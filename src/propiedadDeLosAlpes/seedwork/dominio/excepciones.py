@@ -1,0 +1,3 @@
+
+class ExcepcionDominio(Exception):
+    ...
