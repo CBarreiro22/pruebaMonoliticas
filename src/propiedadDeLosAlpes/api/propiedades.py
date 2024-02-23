@@ -11,5 +11,7 @@ app = api.crear_blueprint('propiedades', '/propiedades')
 def crear_propiedades():
     try:
         propiedad_dict = request.json
+        map_propiedad = MapeadorPropiedadDTOJson()
+        propiedad_dto = map_propiedad.externo_a_dto(propiedad_dict)
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
