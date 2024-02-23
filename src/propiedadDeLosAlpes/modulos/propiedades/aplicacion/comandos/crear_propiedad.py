@@ -12,3 +12,6 @@ class CrearPropiedad (Comando):
     id: str
     fecha_creacion: str
     fecha_actualizacion: str
+
+
+class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
