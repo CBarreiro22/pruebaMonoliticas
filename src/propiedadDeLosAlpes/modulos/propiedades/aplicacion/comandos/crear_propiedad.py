@@ -15,3 +15,16 @@ class CrearPropiedad (Comando):
 
 
 class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
+
+    def handle(self, comando: CrearPropiedad):
+        propiedad_dto = PropiedadDto(
+            direccion=comando.direccion,
+            pais=comando.pais,
+            tipo_propiedad=comando.tipo_propiedad,
+            nombre_propietario=comando.nombre_propietario,
+            id=comando.id,
+            fecha_creacion=comando.fecha_creacion,
+            fecha_actualizacion=comando.fecha_actualizacion
+        )
+
+        propiedad: Propiedad
