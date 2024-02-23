@@ -1,6 +1,8 @@
 import json
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
+
+from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.mapeadores import MapeadorPropiedadDTOJson
 from src.propiedadDeLosAlpes.seedwork.dominio.excepciones import ExcepcionDominio
 from src.propiedadDeLosAlpes.seedwork.presentacion import api
 
