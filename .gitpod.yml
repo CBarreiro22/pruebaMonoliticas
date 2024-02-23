@@ -11,8 +11,6 @@ tasks:
     init: > 
       docker build . -f propiedadDeLosAlpes.Dockerfile -t propiedadDeLosAlpes/flask &&
       docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador &&
-#      docker build . -f notificacion.Dockerfile -t aeroalpes/notificacion &&
-#      docker build . -f ui.Dockerfile -t aeroalpes/ui &&
       gp sync-done images
   - name: Crear folder para datos y asigna permisos
     init: > 
