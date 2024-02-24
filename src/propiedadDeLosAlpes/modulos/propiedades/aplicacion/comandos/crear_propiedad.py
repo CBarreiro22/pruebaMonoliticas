@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.base import CrearPropiedadBaseHandler
+from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.mapeadores import MapeadorPropiedad
 from src.propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
 from src.propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.dto import PropiedadDTO

@@ -11,5 +11,5 @@ class   MapeadorPropiedadDTOJson(AppMap):
         return propiedad_dto
 
 
-class MapeadorReserva(RepMap):
+class MapeadorPropiedad(RepMap):
     pass
