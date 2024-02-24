@@ -8,19 +8,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def registrar_handlers():
-    ##TODO: registrar hanlders
-    #import aeroalpes.modulos.cliente.aplicacion
-    #import aeroalpes.modulos.vuelos.aplicacion
+    import propiedadDeLosAlpes.modulos.propiedad.aplicacion
 
 
 def importar_modelos_alchemy():
-    #TODO: Modelos ALCHEMY
-    #import aeroalpes.modulos.cliente.infraestructura.dto
-    #import aeroalpes.modulos.hoteles.infraestructura.dto
-    #import aeroalpes.modulos.pagos.infraestructura.dto
-    #import aeroalpes.modulos.precios_dinamicos.infraestructura.dto
-    #import aeroalpes.modulos.vehiculos.infraestructura.dto
-    #import aeroalpes.modulos.vuelos.infraestructura.dto
+    import propiedadDeLosAlpes.modulos.propiedad.infraestructura.dto
 
 
 def comenzar_consumidor():
