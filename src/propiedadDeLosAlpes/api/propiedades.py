@@ -2,11 +2,11 @@ import json
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
 
-from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad import CrearPropiedad
-from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.mapeadores import MapeadorPropiedadDTOJson
-from src.propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
-from src.propiedadDeLosAlpes.seedwork.dominio.excepciones import ExcepcionDominio
-from src.propiedadDeLosAlpes.seedwork.presentacion import api
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad import CrearPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.mapeadores import MapeadorPropiedadDTOJson
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
+from propiedadDeLosAlpes.seedwork.dominio.excepciones import ExcepcionDominio
+from propiedadDeLosAlpes.seedwork.presentacion import api
 
 app = api.crear_blueprint('propiedades', '/propiedades')
 

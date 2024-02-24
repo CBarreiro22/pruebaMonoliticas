@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from src.propiedadDeLosAlpes.seedwork.aplicacion.dto import DTO
+from propiedadDeLosAlpes.seedwork.aplicacion.dto import DTO
 
 
 @dataclass(frozen=True)
