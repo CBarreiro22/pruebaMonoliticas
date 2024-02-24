@@ -1,4 +1,6 @@
-from src.propiedadDeLosAlpes.seedwork.aplicacion.comandos import ComandoHandler
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ComandoHandler
+
+
 class CrearPropiedadBaseHandler (ComandoHandler):
 
     def __init__(self):

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
-from src.propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.base import CrearPropiedadBaseHandler
+
 
 
 @dataclass
