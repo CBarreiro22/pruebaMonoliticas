@@ -10,4 +10,4 @@ class PropiedadCreadaPayload(Record):
     tipo_propiedad = String()
 
 class EventoPropiedadCreada(EventoIntegracion):
-    data = ReservaPropiedadPayload()
+    data = PropiedadCreadaPayload()
