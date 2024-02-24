@@ -8,11 +8,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def registrar_handlers():
-    import propiedadDeLosAlpes.modulos.propiedad.aplicacion
+    import propiedadDeLosAlpes.modulos.propiedades.aplicacion
 
 
 def importar_modelos_alchemy():
-    import propiedadDeLosAlpes.modulos.propiedad.infraestructura.dto
+    import propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto
 
 
 def comenzar_consumidor():
@@ -21,30 +21,14 @@ def comenzar_consumidor():
     threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
     de procesos y threads como Celery.
     """
-    #TODO implementar este bloque.
-    #import threading
-    #import aeroalpes.modulos.cliente.infraestructura.consumidores as cliente
-    #import aeroalpes.modulos.hoteles.infraestructura.consumidores as hoteles
-    #import aeroalpes.modulos.pagos.infraestructura.consumidores as pagos
-    #import aeroalpes.modulos.precios_dinamicos.infraestructura.consumidores as precios_dinamicos
-    #import aeroalpes.modulos.vehiculos.infraestructura.consumidores as vehiculos
-    #import aeroalpes.modulos.vuelos.infraestructura.consumidores as vuelos
+    import threading
+    import propiedadDeLosAlpes.modulos.propiedades.infraestructura.consumidores as propiedad
 
     # Suscripción a eventos
-    #threading.Thread(target=cliente.suscribirse_a_eventos).start()
-    #threading.Thread(target=hoteles.suscribirse_a_eventos).start()
-    #threading.Thread(target=pagos.suscribirse_a_eventos).start()
-    #threading.Thread(target=precios_dinamicos.suscribirse_a_eventos).start()
-    #threading.Thread(target=vehiculos.suscribirse_a_eventos).start()
-    #threading.Thread(target=vuelos.suscribirse_a_eventos).start()
+    threading.Thread(target=propiedad.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
-    #threading.Thread(target=cliente.suscribirse_a_comandos).start()
-    #threading.Thread(target=hoteles.suscribirse_a_comandos).start()
-    #threading.Thread(target=pagos.suscribirse_a_comandos).start()
-    #threading.Thread(target=precios_dinamicos.suscribirse_a_comandos).start()
-    #threading.Thread(target=vehiculos.suscribirse_a_comandos).start()
-    #threading.Thread(target=vuelos.suscribirse_a_comandos).start()
+    threading.Thread(target=propiedad.suscribirse_a_comandos).start()
 
 
 def create_app(configuracion={}):
@@ -60,10 +44,10 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
     # Inicializa la DB
-    from aeroalpes.config.db import init_db
+    from propiedadDeLosAlpes.config.db import init_db
     init_db(app)
 
-    from aeroalpes.config.db import db
+    from propiedadDeLosAlpes.config.db import db
 
     importar_modelos_alchemy()
     registrar_handlers()
@@ -74,20 +58,10 @@ def create_app(configuracion={}):
             comenzar_consumidor()
 
     # Importa Blueprints
-    from . import cliente
-    from . import hoteles
-    from . import pagos
-    from . import precios_dinamicos
-    from . import vehiculos
-    from . import vuelos
+    from . import propiedad
 
     # Registro de Blueprints
-    app.register_blueprint(cliente.bp)
-    app.register_blueprint(hoteles.bp)
-    app.register_blueprint(pagos.bp)
-    app.register_blueprint(precios_dinamicos.bp)
-    app.register_blueprint(vehiculos.bp)
-    app.register_blueprint(vuelos.bp)
+    app.register_blueprint(propiedad.bp)
 
     @app.route("/spec")
     def spec():

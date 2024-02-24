@@ -10,7 +10,7 @@ tasks:
   - name: Crear imagenes Docker
     init: > 
       docker build . -f propiedadDeLosAlpes.Dockerfile -t propiedadDeLosAlpes/flask &&
-      docker build . -f adaptador.Dockerfile -t aeroalpes/adaptador &&
+      docker build . -f adaptador.Dockerfile -t propiedadDeLosAlpes/adaptador &&
       gp sync-done images
   - name: Crear folder para datos y asigna permisos
     init: > 
