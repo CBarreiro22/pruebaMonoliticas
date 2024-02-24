@@ -1,5 +1,7 @@
-from src.propiedadDeLosAlpes.seedwork.dominio.repositorios import Repositorio
+from abc import ABC
+
+from propiedadDeLosAlpes.seedwork.dominio.repositorios import Repositorio
 
 
-class RepositorioPropiedad(Repositorio, ABC):
+class RepositorioPropiedades(Repositorio, ABC):
     ...

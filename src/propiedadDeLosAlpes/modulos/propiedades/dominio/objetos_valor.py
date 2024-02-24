@@ -6,6 +6,7 @@ class EstadoPropiedad(str, Enum):
     PENDIENTE = "Pendiente"
     FALLIDA = "Fallida"
 
+
 class TipoPropiedad(str, Enum):
     MINORISTAS = "Minoristas"
     INDUSTRIAL = "Industrial"

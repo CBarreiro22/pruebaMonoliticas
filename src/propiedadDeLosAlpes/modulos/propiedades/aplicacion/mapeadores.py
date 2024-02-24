@@ -1,9 +1,11 @@
-from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.dto import PropiedadDTO
-from src.propiedadDeLosAlpes.seedwork.aplicacion.dto import Mapeador as AppMap
-from src.propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador as RepMap
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.dto import PropiedadDTO
+from propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
+from propiedadDeLosAlpes.seedwork.aplicacion.dto import Mapeador as AppMap
+from propiedadDeLosAlpes.seedwork.dominio.entidades import Entidad
+from propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador as RepMap
 
 
-class   MapeadorPropiedadDTOJson(AppMap):
+class MapeadorPropiedadDTOJson(AppMap):
 
     def externo_a_dto(self, externo: dict) -> PropiedadDTO:
         propiedad_dto = PropiedadDTO()
@@ -12,4 +14,16 @@ class   MapeadorPropiedadDTOJson(AppMap):
 
 
 class MapeadorPropiedad(RepMap):
-    pass
+    def obtener_tipo(self) -> type:
+        return Propiedad.__class__
+
+    def entidad_a_dto(self, entidad: Entidad) -> any:
+        fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
+        fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
+        _id = str(entidad.id)
+
+        return PropiedadDTO(fecha_creacion=fecha_creacion, fecha_actualizacion=fecha_actualizacion, id=_id)
+
+    def dto_a_entidad(self, dto: PropiedadDTO) -> Propiedad:
+        propiedad = Propiedad()
+        return propiedad

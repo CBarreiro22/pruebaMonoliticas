@@ -1,6 +1,6 @@
-from src.propiedadDeLosAlpes.modulos.propiedades.dominio.fabricas import FabricaPropiedad
-from src.propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import FabricaRepositorio
-from src.propiedadDeLosAlpes.seedwork.aplicacion.comandos import ComandoHandler
+from propiedadDeLosAlpes.modulos.propiedades.dominio.fabricas import FabricaPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import FabricaRepositorio
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ComandoHandler
 
 
 class CrearPropiedadBaseHandler (ComandoHandler):

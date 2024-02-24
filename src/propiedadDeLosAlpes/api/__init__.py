@@ -8,7 +8,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def registrar_handlers():
-    #TODO: registrar hanlders
+    ##TODO: registrar hanlders
     #import aeroalpes.modulos.cliente.aplicacion
     #import aeroalpes.modulos.vuelos.aplicacion
 

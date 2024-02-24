@@ -1,8 +1,8 @@
 import uuid
 from dataclasses import dataclass, field
-import src.propiedadDeLosAlpes.modulos.propiedades.dominio.objetos_valor as ov
-from src.propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada
-from src.propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
+import propiedadDeLosAlpes.modulos.propiedades.dominio.objetos_valor as ov
+from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada
+from propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
 
 
 @dataclass
