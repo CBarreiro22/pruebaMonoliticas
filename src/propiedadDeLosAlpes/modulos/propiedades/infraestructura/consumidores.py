@@ -1,13 +1,12 @@
 import pulsar,_pulsar  
 from pulsar.schema import *
-import uuid
-import time
 import logging
 import traceback
-
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoReservaCreada
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoCrearReserva
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
+
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoCrearPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
+
 
 def suscribirse_a_eventos():
     cliente = None
