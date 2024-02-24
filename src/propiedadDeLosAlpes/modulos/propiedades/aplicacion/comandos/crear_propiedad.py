@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-
-from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.base import CrearPropiedadBaseHandler
-
+from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.base import CrearPropiedadBaseHandler
+from src.propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
+from src.propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
+from src.propiedadDeLosAlpes.modulos.propiedades.aplicacion.dto import PropiedadDTO
 
 
 @dataclass
@@ -18,7 +19,7 @@ class CrearPropiedad (Comando):
 class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
 
     def handle(self, comando: CrearPropiedad):
-        propiedad_dto = PropiedadDto(
+        propiedad_dto = PropiedadDTO(
             direccion=comando.direccion,
             pais=comando.pais,
             tipo_propiedad=comando.tipo_propiedad,
@@ -28,4 +29,4 @@ class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
             fecha_actualizacion=comando.fecha_actualizacion
         )
 
-        propiedad: Propiedad
+        propiedad: Propiedad = self.fabrica_propiedades.crear_objeto(propiedad_dto, MapeadorPropiedad())
