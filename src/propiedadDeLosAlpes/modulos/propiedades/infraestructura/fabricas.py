@@ -1,7 +1,10 @@
 from dataclasses import dataclass
 
-from src.propiedadDeLosAlpes.seedwork.dominio.fabricas import Fabrica
-from src.propiedadDeLosAlpes.seedwork.dominio.repositorios import Repositorio
+from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.repositorios import RepositorioPropiedadesSQLite
+from propiedadDeLosAlpes.seedwork.dominio.excepciones import ExcepcionFabrica
+from propiedadDeLosAlpes.seedwork.dominio.fabricas import Fabrica
+from propiedadDeLosAlpes.seedwork.dominio.repositorios import Repositorio
 
 
 @dataclass

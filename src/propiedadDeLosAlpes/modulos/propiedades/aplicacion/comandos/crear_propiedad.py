@@ -4,6 +4,9 @@ from propiedadDeLosAlpes.modulos.propiedades.aplicacion.mapeadores import Mapead
 from propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.dto import PropiedadDTO
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando as comando
+from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
+from propiedadDeLosAlpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 
 
 @dataclass
@@ -34,5 +37,15 @@ class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
         propiedad.crear_propiedad(propiedad)
 
         repositorio = self.fabrica_repositorio.crear_objeto (RepositorioPropiedades.__class__)
+
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, propiedad)
+        UnidadTrabajoPuerto.savepoint()
+        UnidadTrabajoPuerto.commit()
+
+@comando.register(CrearPropiedad)
+def ejecutar_comando_crear_propiedad(comando:CrearPropiedad):
+    handler = CrearPropiedadHandler()
+    handler.handle(comando)
+
 
 
