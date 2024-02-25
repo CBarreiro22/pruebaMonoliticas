@@ -8,14 +8,13 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 """
 
 from propiedadDeLosAlpes.config.db import db
-from .dto import Propiedad as PropiedadDTO
+
 
 from uuid import UUID
 
 from propiedadDeLosAlpes.modulos.propiedades.dominio.fabricas import FabricaPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
-
-from ..aplicacion.dto import PropiedadDTO
+from .dto import Propiedad as PropiedadDTO
 from ..aplicacion.mapeadores import MapeadorPropiedad
 from ..dominio.entidades import Propiedad
 
