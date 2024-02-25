@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "co.edu.uniandes.misw4406";
+option java_outer_classname = "PropiedadProto";
+option objc_class_prefix = "PROP";
+
+package propiedades;
+
+// ------------------------------
+// Servicios
+// ------------------------------
+
+service Propiedades {
+  rpc CrearPropiedad (Propiedad) returns (RespuestaPropiedad) {}
+
+}
+
+// ------------------------------
+// Entidades
+// ------------------------------
+
+message Propiedad {
+    optional string id = 1;
+    optional string propietario = 2;
+    optional google.protobuf.Timestamp fecha_creacion = 3;
+    optional google.protobuf.Timestamp fecha_actualizacion = 4;
+    optional string pais = 5;
+    optional string tipoPropiedad = 6;
+    optional string direccion = 7;
+}
+
+message RespuestaPropiedad {
+    string mensaje = 1;
+    optional Propiedad propiedad = 2;
+}
+
