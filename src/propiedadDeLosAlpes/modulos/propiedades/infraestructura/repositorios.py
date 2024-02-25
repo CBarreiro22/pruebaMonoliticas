@@ -1,5 +1,4 @@
 
-
 """ Repositorios para el manejo de persistencia de objetos de dominio en la capa de infrastructura del dominio de propiedad
 
 En este archivo usted encontrará las diferentes repositorios para
@@ -8,15 +7,12 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 """
 
 from propiedadDeLosAlpes.config.db import db
-
-
-from uuid import UUID
-
-from propiedadDeLosAlpes.modulos.propiedades.dominio.fabricas import FabricaPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
+from propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
+from propiedadDeLosAlpes.modulos.propiedades.dominio.fabricas import FabricaPropiedad
 from .dto import Propiedad as PropiedadDTO
-from ..aplicacion.mapeadores import MapeadorPropiedad
-from ..dominio.entidades import Propiedad
+from .mapeadores import MapeadorPropiedad
+from uuid import UUID
 
 
 class RepositorioPropiedadesSQLite(RepositorioPropiedades):

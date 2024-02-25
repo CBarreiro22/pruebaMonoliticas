@@ -1,10 +1,9 @@
-from dataclasses import dataclass
-
-from propiedadDeLosAlpes.seedwork.dominio.entidades import Entidad
-from propiedadDeLosAlpes.seedwork.dominio.fabricas import Fabrica
-from propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador
 from .entidades import Propiedad
 from .excepciones import TipoObjetoNoExisteEnDominioPropiedadExcepcion
+from propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador, Repositorio
+from propiedadDeLosAlpes.seedwork.dominio.fabricas import Fabrica
+from propiedadDeLosAlpes.seedwork.dominio.entidades import Entidad
+from dataclasses import dataclass
 
 
 @dataclass
