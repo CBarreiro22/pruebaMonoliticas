@@ -1,3 +1,4 @@
+from propiedadDeLosAlpes.seedwork.infraestructura.uow import UnidadTrabajo
 
 
 class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
