@@ -17,6 +17,7 @@ class MapeadorPropiedadDTOJson(AppMap):
 
 
 class MapeadorPropiedad(RepMap):
+    _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
     def obtener_tipo(self) -> type:
         return Propiedad.__class__
 
