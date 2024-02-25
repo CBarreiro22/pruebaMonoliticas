@@ -12,6 +12,9 @@ class MapeadorPropiedadDTOJson(AppMap):
 
         return propiedad_dto
 
+    def dto_a_externo(self, dto: PropiedadDTO) -> dict:
+        return dto.__dict__
+
 
 class MapeadorPropiedad(RepMap):
     def obtener_tipo(self) -> type:
