@@ -18,6 +18,4 @@ class Propiedad(AgregacionRaiz):
         self.tipo_propiedad = propiedad.tipo_propiedad
 
         self.agregar_evento(
-            PropiedadCreada(id_propiedad=self.id, id_propietario=self.id_propietario, estado=self.estado.name,
-                            tipo_propiedad=self.tipo_propiedad,
-                            fecha_creacion=self.fecha_creacion))
+            PropiedadCreada(id_propiedad=self.id_propiedad, id_propietario=self.id_propietario, estado=self.estado.name,tipo_propiedad=self.tipo_propiedad,fecha_creacion=self.fecha_creacion))

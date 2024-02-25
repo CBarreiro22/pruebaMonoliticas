@@ -7,7 +7,7 @@ class CrearPropiedadBaseHandler (ComandoHandler):
 
     def __init__(self):
         self._fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
-        self._fabrica_vpropiedades: FabricaPropiedad = FabricaPropiedad()
+        self._fabrica_propiedades: FabricaPropiedad = FabricaPropiedad()
 
     @property
     def fabrica_repositorio(self):
