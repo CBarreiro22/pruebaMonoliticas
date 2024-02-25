@@ -1,4 +1,5 @@
-from propiedadDeLosAlpes.seedwork.infraestructura.uow import UnidadTrabajo
+from propiedadDeLosAlpes.seedwork.infraestructura.uow import Batch,UnidadTrabajo
+from propiedadDeLosAlpes.config.db import db
 
 
 class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
