@@ -11,7 +11,7 @@ from propiedadDeLosAlpes.seedwork.presentacion import api
 app = api.crear_blueprint('propiedades', '/propiedades')
 
 
-@app.route('/propiedades-comando', methods='POST')
+@app.route('/propiedades-comando', methods=['POST'])
 def crear_propiedades():
     try:
         propiedad_dict = request.json
