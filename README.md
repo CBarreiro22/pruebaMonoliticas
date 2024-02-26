@@ -8,7 +8,7 @@ Para la ejecucion de este repositorio , puede probarlo por medio de gitpod, inst
 
 ![image](https://github.com/CBarreiro22/pruebaMonoliticas/assets/111206402/ab581705-0430-4f66-bb49-9d123356ab6b)
 
-Y en el mismo repo les aparecer la opcion para la redireccion de gitpod
+Y en el mismo repo debe aparecer la opcion para la redireccion de gitpod
 
 ![image](https://github.com/CBarreiro22/pruebaMonoliticas/assets/111206402/616e4848-8cc8-4f92-a2de-ab5e567e5229)
 
