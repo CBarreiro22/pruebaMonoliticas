@@ -2,7 +2,9 @@
 
 Para la ejecucion de este repositorio , puede probarlo por medio de gitpod, instalando la extension de chrome Gitpod
 
-![GitpoChrome](https://chromewebstore.google.com/detail/gitpod/dodmmooeoklaejobgleioelladacbeki?hl=es)
+
+<a href="https://chromewebstore.google.com/detail/gitpod/dodmmooeoklaejobgleioelladacbeki?hl=es"> GitpodChrome</a>
+
 
 ![image](https://github.com/CBarreiro22/pruebaMonoliticas/assets/111206402/ab581705-0430-4f66-bb49-9d123356ab6b)
 
