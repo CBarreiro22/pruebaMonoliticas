@@ -66,12 +66,14 @@ def create_app(configuracion={}):
     @app.route("/spec")
     def spec():
         swag = swagger(app)
-        swag['info']['version'] = "1.0"
+        swag['info']['version'] = "1.0.1"
         swag['info']['title'] = "My API"
         return jsonify(swag)
 
-    @app.route("/health")
+    @app.route("/health", methods=['GET'])
     def health():
-        return {"status": "up"}
+        response = jsonify({"status": "up"})
+        response.headers['Content-Type'] = 'application/json'
+        return response
 
     return app
