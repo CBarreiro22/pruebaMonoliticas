@@ -20,15 +20,14 @@ tasks:
   - name: Pull el Docker compose
     init: gp sync-await images
     command: docker-compose pull
-
-ports:
-  - port: 2181
-    onOpen: ignore
-  - port: 8080
-    onOpen: ignore
-  - port: 6650
-    onOpen: ignore
-  - port: 2181
-    onOpen: ignore
-  - port: 6650
-    onOpen: ignore
+  - name: Instalar y configurar PostgreSQL
+    init: > 
+      sudo apt-get update &&
+      sudo apt-get install -y postgresql postgresql-contrib &&
+      sudo service postgresql start &&
+      sudo -u postgres psql -c "CREATE USER gitpod WITH PASSWORD 'gitpod';" &&
+      sudo -u postgres psql -c "CREATE DATABASE gitpod OWNER gitpod;" &&
+      gp sync-done postgresql
+  - name: Configurar variables de entorno
+    command: > 
+      export DATABASE_URL=postgresql://gitpod:gitpod@localhost/gitpod
