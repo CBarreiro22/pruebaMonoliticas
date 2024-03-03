@@ -9,10 +9,12 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
     import propiedadDeLosAlpes.modulos.propiedades.aplicacion
+    import propiedadDeLosAlpes.modulos.auditoria.aplicacion
 
 
 def importar_modelos_alchemy():
     import propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto
+    import propiedadDeLosAlpes.modulos.auditoria.infraestructura.dto
 
 
 def comenzar_consumidor():
@@ -23,9 +25,11 @@ def comenzar_consumidor():
     """
     import threading
     import propiedadDeLosAlpes.modulos.propiedades.infraestructura.consumidores as propiedad
+    import propiedadDeLosAlpes.modulos.auditoria.infraestructura.consumidores as auditoria
 
     # Suscripción a eventos
     threading.Thread(target=propiedad.suscribirse_a_eventos).start()
+    threading.Thread(target=auditoria.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
     threading.Thread(target=propiedad.suscribirse_a_comandos).start()
