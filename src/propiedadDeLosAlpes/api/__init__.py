@@ -63,9 +63,11 @@ def create_app(configuracion={}):
 
     # Importa Blueprints
     from . import propiedades
+    #from . import auditoria
 
     # Registro de Blueprints
     app.register_blueprint(propiedades.app)
+    #app.register_blueprint(auditoria.app)
 
     @app.route("/spec")
     def spec():
