@@ -18,7 +18,7 @@ class Despachador:
 
     def publicar_evento(self, evento, topico):
         payload = PropiedadModificadaPayload(
-            id_propiedad=str(evento.id_reserva), 
+            id_propiedad=str(evento.id_propiedad), 
             estado=str(evento.estado),
             campos_faltantes=[str(campo) for campo in evento.campos_faltantes]
         )

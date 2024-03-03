@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import PropiedadModificada
+from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacion
 
 from propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
 
