@@ -3,9 +3,9 @@ from propiedadDeLosAlpes.seedwork.infraestructura.schema.v1.eventos import Event
 
 class PropiedadModificadaPayload(Record):
     id_propiedad = String()
-    id_xxx = String()
     estado = String()
-    fecha_creacion = Long()
+    campos_faltantes = Array(String)
+    
 
 class EventoPropiedadModificada(EventoIntegracion):
     data = PropiedadModificadaPayload()

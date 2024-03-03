@@ -1,0 +1,4 @@
+from pydispatch import dispatcher
+from .handlers import HandlerPropiedadModificadaDominio
+
+dispatcher.connect(HandlerPropiedadModificadaDominio.handle_propiedad_modificada, signal='PropiedadModificadaDominio')
