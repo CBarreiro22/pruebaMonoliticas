@@ -24,10 +24,10 @@ tasks:
     init: > 
       sudo apt-get update &&
       sudo apt-get install -y postgresql postgresql-contrib &&
-      sudo service postgresql start && sudo su &&
-      sudo -u postgres psql -c "CREATE USER gitpod WITH PASSWORD 'gitpod';" &&
-      sudo -u postgres psql -c "CREATE DATABASE gitpod OWNER gitpod;" &&
-      gp sync-done postgresql
+      sudo service postgresql start
+#      sudo -u postgres psql -c "CREATE USER gitpod WITH PASSWORD 'gitpod';" &&
+#      sudo -u postgres psql -c "CREATE DATABASE gitpod OWNER gitpod;" &&
+#      gp sync-done postgresql
   - name: Configurar variables de entorno
     command: > 
       export DATABASE_URL=postgresql://gitpod:gitpod@localhost/gitpod
