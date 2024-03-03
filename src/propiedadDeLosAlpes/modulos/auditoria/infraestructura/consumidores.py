@@ -6,7 +6,7 @@ import logging
 import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadModificada
-from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import PropiedadModificada
+from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacion
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.adaptadores import ServicioExternoPropiedades
 from propiedadDeLosAlpes.modulos.auditoria.dominio.entidades import Auditoria 
 from pydispatch import dispatcher
@@ -33,7 +33,7 @@ def suscribirse_a_eventos():
             auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
             propiedad_validada=auditoria.validar_propiedad(auditoria)
             #enviar evento con resultado de validación
-            evento_propiedad_modificada= PropiedadModificada(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
+            evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
             dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
             
             consumidor.acknowledge(mensaje)     
