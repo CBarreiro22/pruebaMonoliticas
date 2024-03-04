@@ -8,7 +8,7 @@ class EventoPropiedadCreada(EventoIntegracion):
     data = PropiedadCreadaPayload()
 class EventoPropiedadRegistradaAgentePayload(Record):
     id_propiedad = String()
-    campos_faltantes= Array(String)
+    campos_faltantes= Array(String())
 class EventoPropiedadRegistradaAgente(EventoIntegracion):
-    data = PropiedadCreadaPayload()
+    data = EventoPropiedadRegistradaAgentePayload()
     
