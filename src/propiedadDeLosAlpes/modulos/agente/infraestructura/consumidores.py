@@ -1,5 +1,4 @@
-from propiedadDeLosAlpes.modulos.auditoria.dominio.fabricas import FabricaAuditoria
-from propiedadDeLosAlpes.modulos.auditoria.infraestructura.mapeadores import MapeadorAuditoriaDTOJson, MapeadorAuditoria
+
 import pulsar,_pulsar  
 from pulsar.schema import *
 import logging
