@@ -57,6 +57,18 @@ class RepositorioPropiedadesPostgreSQL(RepositorioPropiedades):
         propiedad_dto = db.session.query(PropiedadDTO).filter_by(id=str(id)).one()
         return self.fabrica_propiedad.crear_objeto(propiedad_dto, MapeadorPropiedad())
 
+    def obtener_todos(self) -> list[Propiedad]:
+        # TODO
+        raise NotImplementedError
+
     def agregar(self, propiedad: Propiedad):
         propiedad_dto = self.fabrica_propiedad.crear_objeto(propiedad, MapeadorPropiedad())
         db.session.add(propiedad_dto)
+    
+    def actualizar(self, propiedad: Propiedad):
+        # TODO
+        raise NotImplementedError
+
+    def eliminar(self, propiedad_id: UUID):
+        # TODO
+        raise NotImplementedError
