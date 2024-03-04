@@ -6,13 +6,14 @@ from propiedadDeLosAlpes.seedwork.infraestructura import utils
 
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoCrearPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
+from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadModificada
 
 
 def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-propiedad-validada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCreada))
+        consumidor = cliente.subscribe('eventos-propiedad-validada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
         #eventos-propiedad-validada
         #eventos-propiedad-complementada
         while True:
@@ -20,6 +21,9 @@ def suscribirse_a_eventos():
             data=mensaje.value().data
             print("*********** Benito **********")
             print(f'Evento recibido: {data}')
+            print(data.id_propiedad)
+            print(data.estado)
+            print(data.campos_faltantes)
             
             
             consumidor.acknowledge(mensaje)     
