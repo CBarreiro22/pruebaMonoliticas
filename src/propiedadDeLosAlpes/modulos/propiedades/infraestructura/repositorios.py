@@ -43,3 +43,20 @@ class RepositorioPropiedadesSQLite(RepositorioPropiedades):
     def eliminar(self, propiedad_id: UUID):
         # TODO
         raise NotImplementedError
+
+class RepositorioPropiedadesPostgreSQL(RepositorioPropiedades):
+
+    def __init__(self):
+        self._fabrica_propiedad: FabricaPropiedad = FabricaPropiedad()
+
+    @property
+    def fabrica_propiedad(self):
+        return self._fabrica_propiedad
+
+    def obtener_por_id(self, id: UUID) -> Propiedad:
+        propiedad_dto = db.session.query(PropiedadDTO).filter_by(id=str(id)).one()
+        return self.fabrica_propiedad.crear_objeto(propiedad_dto, MapeadorPropiedad())
+
+    def agregar(self, propiedad: Propiedad):
+        propiedad_dto = self.fabrica_propiedad.crear_objeto(propiedad, MapeadorPropiedad())
+        db.session.add(propiedad_dto)

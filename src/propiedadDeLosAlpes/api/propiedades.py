@@ -1,9 +1,10 @@
 import json
 from flask import redirect, render_template, request, session, url_for
-from flask import Response
+from flask import Response, jsonify
 
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad import CrearPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.mapeadores import MapeadorPropiedadDTOJson
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.servicios import ServicioPropiedades
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
 from propiedadDeLosAlpes.seedwork.dominio.excepciones import ExcepcionDominio
 from propiedadDeLosAlpes.seedwork.presentacion import api
@@ -26,3 +27,12 @@ def crear_propiedades():
 
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+
+@app.route('/v1/propiedades/<string:id_propiedad>', methods=['GET'])
+def consultar_propiedades(id_propiedad=None):
+    if id_propiedad:
+        sr = ServicioPropiedades()
+        map_reserva = MapeadorPropiedadDTOJson()
+        return map_reserva.dto_a_externo(sr.obtener_propiedad_por_id(id))
+    else:
+        return [{'message': 'GET!'}]
