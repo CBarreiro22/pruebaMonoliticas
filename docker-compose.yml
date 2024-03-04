@@ -130,7 +130,21 @@ services:
       - PULSAR_ADDRESS=broker
     ports:
       - "50051:50051"
-
+  postgres_agente:
+      image: postgres:latest
+      container_name: postgres_agente
+      ports:
+        - "5433:5433"
+      environment:
+        POSTGRES_DB: agente
+        POSTGRES_USER: usuario_agente
+        POSTGRES_PASSWORD: password_agente
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+      networks:
+        - sidecar
+volumes:
+  postgres_data:
 #  # Servicios de Notificación
 #  notificacion:
 #    container_name: notificacion
