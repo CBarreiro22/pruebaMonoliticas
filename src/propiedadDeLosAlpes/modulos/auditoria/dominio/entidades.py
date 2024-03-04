@@ -25,11 +25,12 @@ class Auditoria(AgregacionRaiz):
     estado: str = field(default=None)   
     
     def validar_propiedad(self, auditoria: Auditoria):
-        for valor in auditoria.values():
+        campos_faltantes=[]
+        for nombre_propiedad, valor in auditoria.__dict__.items():
             if valor == None:
-                self.campos_faltantes.append(valor)
-        if len(self.campos_faltantes) > 0:
-            propiedad_validada = PropiedadModificada(id_propiedad=auditoria.id_propiedad, estado="faltan_datos", campos_faltantes=self.campos_faltantes)
+                campos_faltantes.append(nombre_propiedad)
+        if len(campos_faltantes) > 0:
+            propiedad_validada = ResultadosValidacion(id_propiedad=auditoria.id_propiedad, estado="faltan_datos", campos_faltantes=campos_faltantes)
         else:
-            propiedad_validada=PropiedadModificada(id_propiedad=auditoria.id_propiedad, estado="exitoso", campos_faltantes=[])
+            propiedad_validada=ResultadosValidacion(id_propiedad=auditoria.id_propiedad, estado="exitoso", campos_faltantes=[])
         return propiedad_validada

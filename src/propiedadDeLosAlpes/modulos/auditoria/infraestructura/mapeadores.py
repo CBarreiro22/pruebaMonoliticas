@@ -7,17 +7,7 @@ from .dto import AuditoriaDTO
 
 class MapeadorAuditoriaDTOJson(AppMap):
     def externo_a_dto(self, datos: dict) -> AuditoriaDTO:
-        auditoria_dto = AuditoriaDTO()
-        auditoria_dto.id_propiedad = datos['id_propiedad']
-        auditoria_dto.direccion= datos['direccion']
-        auditoria_dto.pais = datos['pais']
-        auditoria_dto.tipo_propiedad = datos['tipo_propiedad']
-        auditoria_dto.ubicacion = datos['ubicacion']    
-        auditoria_dto.precio = datos['precio']  
-        auditoria_dto.id_empresa = datos['id_empresa']
-        auditoria_dto.superficie = datos['superficie']  
-        auditoria_dto.estado = datos['estado']
-        return auditoria_dto
+        return AuditoriaDTO(id_propiedad=datos['id'], direccion=datos.get('direccion'), pais=datos.get('pais'), tipo_propiedad=datos.get('tipo_propiedad'), ubicacion=datos.get('ubicacion'), precio=datos.get('precio'), id_empresa=datos.get('id_empresa'), superficie=datos.get('superficie'), estado=datos.get('estado'))
 
     def dto_a_externo(self, dto: AuditoriaDTO) -> dict:
         return dto.__dict__

@@ -5,7 +5,7 @@ from pulsar.schema import *
 import logging
 import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
-from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadModificada
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
 from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacion
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.adaptadores import ServicioExternoPropiedades
 from propiedadDeLosAlpes.modulos.auditoria.dominio.entidades import Auditoria 
@@ -15,25 +15,40 @@ def suscribirse_a_eventos():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-propiedad-modificada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
+        consumidor = cliente.subscribe('eventos-propiedad-modificada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCreada))
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Evento recibido: {mensaje.value().data}')
-
+            #print(f'Evento recibido: {mensaje.value().data}')
+            
             #1.- Obtener id de la propiedad
-            id_propiedad = mensaje.value().data['id_propiedad']
+            data=mensaje.value().data 
+            #consumidor.acknowledge(mensaje)  
+            #print(data)
+            id_propiedad = data.id_propiedad
+            print(data)
+            #print(id_propiedad)
             #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
             servicio_propiedades = ServicioExternoPropiedades()
             auditoria_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=id_propiedad)
+            print(auditoria_propiedad_dict)
             map_auditoria = MapeadorAuditoriaDTOJson()
             auditoria_propiedad_dto = map_auditoria.externo_a_dto(auditoria_propiedad_dict)
+           
+            
             #3.- con la info de la api, se tiene que validar campos correctos en la capa de dominio 
+            
             fabrica_auditoria = FabricaAuditoria()
             auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
+            
             propiedad_validada=auditoria.validar_propiedad(auditoria)
+            
             #enviar evento con resultado de validación
             evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
+            print("Benito objeto auditoria")
+            print(propiedad_validada)
+            print(evento_propiedad_modificada)
+            print(f'{type(evento_propiedad_modificada).__name__}Dominio')
             dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
             
             consumidor.acknowledge(mensaje)     
