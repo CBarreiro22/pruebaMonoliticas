@@ -10,3 +10,8 @@ class ResultadosValidacion(EventoDominio):
     id_propiedad: uuid.UUID = None
     estado: str = None
     campos_faltantes: List[str] = None
+
+@dataclass
+class ResultadosValidacionAgente(EventoDominio):
+    id_propiedad: uuid.UUID = None
+    campos_faltantes: List[str] = None

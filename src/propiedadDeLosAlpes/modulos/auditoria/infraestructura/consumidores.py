@@ -19,14 +19,11 @@ def suscribirse_a_eventos():
 
         while True:
             mensaje = consumidor.receive()
-            #print(f'Evento recibido: {mensaje.value().data}')
-            
             #1.- Obtener id de la propiedad
             data=mensaje.value().data 
             #consumidor.acknowledge(mensaje)  
             #print(data)
             id_propiedad = data.id_propiedad
-            print(data)
             #print(id_propiedad)
             #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
             servicio_propiedades = ServicioExternoPropiedades()
@@ -45,10 +42,8 @@ def suscribirse_a_eventos():
             
             #enviar evento con resultado de validación
             evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
-            print("Benito objeto auditoria")
-            print(propiedad_validada)
+            print("Validación Auditoria")
             print(evento_propiedad_modificada)
-            print(f'{type(evento_propiedad_modificada).__name__}Dominio')
             dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
             
             consumidor.acknowledge(mensaje)     
