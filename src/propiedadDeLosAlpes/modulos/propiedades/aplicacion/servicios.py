@@ -16,7 +16,7 @@ class ServicioPropiedades(Servicio):
     
     @property
     def fabrica_propiedades(self):
-        return self._fabrica_vuelos  
+        return self._fabrica_propiedades  
     
     def obtener_propiedad_por_id(self, id) -> PropiedadDTO:
         repositorio = self.fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)

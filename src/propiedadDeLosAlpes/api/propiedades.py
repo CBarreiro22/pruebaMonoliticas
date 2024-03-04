@@ -33,6 +33,6 @@ def consultar_propiedades(id_propiedad=None):
     if id_propiedad:
         sr = ServicioPropiedades()
         map_reserva = MapeadorPropiedadDTOJson()
-        return map_reserva.dto_a_externo(sr.obtener_propiedad_por_id(id))
+        return map_reserva.dto_a_externo(sr.obtener_propiedad_por_id(id_propiedad))
     else:
         return [{'message': 'GET!'}]
