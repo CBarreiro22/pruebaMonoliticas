@@ -2,6 +2,7 @@
 import asyncio
 import time
 import traceback
+from propiedadDeLosAlpes.modulos.agente.infraestructura.v1.eventos import PropiedadRegistrada
 import uvicorn
 
 from propiedadDeLosAlpes.modulos.agente.api import v1
@@ -29,5 +30,18 @@ def shutdown_event():
 async def health() -> dict[str, str]:
     return {"status": "ok"}
 
+@app.get("/prueba-propiedad-registrada", include_in_schema=False)
+async def prueba_propiedad_registrada() -> dict[str, str]:
+    payload = PropiedadRegistrada(id_propiedad="12345", campos_faltantes=["campo1", "campo2"])
+
+    evento = EventoPropiedad(
+        time=utils.time_millis(),
+        ingestion=utils.time_millis(),
+        datacontenttype=UsuarioValidado.__name__,
+        usuario_validado = payload
+    )
+    despachador = Despachador()
+    despachador.publicar_mensaje(evento, "evento-propiedad-registrada")
+    return {"status": "ok"}
 
 app.include_router(v1, prefix="/v1", tags=["Version 1"])

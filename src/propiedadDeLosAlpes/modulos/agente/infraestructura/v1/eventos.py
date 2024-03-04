@@ -3,6 +3,11 @@ from .mensajes import Mensaje
 from pulsar.schema import *
 from propiedadDeLosAlpes.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 import uuid
+
+class PropiedadRegistrada(Record):
+    id_propiedad = String ()
+    campos_faltantes: List[str] = []
+
 class EventoPropiedad(EventoIntegracion):
     id = String(default=str(uuid.uuid4()))
     time = Long()
@@ -11,8 +16,8 @@ class EventoPropiedad(EventoIntegracion):
     type = String(default="EventoPropiedadRegistrada")
     datacontenttype = String()
     service_name = String(default="propiedad.propiedadDeLosAlpes")
-    id_propiedad = id_propiedad
-    campos_faltantes = campos_faltantes
+    propiedad_registrada = PropiedadRegistrada
+    
 
 
     def __init__(self, *args, **kwargs):
