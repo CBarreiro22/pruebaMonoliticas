@@ -1,6 +1,5 @@
-from propiedadDeLosAlpes.seedwork.infraestructura.uow import Batch,UnidadTrabajo
 from propiedadDeLosAlpes.config.db import db
-
+from propiedadDeLosAlpes.seedwork.infraestructura.uow import UnidadTrabajo, Batch
 
 class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
 
@@ -22,14 +21,14 @@ class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
 
     @property
     def batches(self) -> list[Batch]:
-        return self._batches
+        return self._batches             
 
     def commit(self):
         for batch in self.batches:
             lock = batch.lock
             batch.operacion(*batch.args, **batch.kwargs)
-
-        db.session.commit()
+                
+        db.session.commit() # Commits the transaction
 
         super().commit()
 
@@ -38,7 +37,7 @@ class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
             savepoint.rollback()
         else:
             db.session.rollback()
-
+        
         super().rollback()
 
     def savepoint(self):

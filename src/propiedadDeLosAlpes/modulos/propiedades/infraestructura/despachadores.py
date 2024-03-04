@@ -18,9 +18,7 @@ class Despachador:
 
     def publicar_evento(self, evento, topico):
         payload = PropiedadCreadaPayload(
-            id_propiedad=str(evento.id_propiedad), 
-            estado=str(evento.estado),
-            campos_faltantes=[str(campo) for campo in evento.campos_faltantes]
+            id_propiedad=str(evento.id_propiedad),
         )
         evento_dominio = EventoPropiedadCreada(data=payload)
         self._publicar_mensaje(evento_dominio, topico, AvroSchema(EventoPropiedadCreada))

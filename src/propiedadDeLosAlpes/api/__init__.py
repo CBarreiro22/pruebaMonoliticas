@@ -39,25 +39,28 @@ def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = \
-        'postgresql://user_propiedades:propiedades@localhost/propiedades'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = configuracion.get('TESTING')
 
     # Inicializa la DB
-    from propiedadDeLosAlpes.config.db import init_db
+    from propiedadDeLosAlpes.config.db import init_db,database_connection
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     init_db(app)
+    
 
     from propiedadDeLosAlpes.config.db import db
-
     importar_modelos_alchemy()
     registrar_handlers()
 
+    
     with app.app_context():
-        db.create_all()
+        try:
+            db.create_all()
+        except Exception as e:
+            print(f"Error al crear la base de datos: {e}")
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
