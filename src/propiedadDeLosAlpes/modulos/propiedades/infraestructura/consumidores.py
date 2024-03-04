@@ -38,29 +38,16 @@ def suscribirse_a_eventos_auditoria():
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('eventos-propiedad-validada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
-        #eventos-propiedad-validada
-        #eventos-propiedad-complementada
         while True:
+            print("*********** INICIO PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")
             mensaje = consumidor.receive()
             data=mensaje.value().data
-            print("*********** Benito **********")
-            print(f'Evento recibido propiedad validada: {data}')
-            print(data.id_propiedad)
-            print(data.estado)
-            print(data.campos_faltantes)
-            
-            #Insertar en la base de datos pa actualizar el estado de la propiedad
-            #fabrica_propiedades = FabricaPropiedades()
-            #propiedades: Propiedades = fabrica_propiedades.crear_objeto(auditoria_propiedad_dto, MapeadorPropiedades())
-            
-            #propiedad_actualizada=propiedades.actualizar_propiedad(propiedades)
-            #Generar evento para el modulo Agente ... aunque no debería estar aqui
-            #Si el estado es faltan datos, deberia lanzarse el avento para que agente lo procese ... y como un todo (UoW)
+            print(f'Evento recibido: {data}')
             if data.estado == "faltan_datos":
                 evento_resultado_validacion_agente= ResultadosValidacionAgente(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
                 dispatcher.send(signal=f'{type(evento_resultado_validacion_agente).__name__}Dominio', evento=evento_resultado_validacion_agente)
-            consumidor.acknowledge(mensaje)     
-
+            consumidor.acknowledge(mensaje)   
+            print("*********** FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")  
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
