@@ -8,3 +8,12 @@ class PropiedadRegistradaPayload(Record):
 
 class EventoPropiedadRegistrada(EventoIntegracion):
     data = PropiedadRegistradaPayload()
+
+
+class PropiedadCompletadaPayload(Record):
+    id_propiedad = String()
+    propiedades_completadas = Map(String(), String())
+
+
+class EventoPropiedadCompletada(EventoIntegracion):
+    data = PropiedadCompletadaPayload()

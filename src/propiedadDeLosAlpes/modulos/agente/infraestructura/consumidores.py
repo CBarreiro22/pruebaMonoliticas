@@ -20,20 +20,20 @@ def suscribirse_a_eventos():
             mensaje = consumidor.receive()
             print(f'Evento recibido: {mensaje.value().data}')
 
-            #1.- Obtener id de la propiedad
-            id_propiedad = mensaje.value().data['id_propiedad']
-            #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
-            servicio_propiedades = ServicioExternoPropiedades()
-            auditoria_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=id_propiedad)
-            map_auditoria = MapeadorAuditoriaDTOJson()
-            auditoria_propiedad_dto = map_auditoria.externo_a_dto(auditoria_propiedad_dict)
-            #3.- con la info de la api, se tiene que validar campos correctos en la capa de dominio 
-            fabrica_auditoria = FabricaAuditoria()
-            auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
-            propiedad_validada=auditoria.validar_propiedad(auditoria)
-            #enviar evento con resultado de validación
-            evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
-            dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
+            # #1.- Obtener id de la propiedad
+            # id_propiedad = mensaje.value().data['id_propiedad']
+            # #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
+            # servicio_propiedades = ServicioExternoPropiedades()
+            # auditoria_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=id_propiedad)
+            # map_auditoria = MapeadorAuditoriaDTOJson()
+            # auditoria_propiedad_dto = map_auditoria.externo_a_dto(auditoria_propiedad_dict)
+            # #3.- con la info de la api, se tiene que validar campos correctos en la capa de dominio
+            # fabrica_auditoria = FabricaAuditoria()
+            # auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
+            # propiedad_validada=auditoria.validar_propiedad(auditoria)
+            # #enviar evento con resultado de validación
+            # evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes)
+            # dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
             
             consumidor.acknowledge(mensaje)     
 
