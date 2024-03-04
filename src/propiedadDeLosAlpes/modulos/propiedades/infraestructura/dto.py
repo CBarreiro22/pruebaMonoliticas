@@ -12,8 +12,8 @@ class Propiedad(Base):
     __tablename__ = "propiedades"
     id = Column(String, primary_key=True)
     direccion = Column(String)
-    pais: Column(String)
-    tipo_propiedad: Column(String)
-    nombre_propietario: Column(String)
+    pais = Column(String)
+    tipo_propiedad = Column(String)
+    nombre_propietario = Column(String)
     fecha_creacion = Column(DateTime, nullable=False)
     fecha_actualizacion = Column(DateTime, nullable=False)
