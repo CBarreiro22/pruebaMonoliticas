@@ -2,12 +2,12 @@
 import asyncio
 import time
 import traceback
-from propiedadDeLosAlpes.modulos.agente.infraestructura.v1.eventos import PropiedadRegistrada
+from agente.infraestructura.v1.eventos import PropiedadRegistrada
 import uvicorn
 
-from propiedadDeLosAlpes.modulos.agente.api import v1
+from agente.api import v1
 
-from propiedadDeLosAlpes.modulos.agente.infraestructura.consumidores import suscribirse_a_topico
+from agente.infraestructura.consumidores import suscribirse_a_topico
 
 app = FastAPI(**app_configs)
 tasks = list()

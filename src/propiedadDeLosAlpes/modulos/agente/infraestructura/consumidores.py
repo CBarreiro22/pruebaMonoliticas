@@ -5,7 +5,7 @@ import aiopulsar
 import asyncio
 from pulsar.schema import *
 
-from propiedadDeLosAlpes.modulos.agente.seedwork import utils
+from agente.seedwork import utils
 
 
 async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, tipo_consumidor:_pulsar.ConsumerType=_pulsar.ConsumerType.Shared):

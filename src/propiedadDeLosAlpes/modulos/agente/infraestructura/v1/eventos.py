@@ -1,7 +1,7 @@
 
 from .mensajes import Mensaje
 from pulsar.schema import *
-from propiedadDeLosAlpes.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
+from agente.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 import uuid
 
 class PropiedadRegistrada(Record):
