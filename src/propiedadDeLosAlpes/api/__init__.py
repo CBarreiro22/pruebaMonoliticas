@@ -2,6 +2,8 @@ import os
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
+from sqlalchemy import create_engine
+from sqlalchemy.orm import  scoped_session,sessionmaker
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -14,7 +16,8 @@ def registrar_handlers():
 
 def importar_modelos_alchemy():
     import propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto
-    import propiedadDeLosAlpes.modulos.auditoria.infraestructura.dto
+    #from propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto import Propiedad
+    #import propiedadDeLosAlpes.modulos.auditoria.infraestructura.dto
 
 
 def comenzar_consumidor():
@@ -47,7 +50,7 @@ def create_app(configuracion={}):
     from propiedadDeLosAlpes.config.db import init_db,database_connection
     app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+    print(app.config['SQLALCHEMY_DATABASE_URI'])
     init_db(app)
     
 
@@ -55,10 +58,14 @@ def create_app(configuracion={}):
     importar_modelos_alchemy()
     registrar_handlers()
 
-    
+    engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+    from propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto import Base
+    Base.metadata.create_all(engine)
+    db.session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
     with app.app_context():
         try:
             db.create_all()
+            print("creada")
         except Exception as e:
             print(f"Error al crear la base de datos: {e}")
         if not app.config.get('TESTING'):
