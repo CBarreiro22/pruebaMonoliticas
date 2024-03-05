@@ -17,9 +17,18 @@ Y en el mismo repo debe aparecer la opcion para la redireccion de gitpod
 Ahora para probar el POC primero se procede levantando el pulsar
 
 ### Correr docker-compose usando profiles
+
+Correr Servicio de Base de datos
+```bash
+docker-compose --profile postgresPropiedades up
+```
+
+Correr Servicio Pulsar
 ```bash
 docker-compose --profile pulsar up
 ```
+
+
 
 Luego se procede a ejecutar la aplicación
 

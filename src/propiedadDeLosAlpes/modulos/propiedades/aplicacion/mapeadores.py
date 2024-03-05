@@ -8,7 +8,28 @@ from propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador as RepMap
 class MapeadorPropiedadDTOJson(AppMap):
 
     def externo_a_dto(self, externo: dict) -> PropiedadDTO:
-        propiedad_dto = PropiedadDTO()
+        #propiedad_dto = PropiedadDTO()
+          
+    
+    
+    
+    
+    #, ubicacion= externo['ubicacion']
+    #, id_empresa=externo['id_empresa']
+    # "superficie": 1.1,
+    # "precio":23.2,
+    # "estado": "Bogota",
+    # "fecha_actualizacion": "12-12-24",
+    # "fecha_creacion": "12-12-24"
+        propiedad_dto = PropiedadDTO(tipo_propiedad=externo['tipo_propiedad']
+                                        , direccion=externo['direccion']
+                                        , pais=externo['pais']
+                                        , nombre_propietario=externo['nombre_propietario']
+                                        , fecha_creacion=externo['fecha_creacion']
+                                        , fecha_actualizacion=externo['fecha_actualizacion']
+                                       
+                                       
+                                        )
 
         return propiedad_dto
 
@@ -29,5 +50,7 @@ class MapeadorPropiedad(RepMap):
         return PropiedadDTO(fecha_creacion=fecha_creacion, fecha_actualizacion=fecha_actualizacion, id=_id)
 
     def dto_a_entidad(self, dto: PropiedadDTO) -> Propiedad:
-        propiedad = Propiedad()
+        propiedad = Propiedad(direccion=dto.direccion, pais=dto.pais, tipo_propiedad=dto.tipo_propiedad, nombre_propietario=dto.nombre_propietario
+        #,fecha_creacion=dto.fecha_creacion, fecha_actualizacion=dto.fecha_actualizacion
+        )
         return propiedad

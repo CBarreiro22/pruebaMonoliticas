@@ -11,6 +11,17 @@ class Propiedad(AgregacionRaiz):
     id_propietario: uuid.UUID = field(hash=True, default=None)
     estado: ov.EstadoPropiedad = field(default=ov.EstadoPropiedad.PENDIENTE)
     tipo_propiedad: ov.TipoPropiedad = field(default=ov.TipoPropiedad.MINORISTAS)
+    nombre_propietario: str = field(default=None)
+    direccion: str = field(default=None)
+    pais: str = field(default=None)
+    tipo_propiedad: str = field(default=None)
+    ubicacion: str = field(default=None)
+    precio: float = field(default=0)
+    id_empresa: int = field(default=0)
+    superficie: float = field(default=0)
+    estado: str = field(default=None)
+ 
+
 
     def crear_propiedad(self, propiedad: Propiedad):
         self.id_propietario = propiedad.id_propietario
@@ -18,4 +29,4 @@ class Propiedad(AgregacionRaiz):
         self.tipo_propiedad = propiedad.tipo_propiedad
 
         self.agregar_evento(
-            PropiedadCreada(id_propiedad=self.id, id_propietario=self.id_propietario, estado=self.estado.name,tipo_propiedad=self.tipo_propiedad,fecha_creacion=self.fecha_creacion))
+            PropiedadCreada(id_propiedad=self.id))

@@ -97,6 +97,25 @@ services:
       - "8080:8080"
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
+ # PostgreSQL
+  postgresPropiedades:
+    image: postgres:latest
+    hostname: pospostgresPropiedadestgresdb
+    container_name: postgres_propiedades
+    restart: always
+    environment:
+      - POSTGRES_DB=propiedades
+      - POSTGRES_USER=user_propiedades
+      - POSTGRES_PASSWORD=propiedades
+    profiles: ["propiedadDeLosAlpes", "postgresPropiedades"]
+    networks:
+      - pulsar
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
 
   # Servicios de propiedadDeLosAlpes
   propiedadDeLosAlpes:
