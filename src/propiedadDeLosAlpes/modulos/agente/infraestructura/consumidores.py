@@ -5,6 +5,7 @@ import logging
 import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadRegistradaAgente
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadCompletada
 #from propiedadDeLosAlpes.modulos.agente.dominio.eventos import ResultadosValidacion
 # from propiedadDeLosAlpes.modulos.agente.infraestructura.adaptadores import ServicioExternoPropiedades
 # from propiedadDeLosAlpes.modulos.agente.dominio.entidades import Agente 
@@ -21,9 +22,9 @@ def suscribirse_a_eventos():
             
 
             # #1.- Obtener id de la propiedad
-             data=mensaje.value().data
+            data=mensaje.value().data
 
-             print(f'Evento recibido: {data}')
+            print(f'Evento recibido: {data}')
 
             # #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
             # servicio_propiedades = ServicioExternoPropiedades()
@@ -40,7 +41,7 @@ def suscribirse_a_eventos():
             # propiedad_validada=agente.validar_propiedad(agente)
             # #enviar evento con resultado de validación
             # evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes)
-             dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=evento_propiedad_completada)
+            dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=evento_propiedad_completada)
             
             consumidor.acknowledge(mensaje)     
 

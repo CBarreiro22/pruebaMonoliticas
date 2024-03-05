@@ -1,6 +1,7 @@
 import pulsar
 from pulsar.schema import *
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadCompletada,PropiedadCompletadaPayload
+
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
 
