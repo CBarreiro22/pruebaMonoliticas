@@ -24,7 +24,7 @@ def suscribirse_a_eventos():
             # #1.- Obtener id de la propiedad
             data=mensaje.value().data
 
-            print(f'Evento recibido: {data}')
+            print(f'LOG###    Evento recibido: {data}')
 
             # #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
             # servicio_propiedades = ServicioExternoPropiedades()
@@ -41,7 +41,7 @@ def suscribirse_a_eventos():
             # propiedad_validada=agente.validar_propiedad(agente)
             # #enviar evento con resultado de validación
             # evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes)
-            dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=evento_propiedad_completada)
+            dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=payload)
             
             consumidor.acknowledge(mensaje)     
 
