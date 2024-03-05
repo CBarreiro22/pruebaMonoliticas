@@ -4,10 +4,10 @@ from pulsar.schema import *
 import logging
 import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
-from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadModificada
-from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacion
-from propiedadDeLosAlpes.modulos.auditoria.infraestructura.adaptadores import ServicioExternoPropiedades
-from propiedadDeLosAlpes.modulos.auditoria.dominio.entidades import Auditoria 
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadRegistrada
+#from propiedadDeLosAlpes.modulos.agente.dominio.eventos import ResultadosValidacion
+# from propiedadDeLosAlpes.modulos.agente.infraestructura.adaptadores import ServicioExternoPropiedades
+# from propiedadDeLosAlpes.modulos.agente.dominio.entidades import Agente 
 from pydispatch import dispatcher
 
 def suscribirse_a_eventos():
@@ -24,13 +24,13 @@ def suscribirse_a_eventos():
             # id_propiedad = mensaje.value().data['id_propiedad']
             # #2.- Consumir api rest de propiedad en capa infraestructura: GET /v1/propiedaes/{:id_propiedad}
             # servicio_propiedades = ServicioExternoPropiedades()
-            # auditoria_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=id_propiedad)
-            # map_auditoria = MapeadorAuditoriaDTOJson()
-            # auditoria_propiedad_dto = map_auditoria.externo_a_dto(auditoria_propiedad_dict)
+            # agente_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=id_propiedad)
+            # map_agente = MapeadoragenteDTOJson()
+            # agente_propiedad_dto = map_agente.externo_a_dto(agente_propiedad_dict)
             # #3.- con la info de la api, se tiene que validar campos correctos en la capa de dominio
-            # fabrica_auditoria = FabricaAuditoria()
-            # auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
-            # propiedad_validada=auditoria.validar_propiedad(auditoria)
+            # fabrica_agente = Fabricaagente()
+            # agente: agente = fabrica_agente.crear_objeto(agente_propiedad_dto, Mapeadoragente())
+            # propiedad_validada=agente.validar_propiedad(agente)
             # #enviar evento con resultado de validación
             # evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes)
             # dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)

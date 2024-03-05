@@ -4,7 +4,7 @@ from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
 
-from src.propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import PropiedadRegistradaPayload
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import PropiedadRegistradaPayload
 
 epoch = datetime.datetime.utcfromtimestamp(0)
 

@@ -12,7 +12,7 @@ class EventoPropiedadRegistrada(EventoIntegracion):
 
 class PropiedadCompletadaPayload(Record):
     id_propiedad = String()
-    propiedades_completadas = Map(String(), String())
+#    propiedades_completadas = Map(String(), String())
 
 
 class EventoPropiedadCompletada(EventoIntegracion):
