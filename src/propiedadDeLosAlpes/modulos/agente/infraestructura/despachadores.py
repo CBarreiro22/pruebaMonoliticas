@@ -4,6 +4,8 @@ from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
 
+from src.propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import PropiedadRegistradaPayload
+
 epoch = datetime.datetime.utcfromtimestamp(0)
 
 def unix_time_millis(dt):
@@ -23,3 +25,11 @@ class Despachador:
         )
         evento_dominio = EventoPropiedadModificada(data=payload)
         self._publicar_mensaje(evento_dominio, topico, AvroSchema(EventoPropiedadCompletada))
+
+    def publicar_evento_propiedad_registrada(self, evento, topico):
+        payload = PropiedadRegistradaPayload(
+            id_propiedad=str(evento.id_propiedad),
+            propiedades_completadas=evento.campos_faltantes
+        )
+        evento_dominio = EventoPropiedadRegistrada(data=payload)
+        self._publicar_mensaje(evento_dominio, topico, AvroSchema(EventoPropiedadRegistrada))

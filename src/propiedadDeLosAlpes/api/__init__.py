@@ -3,6 +3,10 @@ import os
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadRegistrada
+
+from src.propiedadDeLosAlpes.modulos.agente.infraestructura.despachadores import Despachador
+
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -81,5 +85,19 @@ def create_app(configuracion={}):
         response = jsonify({"status": "up"})
         response.headers['Content-Type'] = 'application/json'
         return response
+
+    @app.get("/prueba-propiedad-registrada", include_in_schema=False)
+    async def prueba_propiedad_registrada() -> dict[str, str]:
+        payload = EventoPropiedadRegistrada(id_propiedad="12345", campos_faltantes=["campo1", "campo2"])
+
+        evento = EventoPropiedad(
+            time=utils.time_millis(),
+            ingestion=utils.time_millis(),
+            datacontenttype=UsuarioValidado.__name__,
+            usuario_validado=payload
+        )
+        despachador = Despachador()
+        despachador.publicar_evento_propiedad_registrada(evento, "eventos-propiedad-registrada")
+        return {"status": "ok"}
 
     return app
