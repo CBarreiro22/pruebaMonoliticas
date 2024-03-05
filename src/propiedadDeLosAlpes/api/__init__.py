@@ -1,7 +1,16 @@
 import os
+import time
+from typing import Dict
+
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
+
+
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadRegistrada, PropiedadRegistradaPayload
+
+
+from propiedadDeLosAlpes.modulos.agente.infraestructura.despachadores import Despachador
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -24,15 +33,18 @@ def comenzar_consumidor():
     de procesos y threads como Celery.
     """
     import threading
-    import propiedadDeLosAlpes.modulos.propiedades.infraestructura.consumidores as propiedad
-    import propiedadDeLosAlpes.modulos.auditoria.infraestructura.consumidores as auditoria
+    ##import propiedadDeLosAlpes.modulos.propiedades.infraestructura.consumidores as propiedad
+    ##import propiedadDeLosAlpes.modulos.auditoria.infraestructura.consumidores as auditoria
+    import propiedadDeLosAlpes.modulos.agente.infraestructura.consumidores as agente
 
     # Suscripción a eventos
-    threading.Thread(target=propiedad.suscribirse_a_eventos).start()
-    threading.Thread(target=auditoria.suscribirse_a_eventos).start()
+    #threading.Thread(target=propiedad.suscribirse_a_eventos).start()
+    #threading.Thread(target=auditoria.suscribirse_a_eventos).start()
+    threading.Thread(target=agente.suscribirse_a_eventos).start()
+
 
     # Suscripción a comandos
-    threading.Thread(target=propiedad.suscribirse_a_comandos).start()
+    #threading.Thread(target=propiedad.suscribirse_a_comandos).start()
 
 
 def create_app(configuracion={}):
@@ -65,11 +77,11 @@ def create_app(configuracion={}):
             comenzar_consumidor()
 
     # Importa Blueprints
-    from . import propiedades
+    #from . import propiedades
     #from . import auditoria
-
+    from . import agente
     # Registro de Blueprints
-    app.register_blueprint(propiedades.app)
+    #app.register_blueprint(propiedades.app)
     #app.register_blueprint(auditoria.app)
 
     @app.route("/spec")
@@ -85,4 +97,26 @@ def create_app(configuracion={}):
         response.headers['Content-Type'] = 'application/json'
         return response
 
+    @app.get("/prueba-propiedad-registrada")
+    async def prueba_propiedad_registrada() -> Dict[str, str]:
+        # Crear un objeto Payload
+        payload = PropiedadRegistradaPayload(id_propiedad="12345", campos_faltantes=["campo1", "campo2"])
+        
+
+        # Crear un objeto Evento
+        evento = EventoPropiedadRegistrada(
+            data=payload
+        )
+        
+
+        # Publicar el evento usando el despachador
+        despachador = Despachador()
+        despachador.publicar_evento_propiedad_registrada(evento, "eventos-propiedad-registrada")
+        print("Evento publicado")
+
+        return {"status": "ok"}
+
     return app
+
+def time_millis():
+    return int(time.time() * 1000)
