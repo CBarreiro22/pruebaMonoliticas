@@ -23,13 +23,11 @@ class Despachador:
             id_propiedad=str(evento.id_propiedad),
             propiedades_completadas=evento.propiedades_completadas
         )
-        evento_dominio = EventoPropiedadModificada(data=payload)
+        evento_dominio = EventoPropiedadCompletada(data=payload)
         self._publicar_mensaje(evento_dominio, topico, AvroSchema(EventoPropiedadCompletada))
 
     def publicar_evento_propiedad_registrada(self, evento, topico):
-        print ("ddefefsefeefefwef$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
-        print (str(evento))
-        print ("ddefefsefeefefwef$$$$$$$$$$$$$$$$$$$$$$$")
+        
         payload = PropiedadRegistradaPayload(
             id_propiedad=str(evento.id_propiedad),
             propiedades_completadas=evento.campos_faltantes
