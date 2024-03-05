@@ -1,8 +1,11 @@
 import os
+import time
+from typing import Dict
+
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
-from propiedadDeLosAlpes.seedwork.infraestructura.utils import utils
+
 
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadRegistrada, PropiedadRegistradaPayload
 
@@ -92,19 +95,25 @@ def create_app(configuracion={}):
         return response
 
     @app.get("/prueba-propiedad-registrada")
-    async def prueba_propiedad_registrada() -> dict[str, str]:
-    
+    async def prueba_propiedad_registrada() -> Dict[str, str]:
+        # Crear un objeto Payload
         payload = PropiedadRegistradaPayload(id_propiedad="12345", campos_faltantes=["campo1", "campo2"])
+        
 
+        # Crear un objeto Evento
         evento = EventoPropiedadRegistrada(
-            time=utils.time_millis(),
-            ingestion=utils.time_millis(),
-            datacontenttype=UsuarioValidado.__name__,
-            usuario_validado=payload
+            data=payload
         )
+        
+
+        # Publicar el evento usando el despachador
         despachador = Despachador()
         despachador.publicar_evento_propiedad_registrada(evento, "eventos-propiedad-registrada")
+        print("Evento publicado")
 
         return {"status": "ok"}
 
     return app
+
+def time_millis():
+    return int(time.time() * 1000)
