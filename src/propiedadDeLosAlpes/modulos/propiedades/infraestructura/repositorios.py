@@ -64,6 +64,7 @@ class RepositorioPropiedadesPostgreSQL(RepositorioPropiedades):
     def agregar(self, propiedad: Propiedad):
         propiedad_dto = self.fabrica_propiedad.crear_objeto(propiedad, MapeadorPropiedad())
         db.session.add(propiedad_dto)
+        db.session.commit()
     
     def actualizar(self, propiedad: Propiedad):
         # TODO

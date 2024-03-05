@@ -18,8 +18,7 @@ def crear_propiedades():
         propiedad_dict = request.json
         map_propiedad = MapeadorPropiedadDTOJson()
         propiedad_dto = map_propiedad.externo_a_dto(propiedad_dict)
-        comando = CrearPropiedad (propiedad_dto.direccion, propiedad_dto.pais, propiedad_dto.tipo_propiedad, propiedad_dto.id, propiedad_dto.fecha_creacion, propiedad_dto.fecha_actualizacion, propiedad_dto.nombre_propietario)
-            
+        comando = CrearPropiedad(id=None, direccion=propiedad_dto.direccion, pais=propiedad_dto.pais, tipo_propiedad=propiedad_dto.tipo_propiedad, nombre_propietario=propiedad_dto.nombre_propietario, fecha_creacion=propiedad_dto.fecha_creacion, fecha_actualizacion=propiedad_dto.fecha_actualizacion)
         ejecutar_commando (comando)
 
         return Response('{}', status=202, mimetype='application/json')
