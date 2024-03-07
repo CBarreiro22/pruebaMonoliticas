@@ -18,10 +18,10 @@ def suscribirse_a_eventos():
         consumidor = cliente.subscribe('eventos-propiedad-modificada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCreada))
 
         while True:
-            print("*********** INICIO PROCESAMIENTO DE EVENTO: eventos-propiedad-modificada ***********")
+            print("*********** AUDITORIA 1 - INICIO PROCESAMIENTO DE EVENTO: eventos-propiedad-modificada ***********")
             mensaje = consumidor.receive()
             data=mensaje.value().data 
-            print(f'Evento recibido: {data}')
+            print(f'Evento recibido AUDITORIA: {data}')
             id_propiedad = data.id_propiedad
             servicio_propiedades = ServicioExternoPropiedades()
             auditoria_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=id_propiedad)
@@ -33,10 +33,10 @@ def suscribirse_a_eventos():
             evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
             dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
             consumidor.acknowledge(mensaje)   
-            print("*********** FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")    
+            print("*********** AUDITORIA 2 - FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-modificada ***********")    
         cliente.close()
     except:
-        logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        logging.error('ERROR: Suscribiendose al tópico de eventos AUDITORIA!')
         traceback.print_exc()
         if cliente:
             cliente.close()

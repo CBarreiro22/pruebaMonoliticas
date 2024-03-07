@@ -32,15 +32,16 @@ def suscribirse_a_eventos_agente():
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('eventos-propiedad-complementada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCompletada))
         while True:
+            print("*********** PROPIEDADES 1 - INICIO PROCESAMIENTO DE EVENTO: eventos-propiedad-complementada ***********")
             mensaje = consumidor.receive()
             data=mensaje.value().data
-            print(f'######LOG desde agente Evento recibido: {data}')
+            print(f'Evento recibido PROPIEDADES: {data}')
 
             consumidor.acknowledge(mensaje)     
-
+            print("*********** PROPIEDADES 2 FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-complementada ***********")
         cliente.close()
     except:
-        logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        logging.error('ERROR: Suscribiendose al tópico de eventos PROPIEDADES!')
         traceback.print_exc()
         if cliente:
             cliente.close()
@@ -51,18 +52,18 @@ def suscribirse_a_eventos_auditoria():
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('eventos-propiedad-validada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
         while True:
-            print("*********** INICIO PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")
+            print("*********** PROPIEDADES 1 - INICIO PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")
             mensaje = consumidor.receive()
             data=mensaje.value().data
-            print(f'Evento recibido: {data}')
+            print(f'Evento recibido PROPIEDADES: {data}')
             if data.estado == "faltan_datos":
                 evento_resultado_validacion_agente= ResultadosValidacionAgente(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
                 dispatcher.send(signal=f'{type(evento_resultado_validacion_agente).__name__}Dominio', evento=evento_resultado_validacion_agente)
             consumidor.acknowledge(mensaje)   
-            print("*********** FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")  
+            print("*********** PROPIEDADES 2 FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-validada ***********")  
         cliente.close()
     except:
-        logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        logging.error('ERROR: Suscribiendose al tópico de eventos PROPIEDADES!')
         traceback.print_exc()
         if cliente:
             cliente.close()

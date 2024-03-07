@@ -16,7 +16,6 @@ class MapeadorPropiedadDTOJson(AppMap):
             id_empresa=externo['id_empresa'],
             superficie=externo['superficie'],
             precio=externo['precio'],
-            estado=externo['estado'],
             ubicacion=externo['ubicacion'])
         return propiedad_dto
 
