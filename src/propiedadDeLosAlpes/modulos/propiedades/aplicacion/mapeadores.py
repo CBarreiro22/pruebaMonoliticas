@@ -28,7 +28,7 @@ class MapeadorPropiedad(RepMap):
     def obtener_tipo(self) -> type:
         return Propiedad.__class__
 
-    def entidad_a_dto(self, entidad: Entidad) -> any:
+    def entidad_a_dto(self, entidad: Entidad) -> PropiedadDTO:
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
         fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)

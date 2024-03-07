@@ -14,7 +14,7 @@ class Propiedad(AgregacionRaiz):
 @dataclass
 class Auditoria(AgregacionRaiz):
     id_propiedad: uuid.UUID = field(hash=True, default=None)
-    propietario: str = field(default=None)
+    nombre_propietario: str = field(default=None)
     direccion: str = field(default=None)
     pais: str = field(default=None) 
     tipo_propiedad: str = field(default=None)   

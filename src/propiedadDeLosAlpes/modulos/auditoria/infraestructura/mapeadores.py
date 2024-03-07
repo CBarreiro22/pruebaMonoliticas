@@ -7,7 +7,7 @@ from .dto import AuditoriaDTO
 
 class MapeadorAuditoriaDTOJson(AppMap):
     def externo_a_dto(self, datos: dict) -> AuditoriaDTO:
-        return AuditoriaDTO(id_propiedad=datos['id'], direccion=datos.get('direccion'), pais=datos.get('pais'), tipo_propiedad=datos.get('tipo_propiedad'), ubicacion=datos.get('ubicacion'), precio=datos.get('precio'), id_empresa=datos.get('id_empresa'), superficie=datos.get('superficie'), estado=datos.get('estado'))
+        return AuditoriaDTO(id_propiedad=datos['id'], direccion=datos.get('direccion'), pais=datos.get('pais'), tipo_propiedad=datos.get('tipo_propiedad'), ubicacion=datos.get('ubicacion'), precio=datos.get('precio'), id_empresa=datos.get('id_empresa'), superficie=datos.get('superficie'), estado=datos.get('estado'), nombre_propietario=datos.get('nombre_propietario'))
 
     def dto_a_externo(self, dto: AuditoriaDTO) -> dict:
         return dto.__dict__
@@ -17,7 +17,17 @@ class MapeadorAuditoria(RepMap):
         return Auditoria.__class__
     
     def entidad_a_dto(self, entidad: Auditoria) -> AuditoriaDTO:
-        return AuditoriaDTO(id_propiedad=entidad.id_propiedad, direccion=entidad.direccion, pais=entidad.pais, tipo_propiedad=entidad.tipo_propiedad, ubicacion=entidad.ubicacion, precio=entidad.precio, id_empresa=entidad.id_empresa, superficie=entidad.superficie, estado=entidad.estado)
+        return AuditoriaDTO(
+            id_propiedad=entidad.id_propiedad, 
+            direccion=entidad.direccion, 
+            pais=entidad.pais, 
+            tipo_propiedad=entidad.tipo_propiedad, 
+            ubicacion=entidad.ubicacion, 
+            precio=entidad.precio, 
+            id_empresa=entidad.id_empresa, 
+            superficie=entidad.superficie, 
+            estado=entidad.estado,
+            nombre_propietario=entidad.nombre_propietario)
 
     def dto_a_entidad(self, dto: AuditoriaDTO) -> Auditoria:
         auditoria= Auditoria()
@@ -30,4 +40,5 @@ class MapeadorAuditoria(RepMap):
         auditoria.id_empresa = dto.id_empresa
         auditoria.superficie = dto.superficie
         auditoria.estado = dto.estado
+        auditoria.nombre_propietario = dto.nombre_propietario
         return auditoria
