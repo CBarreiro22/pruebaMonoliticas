@@ -32,7 +32,8 @@ class MapeadorPropiedad(RepMap):
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
         fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
-
+        print("Benito")
+        print(entidad)
         return PropiedadDTO(
             fecha_creacion=fecha_creacion, 
             fecha_actualizacion=fecha_actualizacion, 
@@ -49,6 +50,8 @@ class MapeadorPropiedad(RepMap):
         )
 
     def dto_a_entidad(self, dto: PropiedadDTO) -> Propiedad:
+        print("Benito")
+        print(dto)
         propiedad = Propiedad(
             direccion=dto.direccion, 
             pais=dto.pais, 
