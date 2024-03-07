@@ -33,7 +33,20 @@ class MapeadorPropiedad(RepMap):
         fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
 
-        return PropiedadDTO(fecha_creacion=fecha_creacion, fecha_actualizacion=fecha_actualizacion, id=_id)
+        return PropiedadDTO(
+            fecha_creacion=fecha_creacion, 
+            fecha_actualizacion=fecha_actualizacion, 
+            id=_id,
+            tipo_propiedad=entidad.tipo_propiedad,
+            direccion=entidad.direccion,
+            pais=entidad.pais,
+            nombre_propietario=entidad.nombre_propietario,
+            id_empresa=entidad.id_empresa,
+            superficie=entidad.superficie,
+            precio=entidad.precio,
+            estado=entidad.estado,
+            ubicacion=entidad.ubicacion
+        )
 
     def dto_a_entidad(self, dto: PropiedadDTO) -> Propiedad:
         propiedad = Propiedad(
