@@ -24,9 +24,5 @@ class Propiedad(AgregacionRaiz):
 
 
     def crear_propiedad(self, propiedad: Propiedad):
-        self.id_propietario = propiedad.id_propietario
-        self.estado = propiedad.estado
-        self.tipo_propiedad = propiedad.tipo_propiedad
-
         self.agregar_evento(
             PropiedadCreada(id_propiedad=self.id))
