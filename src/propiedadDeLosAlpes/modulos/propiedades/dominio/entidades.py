@@ -2,7 +2,7 @@ from __future__ import annotations
 import uuid
 from dataclasses import dataclass, field
 import propiedadDeLosAlpes.modulos.propiedades.dominio.objetos_valor as ov
-from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada
+from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCompletada
 from propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
 
 
@@ -25,4 +25,4 @@ class Propiedad(AgregacionRaiz):
 
     def crear_propiedad(self, propiedad: Propiedad):
         self.agregar_evento(
-            PropiedadCreada(id_propiedad=self.id))
+            PropiedadCompletada(id_propiedad=self.id))

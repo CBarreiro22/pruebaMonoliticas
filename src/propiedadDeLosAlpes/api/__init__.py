@@ -62,7 +62,9 @@ def create_app(configuracion={}):
 
     engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
     from propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto import Base
+    from propiedadDeLosAlpes.modulos.agente.infraestructura.dto import BaseAgente
     Base.metadata.create_all(engine)
+    BaseAgente.metadata.create_all(engine)
     db.session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
     with app.app_context():
         try:
