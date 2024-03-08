@@ -26,7 +26,7 @@ class MapeadorAuditoria(RepMap):
             precio=entidad.precio, 
             id_empresa=entidad.id_empresa, 
             superficie=entidad.superficie, 
-            estado=entidad.estado,
+            #estado=entidad.estado,
             nombre_propietario=entidad.nombre_propietario)
 
     def dto_a_entidad(self, dto: AuditoriaDTO) -> Auditoria:
@@ -39,6 +39,6 @@ class MapeadorAuditoria(RepMap):
         auditoria.precio = dto.precio
         auditoria.id_empresa = dto.id_empresa
         auditoria.superficie = dto.superficie
-        auditoria.estado = dto.estado
+        #auditoria.estado = dto.estado
         auditoria.nombre_propietario = dto.nombre_propietario
         return auditoria
