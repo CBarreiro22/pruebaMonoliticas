@@ -1,4 +1,6 @@
 
+from propiedadDeLosAlpes.modulos.agente.aplicación.comandos.completar_propiedad import CompletarPropiedad
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
 import pulsar,_pulsar  
 from pulsar.schema import *
 import logging
@@ -22,6 +24,14 @@ def suscribirse_a_eventos():
             id_propiedad = data.id_propiedad 
             lista_campos = data.campos_faltantes  
             payload = EventoPropiedadCompletada (id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
+
+            comando = CompletarPropiedad(
+                        id=data.id_propiedad, 
+                        campos_faltantes="datos"
+                    )
+            print(f'comando CompletarPropiedad: {comando}')
+            ejecutar_commando(comando)
+            
             dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=payload)
             consumidor.acknowledge(mensaje)     
             print("*********** AGENTES 2 FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-registrada ***********")  
