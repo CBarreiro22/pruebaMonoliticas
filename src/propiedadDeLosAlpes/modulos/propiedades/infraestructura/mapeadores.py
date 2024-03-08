@@ -34,15 +34,16 @@ class MapeadorPropiedad(Mapeador):
 
     def dto_a_entidad(self, dto: PropiedadDTO) -> Propiedad:
         return Propiedad(
-            dto.id, 
-            dto.fecha_creacion, 
-            dto.fecha_actualizacion, 
-            dto.nombre_propietario, 
-            dto.direccion, 
-            dto.pais, 
-            dto.tipo_propiedad, 
-            dto.ubicacion, 
-            dto.precio, 
-            dto.id_empresa, 
-            dto.superficie, 
-            dto.estado)
+            id=dto.id, 
+            fecha_creacion=dto.fecha_creacion, 
+            fecha_actualizacion=dto.fecha_actualizacion, 
+            nombre_propietario=dto.nombre_propietario, 
+            direccion=dto.direccion, 
+            pais=dto.pais, 
+            tipo_propiedad=dto.tipo_propiedad, 
+            ubicacion=dto.ubicacion, 
+            precio=dto.precio, 
+            id_empresa=dto.id_empresa, 
+            superficie=dto.superficie, 
+            estado=dto.estado
+        )
