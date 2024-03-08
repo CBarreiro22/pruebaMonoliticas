@@ -61,12 +61,18 @@ class UnidadTrabajo(ABC):
         raise NotImplementedError
 
     def registrar_batch(self, operacion, *args, lock=Lock.PESIMISTA, **kwargs):
+        print("********************* registrar_batch(self,")
+        print(operacion)
+        print(*args)
         batch = Batch(operacion, lock, *args, **kwargs)
         self.batches.append(batch)
         self._publicar_eventos_dominio(batch)
 
     def _publicar_eventos_dominio(self, batch):
         for evento in self._obtener_eventos(batches=[batch]):
+            print("*********************  _publicar_eventos_dominio")
+            print(f'{type(evento).__name__}Dominio')
+            print(evento)
             dispatcher.send(signal=f'{type(evento).__name__}Dominio', evento=evento)
 
     def _publicar_eventos_post_commit(self):
@@ -141,6 +147,9 @@ class UnidadTrabajoPuerto:
 
     @staticmethod
     def registrar_batch(operacion, *args, lock=Lock.PESIMISTA, **kwargs):
+        print("*********************registrar_batch")
+        print(operacion)
+        print(*args)
         uow = unidad_de_trabajo()
         uow.registrar_batch(operacion, *args, lock=lock, **kwargs)
         guardar_unidad_trabajo(uow)

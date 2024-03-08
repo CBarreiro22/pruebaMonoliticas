@@ -33,6 +33,7 @@ class CompletarPropiedadHandler (CompletarPropiedadBaseHandler) :
         repositorio = self.fabrica_repositorio.crear_objeto (RepositorioPropiedadesCompletadas.__class__)
 
         print('self.fabrica_repositorio.crear_objeto')
+        print(propiedad_completada)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, propiedad_completada)
 
