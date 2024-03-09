@@ -20,7 +20,7 @@ class RepositorioAgentePostgreSQL(RepositorioAgente):
         self._fabrica_agente: FabricaAgente = FabricaAgente()
 
     @property
-    def fabrica_propiedad(self):
+    def fabrica_agente(self):
         return self._fabrica_agente
 
     def obtener_por_id(self, id: UUID) -> Agente:
@@ -31,15 +31,15 @@ class RepositorioAgentePostgreSQL(RepositorioAgente):
         # TODO
         raise NotImplementedError
 
-    def agregar(self, propiedad: Agente):
-        agente_dto = self.fabrica_propiedad.crear_objeto(propiedad, MapeadorAgente())
+    def agregar(self, agente: Agente):
+        agente_dto = self.fabrica_agente.crear_objeto(agente, MapeadorAgente())
         db.session.add(agente_dto)
         db.session.commit()
     
-    def actualizar(self, propiedad: Agente):
+    def actualizar(self, agente: Agente):
         # TODO
         raise NotImplementedError
 
-    def eliminar(self, propiedad_id: UUID):
+    def eliminar(self, agente_id: UUID):
         # TODO
         raise NotImplementedError
