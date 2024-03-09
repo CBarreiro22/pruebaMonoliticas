@@ -13,8 +13,11 @@ from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos i
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadValidada
 
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida, EventoPropiedadEnriquecidaPayload
-
+from propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
+from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import FabricaRepositorio
 from pydispatch import dispatcher
+import json
 # import asyncio
 # import aiopulsar
 
@@ -160,15 +163,52 @@ def evento_propiedad_validada(mensaje):
     print("*********** CONSUMIDOR PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: evento_propiedad_validada ***********")
     data=mensaje.value().data
     print(f'PROPIEDADES - Evento recibido: {data}')
-    if data.estado == "faltan_datos":
-        enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
-        dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
+    #if data.estado == "faltan_datos":
+    enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
+    dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento_propiedad_validada ***********") 
 
 def evento_propiedad_enriquecida(mensaje):
     print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
     data=mensaje.value().data
     print(f'Evento recibido PROPIEDADES: {data}')    
+    
+    datos = json.loads(data.propiedades_completadas)
+
+    print(datos.get("nombre_propietario"))
+
+    propiedad: Propiedad = Propiedad(
+        id_propietario = data.id_propiedad,  
+        nombre_propietario = datos.get("nombre_propietario"),
+        direccion = datos.get("direccion"),
+        pais = datos.get("pais"),
+        tipo_propiedad = datos.get("tipo_propiedad"),
+        ubicacion = datos.get("ubicacion"),
+        id_empresa = datos.get("id_empresa"),
+        superficie = datos.get("superficie"),
+        precio = datos.get("precio"),
+        estado = "exitoso"
+    )
+
+    #  propiedad_dto.nombre_propietario= propiedad.nombre_propietario
+    #         propiedad_dto.direccion= propiedad.direccion
+    #         propiedad_dto.pais= propiedad.pais
+    #         propiedad_dto.tipo_propiedad= propiedad.tipo_propiedad
+    #         propiedad_dto.ubicacion= propiedad.ubicacion
+    #         propiedad_dto.id_empresa= propiedad.id_empresa
+    #         propiedad_dto.superficie= propiedad.superficie
+    #         propiedad_dto.precio= propiedad.precio
+    #         propiedad_dto.estado= propiedad.estado
+
+
+    #propiedad.crear_agente_propiedad(agente)
+    fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+    repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
+    repositorio.actualizar(propiedad)
+
+    #propiedad_enriquecida = PropiedadEnriquecida(id_propiedad=data.id_propiedad,  propiedades_completadas=diccionario_string)
+    #dispatcher.send(signal=f'{type(propiedad_enriquecida).__name__}Dominio', evento=propiedad_enriquecida)
+
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
 def comando_cancelar_creacion_propiedad(mensaje):

@@ -18,6 +18,7 @@ def registrar_handlers():
 
 def importar_modelos_alchemy():
     import propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto
+    import propiedadDeLosAlpes.modulos.agente.infraestructura.dto
     #from propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto import Propiedad
     #import propiedadDeLosAlpes.modulos.auditoria.infraestructura.dto
 
@@ -55,7 +56,7 @@ def create_app(configuracion={}):
     from propiedadDeLosAlpes.config.db import init_db,database_connection
     app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    print(app.config['SQLALCHEMY_DATABASE_URI'])
+    #print(app.config['SQLALCHEMY_DATABASE_URI'])
     init_db(app)
     
 
@@ -64,13 +65,14 @@ def create_app(configuracion={}):
     registrar_handlers()
 
     engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
-    from propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto import Base
+    #from propiedadDeLosAlpes.modulos.propiedades.infraestructura.dto import Base
+    from propiedadDeLosAlpes.modulos.agente.infraestructura.dto import Base
     Base.metadata.create_all(engine)
     db.session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
     with app.app_context():
         try:
             db.create_all()
-            print("creada")
+            #print("creada")
         except Exception as e:
             print(f"Error al crear la base de datos: {e}")
         if not app.config.get('TESTING'):
@@ -78,11 +80,11 @@ def create_app(configuracion={}):
 
     # Importa Blueprints
     from . import propiedades
-    #from . import auditoria
+    from . import agente
 
     # Registro de Blueprints
     app.register_blueprint(propiedades.app)
-    #app.register_blueprint(auditoria.app)
+    app.register_blueprint(agente.app)
 
     @app.route("/spec")
     def spec():

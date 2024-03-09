@@ -15,6 +15,11 @@ from propiedadDeLosAlpes.modulos.agente.dominio.repositorios import RepositorioA
 from propiedadDeLosAlpes.modulos.agente.dominio.fabricas import FabricaAgente
 from propiedadDeLosAlpes.modulos.agente.infraestructura.fabricas import FabricaRepositorio
 from propiedadDeLosAlpes.modulos.agente.dominio.entidades import Agente
+import json
+import random
+from faker import Faker
+
+faker = Faker()
 
 def suscribirse_a_eventos():
     # Crear los hilos
@@ -73,22 +78,53 @@ def comando_enriquecer_propiedad(mensaje):
     print(f'AGENTES - Comando recibido: {data}')
     id_propiedad = data.id_propiedad 
     lista_campos = data.campos_faltantes  
-    propiedad_enriquecida = PropiedadEnriquecida(id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
-    dispatcher.send(signal=f'{type(propiedad_enriquecida).__name__}Dominio', evento=propiedad_enriquecida)
+   
+    diccionario = {}
+    for campo in lista_campos:
+         diccionario[campo] = bot_simula_proceso_completar_campos(campo)
 
-
-    #fabrica_agente: FabricaAgente = FabricaAgente()
-    #agente: Agente = Agente()# fabrica_agente.crear_objeto(propiedad_dto, MapeadorAgente())
-    #agente.crear_propiedad(agente)
-    agente: Agente = Agente(id_propiedad=id_propiedad,  propiedades_completadas="Benito Zarate")
-    agente.crear_propiedad(agente)
+    diccionario_string = json.dumps(diccionario)
+    agente: Agente = Agente(id_propiedad=id_propiedad,  propiedades_completadas=diccionario_string)
+    agente.crear_agente_propiedad(agente)
     fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
     repositorio = fabrica_repositorio.crear_objeto (RepositorioAgente.__class__)
-    UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, agente)
-    UnidadTrabajoPuerto.savepoint()
-    UnidadTrabajoPuerto.commit()
+    repositorio.agregar(agente)
 
+    #UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, agente)
+    #UnidadTrabajoPuerto.savepoint()
+    #UnidadTrabajoPuerto.commit()
+
+    propiedad_enriquecida = PropiedadEnriquecida(id_propiedad=data.id_propiedad,  propiedades_completadas=diccionario_string)
+    dispatcher.send(signal=f'{type(propiedad_enriquecida).__name__}Dominio', evento=propiedad_enriquecida)
+    
     print("*********** AGENTES - FIN PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")  
 
 def comando_revertir_enriquecimiento(mensaje):
     ...
+
+def bot_simula_proceso_completar_campos(campo):
+    if campo == "nombre_propietario":
+        return faker.name()
+
+    if campo == "direccion":
+        return faker.address()
+
+    if campo == "pais":
+        return faker.country()
+
+    if campo == "tipo_propiedad":
+        return "Casa"
+
+    if campo == "ubicacion":
+        return faker.address()
+
+    if campo == "id_empresa":
+        return 123
+
+    if campo == "superficie":
+        return round(random.uniform(50, 200), 2)
+
+    if campo == "precio":
+        return random.randint(100000000, 500000000)
+
+

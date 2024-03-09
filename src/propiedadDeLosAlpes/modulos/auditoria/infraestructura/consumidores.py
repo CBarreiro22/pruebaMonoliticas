@@ -75,7 +75,7 @@ def comando_validar_propiedad(mensaje):
     fabrica_auditoria = FabricaAuditoria()
     auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
     propiedad_validada=auditoria.validar_propiedad(auditoria)
-    evento_propiedad_validada= EventoPropiedadValidada(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
+    evento_propiedad_validada= EventoPropiedadValidada(id_propiedad=id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
     dispatcher.send(signal=f'{type(evento_propiedad_validada).__name__}Dominio', evento=evento_propiedad_validada)
     print(f'AUDITORIA - Evento enviado: {evento_propiedad_validada}')
     print("*********** AUDITORIA - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")    

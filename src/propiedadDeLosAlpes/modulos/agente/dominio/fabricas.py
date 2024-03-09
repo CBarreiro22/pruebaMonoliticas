@@ -1,5 +1,5 @@
 from .entidades import Agente
-from .excepciones import TipoObjetoNoExisteEnDominioPropiedadExcepcion
+from .excepciones import TipoObjetoNoExisteEnDominioAgenteExcepcion
 from propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador
 from propiedadDeLosAlpes.seedwork.dominio.fabricas import Fabrica
 from propiedadDeLosAlpes.seedwork.dominio.entidades import Entidad
