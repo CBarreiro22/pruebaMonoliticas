@@ -1,6 +1,7 @@
 import pulsar
 from pulsar.schema import *
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada,PropiedadCreadaPayload, EventoPropiedadRegistradaAgente, EventoPropiedadRegistradaAgentePayload
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad, ComandoValidarPropiedadPayload
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
 
@@ -40,17 +41,21 @@ class Despachador:
     #comando_validar_propiedad
     def _publicar_comando_validar_propiedad(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoValidarPropiedad))
         publicador.send(mensaje)
         cliente.close()
 
     def publicar_comando_validar_propiedad(self, evento, topico):
-        payload = EventoPropiedadRegistradaAgentePayload(
-            id_propiedad=str(evento.id_propiedad),
-            campos_faltantes=evento.campos_faltantes
+        payload = ComandoValidarPropiedadPayload(
+            id_propiedad=str(evento.id_propiedad)
         )
-        evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
-        self._publicar_comando_validar_propiedad(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))
+        comando_dominio = ComandoValidarPropiedad(
+            time=utils.time_millis(),
+            ingestion=utils.time_millis(),
+            datacontenttype=ComandoValidarPropiedadPayload.__name__,
+            data=payload
+        )
+        self._publicar_comando_validar_propiedad(comando_dominio, topico, AvroSchema(ComandoValidarPropiedad))
     
     #comando_enriquecer_propiedad
     def _publicar_comando_enriquecer_propiedad(self, mensaje, topico, schema):

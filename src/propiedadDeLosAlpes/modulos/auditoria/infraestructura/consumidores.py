@@ -6,6 +6,7 @@ import logging
 import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad
 from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacion
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.adaptadores import ServicioExternoPropiedades
 from propiedadDeLosAlpes.modulos.auditoria.dominio.entidades import Auditoria 
@@ -30,7 +31,7 @@ def suscribirse_a_comando_validar_propiedad():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_validar_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCreada))
+        consumidor = cliente.subscribe('comando_validar_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(ComandoValidarPropiedad))
 
         while True:
             mensaje = consumidor.receive()
@@ -52,7 +53,7 @@ def suscribirse_a_comando_revertir_validacion():
         
         while True:
             mensaje = consumidor.receive()
-            omando_revertir_validacion(mensaje)
+            comando_revertir_validacion(mensaje)
             consumidor.acknowledge(mensaje)     
         
         cliente.close()
@@ -62,7 +63,7 @@ def suscribirse_a_comando_revertir_validacion():
         if cliente:
             cliente.close()
 
-def comando_validar_propiedad():
+def comando_validar_propiedad(mensaje):
     print("*********** AUDITORIA - INICIO PROCESAMIENTO DE EVENTO: comando_validar_propiedad ***********")
     data=mensaje.value().data 
     print(f'Evento recibido AUDITORIA: {data}')
@@ -75,8 +76,9 @@ def comando_validar_propiedad():
     auditoria: Auditoria = fabrica_auditoria.crear_objeto(auditoria_propiedad_dto, MapeadorAuditoria())
     propiedad_validada=auditoria.validar_propiedad(auditoria)
     evento_propiedad_modificada= ResultadosValidacion(id_propiedad=propiedad_validada.id_propiedad, estado=propiedad_validada.estado, campos_faltantes=propiedad_validada.campos_faltantes) 
+    print("Benito")
     dispatcher.send(signal=f'{type(evento_propiedad_modificada).__name__}Dominio', evento=evento_propiedad_modificada)
     print("*********** AUDITORIA - FIN PROCESAMIENTO DE EVENTO: comando_validar_propiedad ***********")    
 
-def comando_revertir_validacion():
+def comando_revertir_validacion(mensaje):
     ...
