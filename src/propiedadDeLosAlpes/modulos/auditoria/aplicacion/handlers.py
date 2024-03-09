@@ -11,12 +11,12 @@ class HandlerAuditoriaDominio(Handler):
     @staticmethod
     def handle_evento_propiedad_validada(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'evento_propiedad_validada')
+        despachador.publicar_evento_propiedad_validada(evento, 'evento_propiedad_validada')
 
     @staticmethod
     def handle_comando_cancelar_creacion_propiedad(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'comando_cancelar_creacion_propiedad')
+        despachador.publicar_comando_cancelar_creacion_propiedad(evento, 'comando_cancelar_creacion_propiedad')
         
 
     

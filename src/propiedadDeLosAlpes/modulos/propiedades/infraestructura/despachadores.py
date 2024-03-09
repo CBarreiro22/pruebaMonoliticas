@@ -36,3 +36,63 @@ class Despachador:
         )
         evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
         self._publicar_mensaje_agente(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))
+
+    #comando_validar_propiedad
+    def _publicar_comando_validar_propiedad(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_comando_validar_propiedad(self, evento, topico):
+        payload = EventoPropiedadRegistradaAgentePayload(
+            id_propiedad=str(evento.id_propiedad),
+            campos_faltantes=evento.campos_faltantes
+        )
+        evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
+        self._publicar_comando_validar_propiedad(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))
+    
+    #comando_enriquecer_propiedad
+    def _publicar_comando_enriquecer_propiedad(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_comando_enriquecer_propiedad(self, evento, topico):
+        payload = EventoPropiedadRegistradaAgentePayload(
+            id_propiedad=str(evento.id_propiedad),
+            campos_faltantes=evento.campos_faltantes
+        )
+        evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
+        self._publicar_comando_enriquecer_propiedad(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))
+    
+    #comando_revertir_enriquecimiento
+    def _publicar_comando_revertir_enriquecimiento(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_comando_revertir_enriquecimiento(self, evento, topico):
+        payload = EventoPropiedadRegistradaAgentePayload(
+            id_propiedad=str(evento.id_propiedad),
+            campos_faltantes=evento.campos_faltantes
+        )
+        evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
+        self._publicar_comando_revertir_enriquecimiento(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))
+    
+    #evento_propiedad_creada
+    def _publicar_evento_propiedad_creada(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_evento_propiedad_creada(self, evento, topico):
+        payload = EventoPropiedadRegistradaAgentePayload(
+            id_propiedad=str(evento.id_propiedad),
+            campos_faltantes=evento.campos_faltantes
+        )
+        evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
+        self._publicar_evento_propiedad_creada(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))

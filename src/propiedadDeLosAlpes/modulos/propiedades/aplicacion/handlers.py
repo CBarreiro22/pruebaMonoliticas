@@ -13,17 +13,23 @@ class HandlerPropiedadDominio(Handler):
         despachador = Despachador()
         despachador.publicar_evento_agente(evento, 'eventos-propiedad-registrada')
 
+    #Nuevos
     @staticmethod
     def handle_comando_validar_propiedad(evento):
         despachador = Despachador()
-        despachador.publicar_evento_agente(evento, 'comando_validar_propiedad')
+        despachador.publicar_comando_validar_propiedad(evento, 'comando_validar_propiedad')
     
     @staticmethod
     def handle_comando_enriquecer_propiedad(evento):
         despachador = Despachador()
-        despachador.publicar_evento_agente(evento, 'comando_enriquecer_propiedad')
+        despachador.publicar_comando_enriquecer_propiedad(evento, 'comando_enriquecer_propiedad')
     
+    @staticmethod
+    def handle_comando_revertir_enriquecimiento(evento):
+        despachador = Despachador()
+        despachador.publicar_comando_revertir_enriquecimiento(evento, 'comando_revertir_enriquecimiento')
+
     @staticmethod
     def handle_evento_propiedad_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento_agente(evento, 'evento_propiedad_creada')
+        despachador.publicar_evento_propiedad_creada(evento, 'evento_propiedad_creada')

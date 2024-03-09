@@ -24,3 +24,35 @@ class Despachador:
         )
         evento_dominio = EventoPropiedadModificada(data=payload)
         self._publicar_mensaje(evento_dominio, topico, AvroSchema(EventoPropiedadModificada))
+    
+    #evento_propiedad_validada
+    def _publicar_evento_propiedad_validada(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadModificada))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_evento_propiedad_validada(self, evento, topico):
+        payload = PropiedadModificadaPayload(
+            id_propiedad=str(evento.id_propiedad), 
+            estado=str(evento.estado),
+            campos_faltantes=[str(campo) for campo in evento.campos_faltantes]
+        )
+        evento_dominio = EventoPropiedadModificada(data=payload)
+        self._publicar_evento_propiedad_validada(evento_dominio, topico, AvroSchema(EventoPropiedadModificada))
+    
+    #comando_cancelar_creacion_propiedad
+    def _publicar_comando_cancelar_creacion_propiedad(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadModificada))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_comando_cancelar_creacion_propiedad(self, evento, topico):
+        payload = PropiedadModificadaPayload(
+            id_propiedad=str(evento.id_propiedad), 
+            estado=str(evento.estado),
+            campos_faltantes=[str(campo) for campo in evento.campos_faltantes]
+        )
+        evento_dominio = EventoPropiedadModificada(data=payload)
+        self._publicar_comando_cancelar_creacion_propiedad(evento_dominio, topico, AvroSchema(EventoPropiedadModificada))
