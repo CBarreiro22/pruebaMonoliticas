@@ -33,8 +33,7 @@ def comenzar_consumidor():
     import propiedadDeLosAlpes.modulos.agente.infraestructura.consumidores as agente
 
     # Suscripción a eventos
-    asyncio.run(propiedad.suscribirse_a_eventos())
-    #threading.Thread(target=propiedad.suscribirse_a_eventos).start()
+    threading.Thread(target=propiedad.suscribirse_a_eventos).start()
     threading.Thread(target=auditoria.suscribirse_a_eventos).start()
     threading.Thread(target=agente.suscribirse_a_eventos).start()
     

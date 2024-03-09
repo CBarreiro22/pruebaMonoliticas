@@ -5,3 +5,4 @@ dispatcher.connect(HandlerAuditoriaDominio.handle_propiedad_modificada, signal='
 
 dispatcher.connect(HandlerAuditoriaDominio.handle_evento_propiedad_validada, signal='EventoPropiedadValidadaDominio')
 dispatcher.connect(HandlerAuditoriaDominio.handle_comando_cancelar_creacion_propiedad, signal='ComandoCancelarCreacionPropiedad')
+
