@@ -1,5 +1,8 @@
 
 from propiedadDeLosAlpes.modulos.agente.aplicación.comandos.completar_propiedad import CompletarPropiedad
+from propiedadDeLosAlpes.modulos.agente.dominio.eventos import EventoPropiedadEnriquecida, PropiedadEnriquecida
+from propiedadDeLosAlpes.modulos.agente.dominio.fabricas import FabricaPropiedad
+from propiedadDeLosAlpes.modulos.agente.infraestructura.fabricas import FabricaRepositorio
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
 import pulsar,_pulsar  
 from pulsar.schema import *
@@ -8,6 +11,16 @@ import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadRegistradaAgente
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadCompletada
+from dataclasses import dataclass
+from propiedadDeLosAlpes.modulos.agente.aplicación.comandos.base import CompletarPropiedadBaseHandler
+from propiedadDeLosAlpes.modulos.agente.aplicación.dto import PropiedadCompletadaDTO
+from propiedadDeLosAlpes.modulos.agente.aplicación.mapeadores import MapeadorPropiedadCompletada
+from propiedadDeLosAlpes.modulos.agente.dominio.entidades import PropiedadCompletada
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
+from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando as comando
+from propiedadDeLosAlpes.modulos.agente.dominio.repositorios import RepositorioPropiedadesCompletadas
+from propiedadDeLosAlpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
+from typing import Dict
 from pydispatch import dispatcher
 
 def suscribirse_a_eventos():
@@ -25,14 +38,14 @@ def suscribirse_a_eventos():
             lista_campos = data.campos_faltantes  
             payload = EventoPropiedadCompletada (id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
 
-            comando = CompletarPropiedad(
+            evento = CompletarPropiedad(
                         id=data.id_propiedad, 
                         campos_faltantes="datos"
                     )
-            print(f'comando CompletarPropiedad: {comando}')
-            ejecutar_commando(comando)
+            handle(evento)
+            print(f'evento CompletarPropiedad: {evento}')
             
-            dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=payload)
+            # dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=payload)
             consumidor.acknowledge(mensaje)     
             print("*********** AGENTES 2 FIN PROCESAMIENTO DE EVENTO: eventos-propiedad-registrada ***********")  
 
@@ -42,3 +55,29 @@ def suscribirse_a_eventos():
         traceback.print_exc()
         if cliente:
             cliente.close()
+
+
+def handle(evento: CompletarPropiedad):
+        print(f'Comando handle CompletarPropiedadHandler: {evento}')
+        propiedad_completada_dto = PropiedadCompletadaDTO(
+            id=evento.id,
+            campos_faltantes=evento.campos_faltantes
+        )
+        print(f'propiedad_completada_dto: {propiedad_completada_dto}')
+
+        propiedad_enriquecida: PropiedadEnriquecida = FabricaPropiedad.crear_objeto(propiedad_completada_dto, MapeadorPropiedadCompletada())
+        propiedad_enriquecida.crear_propiedad_completada(evento)
+
+        print('propiedad_completada.crear_propiedad_completada(propiedad_completada)')
+
+        repositorio = FabricaRepositorio.crear_objeto (RepositorioPropiedadesCompletadas.__class__)
+
+        print('self.fabrica_repositorio.crear_objeto')
+        print(propiedad_enriquecida)
+
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, propiedad_enriquecida)
+
+        print('UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, propiedad_completada)')
+        
+        UnidadTrabajoPuerto.savepoint()
+        UnidadTrabajoPuerto.commit()

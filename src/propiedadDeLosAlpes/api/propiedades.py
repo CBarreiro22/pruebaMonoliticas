@@ -18,7 +18,7 @@ def crear_propiedades():
         propiedad_dict = request.json
         map_propiedad = MapeadorPropiedadDTOJson()
         propiedad_dto = map_propiedad.externo_a_dto(propiedad_dict)
-        comando = CrearPropiedad(
+        evento = CrearPropiedad(
             nombre_propietario=propiedad_dto.nombre_propietario, 
             direccion=propiedad_dto.direccion, 
             pais=propiedad_dto.pais, 
@@ -28,7 +28,7 @@ def crear_propiedades():
             precio=propiedad_dto.precio, 
             estado="", 
             ubicacion=propiedad_dto.ubicacion)
-        ejecutar_commando(comando)
+        ejecutar_commando(evento)
         return Response('{}', status=202, mimetype='application/json')
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
