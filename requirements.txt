@@ -36,4 +36,3 @@ urllib3==1.26.18
 Werkzeug==2.2.2
 aiopulsar-py==0.1.0a0
 faker
-uvicorn[standard]==0.20.0
