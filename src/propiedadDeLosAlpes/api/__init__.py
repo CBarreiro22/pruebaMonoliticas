@@ -13,6 +13,7 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 def registrar_handlers():
     import propiedadDeLosAlpes.modulos.propiedades.aplicacion
     import propiedadDeLosAlpes.modulos.auditoria.aplicacion
+    import propiedadDeLosAlpes.modulos.agente.aplicacion
 
 
 def importar_modelos_alchemy():

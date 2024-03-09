@@ -8,6 +8,7 @@ from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadRegistradaAgente
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoEnriquecerPropiedad
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida
+from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
 from pydispatch import dispatcher
 
 def suscribirse_a_eventos():
@@ -67,8 +68,13 @@ def comando_enriquecer_propiedad(mensaje):
     print(f'AGENTES - Comando recibido: {data}')
     id_propiedad = data.id_propiedad 
     lista_campos = data.campos_faltantes  
-    payload = EventoPropiedadEnriquecida (id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
-    dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=payload)
+    propiedad_enriquecida = PropiedadEnriquecida(id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
+    print(f'{type(propiedad_enriquecida).__name__}Dominio')
+    dispatcher.send(signal=f'{type(propiedad_enriquecida).__name__}Dominio', evento=propiedad_enriquecida)
+    
+    #enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
+    #dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
+    
     print("*********** AGENTES 2 FIN PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")  
 
 def comando_revertir_enriquecimiento(mensaje):

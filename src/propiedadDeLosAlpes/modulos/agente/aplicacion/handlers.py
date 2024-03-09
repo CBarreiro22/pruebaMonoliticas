@@ -10,6 +10,7 @@ class HandlerAgenteDominio(Handler):
     
     @staticmethod
     def handle_evento_propiedad_enriquecida(evento):
+        print("Benito handler")
         despachador = Despachador()
         despachador.publicar_evento_propiedad_enriquecida(evento, 'evento-propiedad-enriquecida')
     

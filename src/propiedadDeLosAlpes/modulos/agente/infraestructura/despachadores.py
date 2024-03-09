@@ -48,7 +48,6 @@ class Despachador:
             id_propiedad=str(evento.id_propiedad),
             propiedades_completadas=evento.propiedades_completadas
         )
-
         evento_dominio = EventoPropiedadEnriquecida(data=payload)
         self._publicar_evento_propiedad_enriquecida(evento_dominio, topico, AvroSchema(EventoPropiedadEnriquecida))
     
