@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, url_for, redirect, jsonify, s
 from flask_swagger import swagger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import  scoped_session,sessionmaker
+import asyncio
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -32,9 +33,11 @@ def comenzar_consumidor():
     import propiedadDeLosAlpes.modulos.agente.infraestructura.consumidores as agente
 
     # Suscripción a eventos
-    threading.Thread(target=propiedad.suscribirse_a_eventos).start()
+    asyncio.run(propiedad.suscribirse_a_eventos())
+    #threading.Thread(target=propiedad.suscribirse_a_eventos).start()
     threading.Thread(target=auditoria.suscribirse_a_eventos).start()
     threading.Thread(target=agente.suscribirse_a_eventos).start()
+    
 
     # Suscripción a comandos
     threading.Thread(target=propiedad.suscribirse_a_comandos).start()
