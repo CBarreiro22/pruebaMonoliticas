@@ -3,15 +3,15 @@ from propiedadDeLosAlpes.modulos.auditoria.infraestructura.despachadores import 
 
 class HandlerAuditoriaDominio(Handler):
 
-    @staticmethod
-    def handle_propiedad_modificada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-propiedad-validada')
+    # @staticmethod
+    # def handle_propiedad_modificada(evento):
+    #     despachador = Despachador()
+    #     despachador.publicar_evento(evento, 'eventos-propiedad-validada')
     
     @staticmethod
     def handle_evento_propiedad_validada(evento):
         despachador = Despachador()
-        despachador.publicar_evento_propiedad_validada(evento, 'evento_propiedad_validada')
+        despachador.publicar_evento_propiedad_validada(evento, 'evento-propiedad-validada')
 
     @staticmethod
     def handle_comando_cancelar_creacion_propiedad(evento):

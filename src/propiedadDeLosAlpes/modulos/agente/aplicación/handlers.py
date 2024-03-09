@@ -11,7 +11,7 @@ class HandlerAgenteDominio(Handler):
     @staticmethod
     def handle_evento_propiedad_enriquecida(evento):
         despachador = Despachador()
-        despachador.publicar_evento_propiedad_enriquecida(evento, 'evento_propiedad_enriquecida')
+        despachador.publicar_evento_propiedad_enriquecida(evento, 'evento-propiedad-enriquecida')
     
     @staticmethod
     def handle_comando_revertir_validacion(evento):

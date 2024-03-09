@@ -1,6 +1,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
-from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacion
+from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada
 
 from propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
 
@@ -29,7 +29,7 @@ class Auditoria(AgregacionRaiz):
             if valor == None or valor =="":
                 campos_faltantes.append(nombre_propiedad)
         if len(campos_faltantes) > 0:
-            propiedad_validada = ResultadosValidacion(id_propiedad=auditoria.id_propiedad, estado="faltan_datos", campos_faltantes=campos_faltantes)
+            propiedad_validada = EventoPropiedadValidada(id_propiedad=auditoria.id_propiedad, estado="faltan_datos", campos_faltantes=campos_faltantes)
         else:
-            propiedad_validada=ResultadosValidacion(id_propiedad=auditoria.id_propiedad, estado="exitoso", campos_faltantes=[])
+            propiedad_validada=EventoPropiedadValidada(id_propiedad=auditoria.id_propiedad, estado="exitoso", campos_faltantes=[])
         return propiedad_validada

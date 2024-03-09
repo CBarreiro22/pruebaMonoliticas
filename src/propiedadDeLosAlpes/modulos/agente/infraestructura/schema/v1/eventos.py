@@ -10,10 +10,10 @@ class EventoPropiedadRegistrada(EventoIntegracion):
     data = PropiedadRegistradaPayload()
 
 
-class PropiedadCompletadaPayload(Record):
+class EventoPropiedadEnriquecidaPayload(Record):
     id_propiedad = String()
     propiedades_completadas = String()
 
 
-class EventoPropiedadCompletada(EventoIntegracion):
-    data = PropiedadCompletadaPayload()
+class EventoPropiedadEnriquecida(EventoIntegracion):
+    data = EventoPropiedadEnriquecidaPayload()

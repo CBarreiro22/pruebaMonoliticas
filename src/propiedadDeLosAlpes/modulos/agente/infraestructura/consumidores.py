@@ -6,7 +6,8 @@ import traceback
 import threading
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadRegistradaAgente
-from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadCompletada
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoEnriquecerPropiedad
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida
 from pydispatch import dispatcher
 
 def suscribirse_a_eventos():
@@ -26,7 +27,7 @@ def suscribirse_a_comando_enriquecer_propiedad():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_enriquecer_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        consumidor = cliente.subscribe('comando-enriquecer-propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(ComandoEnriquecerPropiedad))
 
         while True:
             mensaje = consumidor.receive()
@@ -45,7 +46,7 @@ def suscribirse_a_comando_revertir_enriquecimiento():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_revertir_enriquecimiento', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCompletada))
+        consumidor = cliente.subscribe('comando_revertir_enriquecimiento', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadRegistradaAgente))
 
         while True:
             mensaje = consumidor.receive()
@@ -61,14 +62,14 @@ def suscribirse_a_comando_revertir_enriquecimiento():
             cliente.close()
 
 def comando_enriquecer_propiedad(mensaje):
-    print("*********** AGENTES 1 - INICIO PROCESAMIENTO DE EVENTO: comando_enriquecer_propiedad ***********")
+    print("*********** AGENTES 1 - INICIO PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")
     data=mensaje.value().data
-    print(f'Evento recibido AGENTES: {data}')
+    print(f'AGENTES - Comando recibido: {data}')
     id_propiedad = data.id_propiedad 
     lista_campos = data.campos_faltantes  
-    payload = EventoPropiedadCompletada (id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
+    payload = EventoPropiedadEnriquecida (id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
     dispatcher.send(signal=f'{type(payload).__name__}Dominio', evento=payload)
-    print("*********** AGENTES 2 FIN PROCESAMIENTO DE EVENTO: comando_enriquecer_propiedad ***********")  
+    print("*********** AGENTES 2 FIN PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")  
 
 def comando_revertir_enriquecimiento(mensaje):
     ...

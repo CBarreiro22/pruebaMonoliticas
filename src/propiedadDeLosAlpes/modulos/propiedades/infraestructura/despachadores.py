@@ -1,7 +1,7 @@
 import pulsar
 from pulsar.schema import *
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada,PropiedadCreadaPayload, EventoPropiedadRegistradaAgente, EventoPropiedadRegistradaAgentePayload
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad, ComandoValidarPropiedadPayload
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad, ComandoValidarPropiedadPayload, ComandoEnriquecerPropiedad, ComandoEnriquecerPropiedadPayload
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
 
@@ -49,28 +49,28 @@ class Despachador:
         payload = ComandoValidarPropiedadPayload(
             id_propiedad=str(evento.id_propiedad)
         )
-        comando_dominio = ComandoValidarPropiedad(
+        comando = ComandoValidarPropiedad(
             time=utils.time_millis(),
             ingestion=utils.time_millis(),
             datacontenttype=ComandoValidarPropiedadPayload.__name__,
             data=payload
         )
-        self._publicar_comando_validar_propiedad(comando_dominio, topico, AvroSchema(ComandoValidarPropiedad))
+        self._publicar_comando_validar_propiedad(comando, topico, AvroSchema(ComandoValidarPropiedad))
     
     #comando_enriquecer_propiedad
     def _publicar_comando_enriquecer_propiedad(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoEnriquecerPropiedad))
         publicador.send(mensaje)
         cliente.close()
 
     def publicar_comando_enriquecer_propiedad(self, evento, topico):
-        payload = EventoPropiedadRegistradaAgentePayload(
+        payload = ComandoEnriquecerPropiedadPayload(
             id_propiedad=str(evento.id_propiedad),
             campos_faltantes=evento.campos_faltantes
         )
-        evento_dominio = EventoPropiedadRegistradaAgente(data=payload)
-        self._publicar_comando_enriquecer_propiedad(evento_dominio, topico, AvroSchema(EventoPropiedadRegistradaAgente))
+        comando = ComandoEnriquecerPropiedad(data=payload)
+        self._publicar_comando_enriquecer_propiedad(comando, topico, AvroSchema(ComandoEnriquecerPropiedad))
     
     #comando_revertir_enriquecimiento
     def _publicar_comando_revertir_enriquecimiento(self, mensaje, topico, schema):

@@ -17,12 +17,12 @@ class HandlerPropiedadDominio(Handler):
     @staticmethod
     def handle_comando_validar_propiedad(evento):
         despachador = Despachador()
-        despachador.publicar_comando_validar_propiedad(evento, 'comando_validar_propiedad')
+        despachador.publicar_comando_validar_propiedad(evento, 'comando-validar-propiedad')
     
     @staticmethod
     def handle_comando_enriquecer_propiedad(evento):
         despachador = Despachador()
-        despachador.publicar_comando_enriquecer_propiedad(evento, 'comando_enriquecer_propiedad')
+        despachador.publicar_comando_enriquecer_propiedad(evento, 'comando-enriquecer-propiedad')
     
     @staticmethod
     def handle_comando_revertir_enriquecimiento(evento):

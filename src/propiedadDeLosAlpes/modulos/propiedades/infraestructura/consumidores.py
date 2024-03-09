@@ -1,16 +1,18 @@
 import threading
 
 from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import ResultadosValidacionAgente
+from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import EnriquecerPropiedad
 import pulsar,_pulsar  
 from pulsar.schema import *
 import logging
 import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoCrearPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoCrearPropiedad, ComandoEnriquecerPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
-from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadModificada
-from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadCompletada
+from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadValidada
+
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida, EventoPropiedadEnriquecidaPayload
 
 from pydispatch import dispatcher
 # import asyncio
@@ -76,7 +78,7 @@ def suscribirse_a_comando_crear_propiedad():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_crear_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
+        consumidor = cliente.subscribe('comando_crear_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadValidada))
         
         while True:
             mensaje = consumidor.receive()
@@ -95,7 +97,7 @@ def suscribirse_a_evento_propiedad_validada():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('evento-propiedad-validada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
+        consumidor = cliente.subscribe('evento-propiedad-validada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadValidada))
         
         while True:
             mensaje = consumidor.receive()
@@ -114,7 +116,7 @@ def suscribirse_a_evento_propiedad_enriquecida():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('evento_propiedad_enriquecida', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCompletada))
+        consumidor = cliente.subscribe('evento-propiedad-enriquecida', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadEnriquecida))
         
         while True:
             mensaje = consumidor.receive()
@@ -133,7 +135,7 @@ def suscribirse_a_comando_cancelar_creacion_propiedad():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_cancelar_creacion_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadModificada))
+        consumidor = cliente.subscribe('comando_cancelar_creacion_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadValidada))
         
         while True:
             mensaje = consumidor.receive()
@@ -157,17 +159,17 @@ def comando_crear_propiedad(mensaje):
 def evento_propiedad_validada(mensaje):
     print("*********** CONSUMIDOR PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: evento_propiedad_validada ***********")
     data=mensaje.value().data
-    print(f'Evento recibido PROPIEDADES: {data}')
+    print(f'PROPIEDADES - Evento recibido: {data}')
     if data.estado == "faltan_datos":
-        evento_resultado_validacion_agente= ResultadosValidacionAgente(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
-        dispatcher.send(signal=f'{type(evento_resultado_validacion_agente).__name__}Dominio', evento=evento_resultado_validacion_agente)
+        enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
+        dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento_propiedad_validada ***********") 
 
 def evento_propiedad_enriquecida(mensaje):
-    print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: evento_propiedad_enriquecida ***********")
+    print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
     data=mensaje.value().data
     print(f'Evento recibido PROPIEDADES: {data}')    
-    print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento_propiedad_enriquecida ***********")
+    print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
 def comando_cancelar_creacion_propiedad(mensaje):
     print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: comando_cancelar_creacion_propiedad ***********")
