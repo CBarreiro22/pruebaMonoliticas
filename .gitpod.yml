@@ -6,7 +6,7 @@ tasks:
       gp sync-done bundle
   - name: Instalar dependencias
     init: gp sync-await bundle
-    command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt
+    command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt && pip install -r bff-requirements.txt
   - name: Crear imagenes Docker
     init: > 
       docker build . -f propiedadDeLosAlpes.Dockerfile -t propiedadDeLosAlpes/flask &&
