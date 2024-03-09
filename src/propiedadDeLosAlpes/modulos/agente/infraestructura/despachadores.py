@@ -1,6 +1,7 @@
 import pulsar
 from pulsar.schema import *
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida, EventoPropiedadEnriquecidaPayload
+from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.comandos import ComandoRevertirValidacionPropiedad, ComandoRevertirValidacionPropiedadPayload
 
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
@@ -54,14 +55,13 @@ class Despachador:
     #comando_revertir_validacion
     def _publicar_comando_revertir_validacion(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadCompletada))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoRevertirValidacionPropiedad))
         publicador.send(mensaje)
         cliente.close()
 
     def publicar_comando_revertir_validacion(self, evento, topico):
-        payload = PropiedadCompletadaPayload(
-            id_propiedad=str(evento.id_propiedad),
-            propiedades_completadas=evento.propiedades_completadas
+        payload = ComandoRevertirValidacionPropiedadPayload(
+            id_propiedad=str(evento.id_propiedad)
         )
-        evento_dominio = EventoPropiedadCompletada(data=payload)
-        self._publicar_comando_revertir_validacion(evento_dominio, topico, AvroSchema(EventoPropiedadCompletada))
+        comando = ComandoRevertirValidacionPropiedad(data=payload)
+        self._publicar_comando_revertir_validacion(comando, topico, AvroSchema(ComandoRevertirValidacionPropiedad))

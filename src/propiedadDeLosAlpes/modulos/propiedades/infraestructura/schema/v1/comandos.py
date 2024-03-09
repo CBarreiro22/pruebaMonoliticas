@@ -41,3 +41,19 @@ class ComandoEnriquecerPropiedad(ComandoIntegracion):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+    
+class ComandoRevertirEnriquecimientoPropiedadPayload(Record):
+    id_propiedad = String()
+
+class ComandoRevertirEnriquecimientoPropiedad(ComandoIntegracion):
+    id = String(default=str(uuid.uuid4()))
+    time = Long()
+    ingestion = Long(default=time_millis())
+    specversion = String(default="v1")
+    type = String(default="RevertirEnriquecimientoPropiedad")
+    datacontenttype = String()
+    service_name = String(default="propiedadDeLosAlpes")
+    data = ComandoRevertirEnriquecimientoPropiedadPayload
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

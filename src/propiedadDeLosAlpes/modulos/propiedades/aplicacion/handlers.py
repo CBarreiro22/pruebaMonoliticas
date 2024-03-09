@@ -27,7 +27,7 @@ class HandlerPropiedadDominio(Handler):
     @staticmethod
     def handle_comando_revertir_enriquecimiento(evento):
         despachador = Despachador()
-        despachador.publicar_comando_revertir_enriquecimiento(evento, 'comando_revertir_enriquecimiento')
+        despachador.publicar_comando_revertir_enriquecimiento(evento, 'comando-revertir-enriquecimiento')
 
     @staticmethod
     def handle_evento_propiedad_creada(evento):

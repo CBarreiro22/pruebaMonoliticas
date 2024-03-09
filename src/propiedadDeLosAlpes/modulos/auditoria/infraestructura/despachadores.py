@@ -1,6 +1,7 @@
 import pulsar
 from pulsar.schema import *
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.eventos import EventoPropiedadValidada,PropiedadValidadaPayload
+from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.comandos import ComandoCancelarCreacionPropiedad,ComandoCancelarCreacionPropiedadPayload
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
 
@@ -44,15 +45,13 @@ class Despachador:
     #comando_cancelar_creacion_propiedad
     def _publicar_comando_cancelar_creacion_propiedad(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadValidada))
+        publicador = cliente.create_producer(topico, schema=AvroSchema(ComandoCancelarCreacionPropiedad))
         publicador.send(mensaje)
         cliente.close()
 
     def publicar_comando_cancelar_creacion_propiedad(self, evento, topico):
-        payload = PropiedadValidadaPayload(
-            id_propiedad=str(evento.id_propiedad), 
-            estado=str(evento.estado),
-            campos_faltantes=[str(campo) for campo in evento.campos_faltantes]
+        payload = ComandoCancelarCreacionPropiedadPayload(
+            id_propiedad=str(evento.id_propiedad)
         )
-        evento_dominio = EventoPropiedadValidada(data=payload)
-        self._publicar_comando_cancelar_creacion_propiedad(evento_dominio, topico, AvroSchema(EventoPropiedadValidada))
+        comando = ComandoCancelarCreacionPropiedad(data=payload)
+        self._publicar_comando_cancelar_creacion_propiedad(comando, topico, AvroSchema(ComandoCancelarCreacionPropiedad))

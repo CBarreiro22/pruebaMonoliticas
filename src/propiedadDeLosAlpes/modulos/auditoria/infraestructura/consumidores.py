@@ -7,9 +7,12 @@ import traceback
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad
+from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.comandos import ComandoCancelarCreacionPropiedad
+from propiedadDeLosAlpes.modulos.agentes.infraestructura.schema.v1.comandos import ComandRevertirValidacion
 from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.adaptadores import ServicioExternoPropiedades
 from propiedadDeLosAlpes.modulos.auditoria.dominio.entidades import Auditoria 
+from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import CancelarCreacionPropiedad
 from pydispatch import dispatcher
 import threading
 
@@ -49,7 +52,7 @@ def suscribirse_a_comando_revertir_validacion():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_revertir_validacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCreada))
+        consumidor = cliente.subscribe('comando-revertir-validacion', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(ComandRevertirValidacion))
         
         while True:
             mensaje = consumidor.receive()
@@ -81,4 +84,10 @@ def comando_validar_propiedad(mensaje):
     print("*********** AUDITORIA - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")    
 
 def comando_revertir_validacion(mensaje):
-    ...
+    print("*********** AUDITORIA - INICIO PROCESAMIENTO DE COMANDO: comando_revertir_validacion ***********")
+    data=mensaje.value().data 
+    print(f'AUDITORIA - Comando recibido: {data}')
+    cancelar_creacion_propiedad = CancelarCreacionPropiedad(id_propiedad=data.id_propiedad) 
+    dispatcher.send(signal=f'{type(cancelar_creacion_propiedad).__name__}Dominio', evento=cancelar_creacion_propiedad)
+    print(f'AUDITORIA - Comando enviado: {cancelar_creacion_propiedad}')
+    print("*********** AUDITORIA - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")    

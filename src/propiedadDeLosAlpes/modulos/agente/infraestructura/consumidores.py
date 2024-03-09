@@ -15,6 +15,8 @@ from propiedadDeLosAlpes.modulos.agente.dominio.repositorios import RepositorioA
 from propiedadDeLosAlpes.modulos.agente.dominio.fabricas import FabricaAgente
 from propiedadDeLosAlpes.modulos.agente.infraestructura.fabricas import FabricaRepositorio
 from propiedadDeLosAlpes.modulos.agente.dominio.entidades import Agente
+from propiedadDeLosAlpes.modulos.agente.dominio.comandos import RevertirValidacionPropiedad
+
 import json
 import random
 from faker import Faker
@@ -100,7 +102,13 @@ def comando_enriquecer_propiedad(mensaje):
     print("*********** AGENTES - FIN PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")  
 
 def comando_revertir_enriquecimiento(mensaje):
-    ...
+    print("*********** AGENTES - INICIO PROCESAMIENTO DE COMANDO: comando_revertir_enriquecimiento ***********")
+    data=mensaje.value().data 
+    print(f'AGENTES - Comando recibido: {data}')
+    revertir_validacion_propiedad = RevertirValidacionPropiedad(id_propiedad=data.id_propiedad) 
+    dispatcher.send(signal=f'{type(revertir_validacion_propiedad).__name__}Dominio', evento=revertir_validacion_propiedad)
+    print(f'AGENTES - Comando enviado: {revertir_validacion_propiedad}')
+    print("*********** AGENTES - FIN PROCESAMIENTO DE COMANDO: comando_revertir_enriquecimiento ***********")    
 
 def bot_simula_proceso_completar_campos(campo):
     if campo == "nombre_propietario":

@@ -16,6 +16,7 @@ from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import
 from propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import FabricaRepositorio
+from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.comandos import ComandoCancelarCreacionPropiedad
 from pydispatch import dispatcher
 import json
 # import asyncio
@@ -138,7 +139,7 @@ def suscribirse_a_comando_cancelar_creacion_propiedad():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_cancelar_creacion_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadValidada))
+        consumidor = cliente.subscribe('comando-cancelar-creacion-propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(ComandoCancelarCreacionPropiedad))
         
         while True:
             mensaje = consumidor.receive()
@@ -212,10 +213,11 @@ def evento_propiedad_enriquecida(mensaje):
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
 def comando_cancelar_creacion_propiedad(mensaje):
-    print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: comando_cancelar_creacion_propiedad ***********")
-    data=mensaje.value().data
-    print(f'Evento recibido PROPIEDADES: {data}')    
-    print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: comando_cancelar_creacion_propiedad ***********")
+    print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE COMANDO: comando_revertir_validacion ***********")
+    data=mensaje.value().data 
+    print(f'PROPIEDADES - Comando recibido: {data}')
+    print("*********** PROPIEDADES - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")   
+
 
 def suscribirse_a_comandos():
     cliente = None
