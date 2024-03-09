@@ -10,6 +10,11 @@ from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos 
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida
 from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
 from pydispatch import dispatcher
+from propiedadDeLosAlpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
+from propiedadDeLosAlpes.modulos.agente.dominio.repositorios import RepositorioAgente
+from propiedadDeLosAlpes.modulos.agente.dominio.fabricas import FabricaAgente
+from propiedadDeLosAlpes.modulos.agente.infraestructura.fabricas import FabricaRepositorio
+from propiedadDeLosAlpes.modulos.agente.dominio.entidades import Agente
 
 def suscribirse_a_eventos():
     # Crear los hilos
@@ -63,19 +68,27 @@ def suscribirse_a_comando_revertir_enriquecimiento():
             cliente.close()
 
 def comando_enriquecer_propiedad(mensaje):
-    print("*********** AGENTES 1 - INICIO PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")
+    print("*********** AGENTES - INICIO PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")
     data=mensaje.value().data
     print(f'AGENTES - Comando recibido: {data}')
     id_propiedad = data.id_propiedad 
     lista_campos = data.campos_faltantes  
     propiedad_enriquecida = PropiedadEnriquecida(id_propiedad=data.id_propiedad,  propiedades_completadas="isai oliva")
-    print(f'{type(propiedad_enriquecida).__name__}Dominio')
     dispatcher.send(signal=f'{type(propiedad_enriquecida).__name__}Dominio', evento=propiedad_enriquecida)
-    
-    #enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
-    #dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
-    
-    print("*********** AGENTES 2 FIN PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")  
+
+
+    #fabrica_agente: FabricaAgente = FabricaAgente()
+    #agente: Agente = Agente()# fabrica_agente.crear_objeto(propiedad_dto, MapeadorAgente())
+    #agente.crear_propiedad(agente)
+    agente: Agente = Agente(id_propiedad=id_propiedad,  propiedades_completadas="Benito Zarate")
+    agente.crear_propiedad(agente)
+    fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+    repositorio = fabrica_repositorio.crear_objeto (RepositorioAgente.__class__)
+    UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, agente)
+    UnidadTrabajoPuerto.savepoint()
+    UnidadTrabajoPuerto.commit()
+
+    print("*********** AGENTES - FIN PROCESAMIENTO DE COMANDO: comando-enriquecer-propiedad ***********")  
 
 def comando_revertir_enriquecimiento(mensaje):
     ...
