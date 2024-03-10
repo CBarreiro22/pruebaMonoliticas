@@ -7,40 +7,39 @@ import os
 from datetime import datetime
 
 
-AEROALPES_HOST = os.getenv("AEROALPES_ADDRESS", default="localhost")
-FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
+PROPIEADES_HOST = ""
 
-def obtener_reservas(root) -> typing.List["Reserva"]:
-    reservas_json = requests.get(f'http://{AEROALPES_HOST}:5000/vuelos/reserva').json()
-    reservas = []
+def obtener_propiedades(root) -> typing.List["Propiedad"]:
+    propiedades_json = requests.get(f'http://{PROPIEADES_HOST}:5000/vuelos/reserva').json()
+    propiedades = []
 
-    for reserva in reservas_json:
-        reservas.append(
-            Reserva(
-                fecha_creacion=datetime.strptime(reserva.get('fecha_creacion'), FORMATO_FECHA), 
-                fecha_actualizacion=datetime.strptime(reserva.get('fecha_actualizacion'), FORMATO_FECHA), 
-                id=reserva.get('id'), 
-                id_usuario=reserva.get('id_usuario', '')
+    for propiedad in propiedades_json:
+        propiedades.append(
+            Propiedad(
+                direccion = propiedad.get('direccion'),
+                pais = propiedad.get('pais'),
+                tipo_propiedad = propiedad.get('tipo_propiedad'),
+                ubicacion = propiedad.get('ubicacion'), 
+                id_empresa = propiedad.get('id_empresa'),
+                superficie = propiedad.get('superficie'),
+                precio = propiedad.get('precio')
             )
         )
 
-    return reservas
+    return propiedades
 
 @strawberry.type
-class Itinerario:
-    # TODO Completar objeto strawberry para incluir los itinerarios
-    ...
+class Propiedad:
+    direccion = str,
+    pais = str,
+    tipo_propiedad = str,
+    ubicacion = str, 
+    id_empresa = int,
+    superficie = float,
+    precio = float
 
 @strawberry.type
-class Reserva:
-    id: str
-    id_usuario: str
-    fecha_creacion: datetime
-    fecha_actualizacion: datetime
-    #itinerarios: typing.List[Itinerario]
-
-@strawberry.type
-class ReservaRespuesta:
+class RegistrarPropiedadRespuesta:
     mensaje: str
     codigo: int
 
