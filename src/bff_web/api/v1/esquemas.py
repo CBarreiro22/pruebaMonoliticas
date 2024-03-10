@@ -30,13 +30,13 @@ def obtener_propiedades(root) -> typing.List["Propiedad"]:
 
 @strawberry.type
 class Propiedad:
-    direccion = str,
-    pais = str,
-    tipo_propiedad = str,
-    ubicacion = str, 
-    id_empresa = int,
-    superficie = float,
-    precio = float
+    direccion: str
+    pais: str
+    tipo_propiedad: str
+    ubicacion: str
+    id_empresa: int
+    superficie: float
+    precio: float
 
 @strawberry.type
 class RegistrarPropiedadRespuesta:

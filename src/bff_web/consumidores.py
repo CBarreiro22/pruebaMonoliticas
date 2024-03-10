@@ -8,6 +8,8 @@ from . import utils
 
 async def suscribirse_a_topico(topico: str, suscripcion: str, schema: str, tipo_consumidor:_pulsar.ConsumerType=_pulsar.ConsumerType.Shared, eventos=[]):
     try:
+        print("********************************  suscribirse_a_topico ()")
+        print(f'topico {topico}, suscripcion {suscripcion}, schema {schema}, tipo_consumidor {tipo_consumidor}')
         json_schema = utils.consultar_schema_registry(schema)  
         avro_schema = utils.obtener_schema_avro_de_diccionario(json_schema)
         async with aiopulsar.connect(f'pulsar://{utils.broker_host()}:6650') as cliente:

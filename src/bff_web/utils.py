@@ -22,6 +22,8 @@ def broker_host():
     return os.getenv(PULSAR_ENV, default="localhost")
 
 def consultar_schema_registry(topico: str) -> dict:
+    print("*********************************** TOPICOOOOOOOOO consultar_schema_registry")
+    print(topico)
     json_registry = requests.get(f'http://{broker_host()}:8080/admin/v2/schemas/{topico}/schema').json()
     return json.loads(json_registry.get('data',{}))
 
