@@ -62,19 +62,19 @@ import json
 
 def suscribirse_a_eventos():
     # Crear los hilos
-    #thread_comando_crear_propiedad = threading.Thread(target=suscribirse_a_comando_crear_propiedad)
+    thread_comando_crear_propiedad = threading.Thread(target=suscribirse_a_comando_crear_propiedad)
     thread_evento_propiedad_validada = threading.Thread(target=suscribirse_a_evento_propiedad_validada)
     thread_evento_propiedad_enriquecida = threading.Thread(target=suscribirse_a_evento_propiedad_enriquecida)
     thread_comando_cancelar_creacion_propiedad = threading.Thread(target=suscribirse_a_comando_cancelar_creacion_propiedad)
 
     # Iniciar los hilos
-    #thread_comando_crear_propiedad.start()
+    thread_comando_crear_propiedad.start()
     thread_evento_propiedad_validada.start()
     thread_evento_propiedad_enriquecida.start()
     thread_comando_cancelar_creacion_propiedad.start()
 
     # Esperar a que ambos hilos terminens
-    #thread_comando_crear_propiedad.join()
+    thread_comando_crear_propiedad.join()
     thread_evento_propiedad_validada.join()
     thread_evento_propiedad_enriquecida.join()
     thread_comando_cancelar_creacion_propiedad.join()
@@ -83,7 +83,7 @@ def suscribirse_a_comando_crear_propiedad():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_crear_propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadValidada))
+        consumidor = cliente.subscribe('comando-crear-propiedad', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(ComandoCrearPropiedad))
         
         while True:
             mensaje = consumidor.receive()

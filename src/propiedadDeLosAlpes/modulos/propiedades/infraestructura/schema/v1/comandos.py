@@ -4,7 +4,14 @@ import uuid
 from propiedadDeLosAlpes.seedwork.infraestructura.utils import time_millis
 
 class ComandoCrearPropiedadPayload(ComandoIntegracion):
-    id_usuario = String()
+    nombre_propietario = String()
+    direccion = String()
+    pais = String()
+    tipo_propiedad = String()
+    ubicacion = String()
+    id_empresa = int()
+    superficie = Float()
+    precio = Float()
 
 class ComandoCrearPropiedad(ComandoIntegracion):
     data = ComandoCrearPropiedadPayload()
