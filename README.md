@@ -44,6 +44,14 @@ Siempre puede ejecutarlo en modo DEBUG:
 flask --app src/propiedadDeLosAlpes/api --debug run
 ```
 
+BFF: Web
+
+Desde el directorio src ejecute el siguiente comando
+
+```bash
+uvicorn bff_web.main:app --host localhost --port 8003 --reload
+```
+
 ```sql
 select * from propiedades;
 select * from agentes;
