@@ -35,6 +35,6 @@ class Mutation:
             data = payload
         )
         despachador = Despachador()
-        info.context["background_tasks"].add_task(despachador.publicar_mensaje, comando, "comando-crear-propiedad", "public/default/comando-crear-reserva")
+        info.context["background_tasks"].add_task(despachador.publicar_mensaje, comando, "comando-crear-propiedad", "public/default/comando-crear-propiedad")
         
         return RegistrarPropiedadRespuesta(mensaje="Procesando Mensaje", codigo=203)
