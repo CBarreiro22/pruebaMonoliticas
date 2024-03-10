@@ -19,6 +19,7 @@ from propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import Fab
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.comandos import ComandoCancelarCreacionPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.comandos import RevertirEnriquecimientoPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada
+from propiedadDeLosAlpes.modulos.propiedades.dominio.comandos import ComandoValidarPropiedad
 
 from pydispatch import dispatcher
 import json
@@ -175,6 +176,9 @@ def comando_crear_propiedad(mensaje):
     fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
     repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
     repositorio.agregar(propiedad)
+
+    comando_validar_propiedad = ComandoValidarPropiedad(id_propiedad=propiedad.id)
+    dispatcher.send(signal=f'{type(comando_validar_propiedad).__name__}Dominio', evento=comando_validar_propiedad)
 
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: comando_crear_propiedad ***********")
 
