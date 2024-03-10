@@ -16,13 +16,7 @@ def obtener_propiedades(root) -> typing.List["Propiedad"]:
     for propiedad in propiedades_json:
         propiedades.append(
             Propiedad(
-                direccion = propiedad.get('direccion'),
-                pais = propiedad.get('pais'),
-                tipo_propiedad = propiedad.get('tipo_propiedad'),
-                ubicacion = propiedad.get('ubicacion'), 
-                id_empresa = propiedad.get('id_empresa'),
-                superficie = propiedad.get('superficie'),
-                precio = propiedad.get('precio')
+                id_propiedad = propiedad.get('id_propiedad')
             )
         )
 
@@ -30,13 +24,7 @@ def obtener_propiedades(root) -> typing.List["Propiedad"]:
 
 @strawberry.type
 class Propiedad:
-    direccion: str
-    pais: str
-    tipo_propiedad: str
-    ubicacion: str
-    id_empresa: int
-    superficie: float
-    precio: float
+    id_propiedad: str
 
 @strawberry.type
 class RegistrarPropiedadRespuesta:
