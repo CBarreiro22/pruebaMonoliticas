@@ -40,6 +40,9 @@ class RepositorioAgentePostgreSQL(RepositorioAgente):
         # TODO
         raise NotImplementedError
 
-    def eliminar(self, agente_id: UUID):
-        # TODO
-        raise NotImplementedError
+    def eliminar(self, id_propiedad: UUID):
+        agente_dto = db.session.query(AgenteDTO).filter_by(id_propiedad=str(id_propiedad)).first()
+        if agente_dto is None:
+            return
+        db.session.delete(agente_dto)
+        db.session.commit()

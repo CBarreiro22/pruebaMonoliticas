@@ -16,7 +16,7 @@ class HandlerAuditoriaDominio(Handler):
     @staticmethod
     def handle_comando_cancelar_creacion_propiedad(evento):
         despachador = Despachador()
-        despachador.publicar_comando_cancelar_creacion_propiedad(evento, 'comando_cancelar_creacion_propiedad')
+        despachador.publicar_comando_cancelar_creacion_propiedad(evento, 'comando-cancelar-creacion-propiedad')
         
 
     

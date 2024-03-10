@@ -44,5 +44,10 @@ Siempre puede ejecutarlo en modo DEBUG:
 flask --app src/propiedadDeLosAlpes/api --debug run
 ```
 
+```sql
+select * from propiedades;
+select * from agentes;
 
-
+-- delete from propiedades;
+-- delete from agentes;
+```

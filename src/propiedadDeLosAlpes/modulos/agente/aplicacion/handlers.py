@@ -16,7 +16,7 @@ class HandlerAgenteDominio(Handler):
     @staticmethod
     def handle_comando_revertir_validacion(evento):
         despachador = Despachador()
-        despachador.publicar_comando_revertir_validacion(evento, 'comando_revertir_validacion')
+        despachador.publicar_comando_revertir_validacion(evento, 'comando-revertir-validacion')
         
 
     
