@@ -18,6 +18,8 @@ from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import Reposit
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import FabricaRepositorio
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.comandos import ComandoCancelarCreacionPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.comandos import RevertirEnriquecimientoPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada
+
 from pydispatch import dispatcher
 import json
 # import asyncio
@@ -159,6 +161,21 @@ def comando_crear_propiedad(mensaje):
     print("*********** CONSUMIDOR PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: comando_crear_propiedad ***********")
     data=mensaje.value().data
     print(f'Evento recibido PROPIEDADES: {data}')    
+
+    propiedad = Propiedad(
+        nombre_propietario = data.nombre_propietario,
+        direccion = data.direccion,
+        pais = data.pais,
+        tipo_propiedad = data.tipo_propiedad,
+        ubicacion = data.ubicacion,
+        id_empresa = data.id_empresa,
+        superficie = data.superficie,
+        precio = data.precio
+    )
+    fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+    repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
+    repositorio.agregar(propiedad)
+
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: comando_crear_propiedad ***********")
 
 def evento_propiedad_validada(mensaje):
@@ -198,6 +215,10 @@ def evento_propiedad_enriquecida(mensaje):
     #Para revertir proceso de creación
     #revertir_enriquecimiento_propiedad = RevertirEnriquecimientoPropiedad(id_propiedad=data.id_propiedad)
     #dispatcher.send(signal=f'{type(revertir_enriquecimiento_propiedad).__name__}Dominio', evento=revertir_enriquecimiento_propiedad)
+
+    #Lanzar evento de propiedad creada
+    propiedad_creada = PropiedadCreada(id_propiedad=data.id_propiedad)
+    dispatcher.send(signal=f'{type(propiedad_creada).__name__}Dominio', evento=propiedad_creada)
 
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
