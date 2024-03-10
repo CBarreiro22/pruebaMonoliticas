@@ -3,15 +3,15 @@ from propiedadDeLosAlpes.modulos.propiedades.infraestructura.despachadores impor
 
 class HandlerPropiedadDominio(Handler):
 
-    @staticmethod
-    def handle_propiedad_creada(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-propiedad-modificada')
+    # @staticmethod
+    # def handle_propiedad_creada(evento):
+    #     despachador = Despachador()
+    #     despachador.publicar_evento(evento, 'eventos-propiedad-modificada')
     
-    @staticmethod
-    def handle_propiedad_validacion_agente(evento):
-        despachador = Despachador()
-        despachador.publicar_evento_agente(evento, 'eventos-propiedad-registrada')
+    # @staticmethod
+    # def handle_propiedad_validacion_agente(evento):
+    #     despachador = Despachador()
+    #     despachador.publicar_evento_agente(evento, 'eventos-propiedad-registrada')
 
     #Nuevos
     @staticmethod
@@ -32,4 +32,4 @@ class HandlerPropiedadDominio(Handler):
     @staticmethod
     def handle_evento_propiedad_creada(evento):
         despachador = Despachador()
-        despachador.publicar_evento_propiedad_creada(evento, 'evento_propiedad_creada')
+        despachador.publicar_evento_propiedad_creada(evento, 'evento-propiedad-creada')

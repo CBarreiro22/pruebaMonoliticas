@@ -17,6 +17,7 @@ from propiedadDeLosAlpes.modulos.propiedades.dominio.entidades import Propiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.repositorios import RepositorioPropiedades
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.fabricas import FabricaRepositorio
 from propiedadDeLosAlpes.modulos.auditoria.infraestructura.schema.v1.comandos import ComandoCancelarCreacionPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.dominio.comandos import RevertirEnriquecimientoPropiedad
 from pydispatch import dispatcher
 import json
 # import asyncio
@@ -61,19 +62,19 @@ import json
 
 def suscribirse_a_eventos():
     # Crear los hilos
-    thread_comando_crear_propiedad = threading.Thread(target=suscribirse_a_comando_crear_propiedad)
+    #thread_comando_crear_propiedad = threading.Thread(target=suscribirse_a_comando_crear_propiedad)
     thread_evento_propiedad_validada = threading.Thread(target=suscribirse_a_evento_propiedad_validada)
     thread_evento_propiedad_enriquecida = threading.Thread(target=suscribirse_a_evento_propiedad_enriquecida)
     thread_comando_cancelar_creacion_propiedad = threading.Thread(target=suscribirse_a_comando_cancelar_creacion_propiedad)
 
     # Iniciar los hilos
-    thread_comando_crear_propiedad.start()
+    #thread_comando_crear_propiedad.start()
     thread_evento_propiedad_validada.start()
     thread_evento_propiedad_enriquecida.start()
     thread_comando_cancelar_creacion_propiedad.start()
 
     # Esperar a que ambos hilos terminens
-    thread_comando_crear_propiedad.join()
+    #thread_comando_crear_propiedad.join()
     thread_evento_propiedad_validada.join()
     thread_evento_propiedad_enriquecida.join()
     thread_comando_cancelar_creacion_propiedad.join()
@@ -190,25 +191,12 @@ def evento_propiedad_enriquecida(mensaje):
         precio = datos.get("precio"),
         estado = "exitoso"
     )
-
-    #  propiedad_dto.nombre_propietario= propiedad.nombre_propietario
-    #         propiedad_dto.direccion= propiedad.direccion
-    #         propiedad_dto.pais= propiedad.pais
-    #         propiedad_dto.tipo_propiedad= propiedad.tipo_propiedad
-    #         propiedad_dto.ubicacion= propiedad.ubicacion
-    #         propiedad_dto.id_empresa= propiedad.id_empresa
-    #         propiedad_dto.superficie= propiedad.superficie
-    #         propiedad_dto.precio= propiedad.precio
-    #         propiedad_dto.estado= propiedad.estado
-
-
-    #propiedad.crear_agente_propiedad(agente)
     fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
     repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
     repositorio.actualizar(propiedad)
 
-    #propiedad_enriquecida = PropiedadEnriquecida(id_propiedad=data.id_propiedad,  propiedades_completadas=diccionario_string)
-    #dispatcher.send(signal=f'{type(propiedad_enriquecida).__name__}Dominio', evento=propiedad_enriquecida)
+    revertir_enriquecimiento_propiedad = RevertirEnriquecimientoPropiedad(id_propiedad=data.id_propiedad)
+    dispatcher.send(signal=f'{type(revertir_enriquecimiento_propiedad).__name__}Dominio', evento=revertir_enriquecimiento_propiedad)
 
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
@@ -216,7 +204,9 @@ def comando_cancelar_creacion_propiedad(mensaje):
     print("*********** PROPIEDADES - INICIO PROCESAMIENTO DE COMANDO: comando_revertir_validacion ***********")
     data=mensaje.value().data 
     print(f'PROPIEDADES - Comando recibido: {data}')
+    print("Benito: eliminar en bd de propiedades")
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")   
+    print("bnito")
 
 
 def suscribirse_a_comandos():

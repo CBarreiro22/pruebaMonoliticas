@@ -6,7 +6,7 @@ import traceback
 import threading
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadRegistradaAgente
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoEnriquecerPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoEnriquecerPropiedad, ComandoRevertirEnriquecimientoPropiedad
 from propiedadDeLosAlpes.modulos.agente.infraestructura.schema.v1.eventos import EventoPropiedadEnriquecida
 from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
 from pydispatch import dispatcher
@@ -15,7 +15,7 @@ from propiedadDeLosAlpes.modulos.agente.dominio.repositorios import RepositorioA
 from propiedadDeLosAlpes.modulos.agente.dominio.fabricas import FabricaAgente
 from propiedadDeLosAlpes.modulos.agente.infraestructura.fabricas import FabricaRepositorio
 from propiedadDeLosAlpes.modulos.agente.dominio.entidades import Agente
-from propiedadDeLosAlpes.modulos.agente.dominio.comandos import RevertirValidacionPropiedad
+from propiedadDeLosAlpes.modulos.agente.dominio.comando import RevertirValidacionPropiedad
 
 import json
 import random
@@ -59,7 +59,7 @@ def suscribirse_a_comando_revertir_enriquecimiento():
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comando_revertir_enriquecimiento', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadRegistradaAgente))
+        consumidor = cliente.subscribe('comando-revertir-enriquecimiento', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(ComandoRevertirEnriquecimientoPropiedad))
 
         while True:
             mensaje = consumidor.receive()
@@ -105,6 +105,9 @@ def comando_revertir_enriquecimiento(mensaje):
     print("*********** AGENTES - INICIO PROCESAMIENTO DE COMANDO: comando_revertir_enriquecimiento ***********")
     data=mensaje.value().data 
     print(f'AGENTES - Comando recibido: {data}')
+
+    print("Benito: eliminar en bd de agentes")
+
     revertir_validacion_propiedad = RevertirValidacionPropiedad(id_propiedad=data.id_propiedad) 
     dispatcher.send(signal=f'{type(revertir_validacion_propiedad).__name__}Dominio', evento=revertir_validacion_propiedad)
     print(f'AGENTES - Comando enviado: {revertir_validacion_propiedad}')
