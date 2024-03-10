@@ -84,6 +84,8 @@ class RepositorioPropiedadesPostgreSQL(RepositorioPropiedades):
 
     def eliminar(self, propiedad_id: UUID):
         propiedad_dto = db.session.query(PropiedadDTO).filter_by(id=str(propiedad_id)).first()
+        print(propiedad_dto)
+        print(propiedad_id)
         if propiedad_dto is None:
             return
         db.session.delete(propiedad_dto)

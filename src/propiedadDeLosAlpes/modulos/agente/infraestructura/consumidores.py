@@ -107,6 +107,11 @@ def comando_revertir_enriquecimiento(mensaje):
     print(f'AGENTES - Comando recibido: {data}')
 
     print("Benito: eliminar en bd de agentes")
+    #agente: Agente = Agente(id_propiedad=data.id_propiedad)
+    #agente.crear_agente_propiedad(agente)
+    fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+    repositorio = fabrica_repositorio.crear_objeto (RepositorioAgente.__class__)
+    repositorio.eliminar(data.id_propiedad)
 
     revertir_validacion_propiedad = RevertirValidacionPropiedad(id_propiedad=data.id_propiedad) 
     dispatcher.send(signal=f'{type(revertir_validacion_propiedad).__name__}Dominio', evento=revertir_validacion_propiedad)

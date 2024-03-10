@@ -195,8 +195,9 @@ def evento_propiedad_enriquecida(mensaje):
     repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
     repositorio.actualizar(propiedad)
 
-    revertir_enriquecimiento_propiedad = RevertirEnriquecimientoPropiedad(id_propiedad=data.id_propiedad)
-    dispatcher.send(signal=f'{type(revertir_enriquecimiento_propiedad).__name__}Dominio', evento=revertir_enriquecimiento_propiedad)
+    #Para revertir proceso de creación
+    #revertir_enriquecimiento_propiedad = RevertirEnriquecimientoPropiedad(id_propiedad=data.id_propiedad)
+    #dispatcher.send(signal=f'{type(revertir_enriquecimiento_propiedad).__name__}Dominio', evento=revertir_enriquecimiento_propiedad)
 
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
@@ -205,6 +206,11 @@ def comando_cancelar_creacion_propiedad(mensaje):
     data=mensaje.value().data 
     print(f'PROPIEDADES - Comando recibido: {data}')
     print("Benito: eliminar en bd de propiedades")
+
+    fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+    repositorio = fabrica_repositorio.crear_objeto (RepositorioPropiedades.__class__)
+    repositorio.eliminar(data.id_propiedad)
+
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")   
     print("bnito")
 
