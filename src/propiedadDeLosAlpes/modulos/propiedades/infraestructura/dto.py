@@ -23,9 +23,9 @@ class Propiedad(Base):
     precio = Column(Numeric(precision=15, scale=2))
     superficie = Column(Numeric(precision=10, scale=2))
 
-class Agente(Base):
-    __tablename__ = "agentes"
-    id = Column(String, primary_key=True)
-    id_propiedad = Column(String)
-    propiedades_completadas = Column(String)
+# class Agente(Base):
+#     __tablename__ = "agentes"
+#     id = Column(String, primary_key=True)
+#     id_propiedad = Column(String)
+#     propiedades_completadas = Column(String)
   

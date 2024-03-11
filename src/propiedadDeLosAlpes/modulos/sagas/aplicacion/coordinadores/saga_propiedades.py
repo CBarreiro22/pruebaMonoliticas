@@ -39,6 +39,14 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
     def persistir_en_saga_log(self, mensaje):
         # TODO Persistir estado en DB
         # Probablemente usted podría usar un repositorio para ello
+        
+        #from propiedadDeLosAlpes.modulos.sagas.dominio.repositorios import RepositorioSaga
+
+        #saga: Saga = Agente(id_propiedad=id_propiedad,  propiedades_completadas=diccionario_string)
+        #fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+        
+        #repositorio = self.fabrica_repositorio.crear_objeto (RepositorioSaga.__class__)
+        #repositorio.agregar(saga)
         ...
 
     def construir_comando(self, evento: EventoDominio, tipo_comando: type):
