@@ -69,18 +69,21 @@ def suscribirse_a_eventos():
     thread_evento_propiedad_validada = threading.Thread(target=suscribirse_a_evento_propiedad_validada)
     thread_evento_propiedad_enriquecida = threading.Thread(target=suscribirse_a_evento_propiedad_enriquecida)
     thread_comando_cancelar_creacion_propiedad = threading.Thread(target=suscribirse_a_comando_cancelar_creacion_propiedad)
+    thread_evento_propiedad_creada = threading.Thread(target=suscribirse_a_evento_propiedad_creada)
 
     # Iniciar los hilos
     thread_comando_crear_propiedad.start()
     thread_evento_propiedad_validada.start()
     thread_evento_propiedad_enriquecida.start()
     thread_comando_cancelar_creacion_propiedad.start()
+    thread_evento_propiedad_creada.start()
 
     # Esperar a que ambos hilos terminens
     thread_comando_crear_propiedad.join()
     thread_evento_propiedad_validada.join()
     thread_evento_propiedad_enriquecida.join()
     thread_comando_cancelar_creacion_propiedad.join()
+    thread_evento_propiedad_creada.join()
 
 def suscribirse_a_comando_crear_propiedad():
     cliente = None
@@ -158,6 +161,30 @@ def suscribirse_a_comando_cancelar_creacion_propiedad():
         if cliente:
             cliente.close()
 
+def suscribirse_a_evento_propiedad_creada():
+    cliente = None
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada
+        consumidor = cliente.subscribe('evento-propiedad-creada', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='propiedadDeLosAlpes-sub-eventos', schema=AvroSchema(EventoPropiedadCreada))
+        
+        while True:
+            mensaje = consumidor.receive()
+            data=mensaje.value().data
+            from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada  
+            evento = PropiedadCreada(id_propiedad=data.id_propiedad)
+            dispatcher.send(signal=f'OirMensaje', evento=evento)
+            
+            consumidor.acknowledge(mensaje)   
+        
+        cliente.close()
+
+    except:
+        logging.error('ERROR: Suscribiendose al tópico de eventos PROPIEDADES!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+
 def comando_crear_propiedad(mensaje):
     print("*********** CONSUMIDOR PROPIEDADES - INICIO PROCESAMIENTO DE EVENTO: comando_crear_propiedad ***********")
     data=mensaje.value().data
@@ -196,13 +223,11 @@ def evento_propiedad_validada(mensaje):
     #enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
     #dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
     print("Oir mensaje desde propiedades")
-    print(mensaje)
-    print(data)
+    
     from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada as Validada
-    evento = Validada(id_propiedad=data.id_propiedad, campos_faltantes="")
+    evento = Validada(id_propiedad=data.id_propiedad, campos_faltantes=data.campos_faltantes)
     dispatcher.send(signal=f'OirMensaje', evento=evento)
 
-    #OirMensaje
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento_propiedad_validada ***********") 
 
 def evento_propiedad_enriquecida(mensaje):
@@ -250,7 +275,6 @@ def comando_cancelar_creacion_propiedad(mensaje):
     repositorio.eliminar(data.id_propiedad)
 
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE COMANDO: comando_validar_propiedad ***********")   
-    print("bnito")
 
 
 def suscribirse_a_comandos():

@@ -23,12 +23,11 @@ class EnriquecerPropiedad (Comando):
 class EnriquecerPropiedadHandler (AgenteBaseHandler) :
 
     def handle(self, comando: EnriquecerPropiedad):
-        print("Guarda en agente")
-        print("publica evento propiedad enriquecida")
-        print(comando)
+        print(f"*********** SAGAS - Comando para Agente: Enriquecer Propiedad - mensaje: {comando}")
+
         id_propiedad = comando.id_propiedad 
         lista_campos = comando.campos_faltantes  
-   
+        print(comando)
         diccionario = {}
         for campo in lista_campos:
             diccionario[campo] = bot_simula_proceso_completar_campos(campo)
@@ -78,7 +77,7 @@ class EnriquecerPropiedadHandler (AgenteBaseHandler) :
         # UnidadTrabajoPuerto.savepoint()
         # UnidadTrabajoPuerto.commit()
 
-    def bot_simula_proceso_completar_campos(campo):
+def bot_simula_proceso_completar_campos(campo):
         if campo == "nombre_propietario":
             return faker.name()
 

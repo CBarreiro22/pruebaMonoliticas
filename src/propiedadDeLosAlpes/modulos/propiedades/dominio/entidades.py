@@ -22,10 +22,6 @@ class Propiedad(AgregacionRaiz):
     superficie: float = field(default=0)
     estado: str = field(default=None)
  
-
-
     def crear_propiedad(self, propiedad: Propiedad):
-        print("*** crear propiedad")
-        print(self.id)
         self.agregar_evento(
             PropiedadCreada(id_propiedad=self.id))

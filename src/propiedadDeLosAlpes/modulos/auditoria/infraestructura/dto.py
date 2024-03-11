@@ -13,5 +13,14 @@ class Auditoria(Base):
     id = Column(String, primary_key=True)
     id_propiedad = Column(String)
     estado = Column(String)
+    nombre_propietario: str = Column(String)
+    direccion: str = Column(String)
+    pais: str = Column(String)
+    tipo_propiedad: str = Column(String)
+    ubicacion: str = Column(String)
+    id_empresa = Column(Integer)
+    precio = Column(Numeric(precision=15, scale=2))
+    superficie = Column(Numeric(precision=10, scale=2))
+    estado: str = Column(String)
 
     

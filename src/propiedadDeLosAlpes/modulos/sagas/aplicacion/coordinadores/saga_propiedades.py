@@ -14,6 +14,7 @@ from propiedadDeLosAlpes.modulos.sagas.dominio.eventos.propiedades import Creaci
 from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import CancelarCreacionPropiedad, RevertirEnriquecimientoPropiedad
 from propiedadDeLosAlpes.modulos.agente.dominio.comando import RevertirValidacionPropiedad
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
+from propiedadDeLosAlpes.seedwork.aplicacion.handlers import Handler
 
 class CoordinadorPropiedades(CoordinadorOrquestacion):
 
@@ -31,11 +32,11 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
             #Fin(index=4)
 
     def iniciar(self):
-        print("Inicio")
+        print("*********** Inicio SAGA")
         self.persistir_en_saga_log(self.pasos[0])
     
     def terminar(self):
-        print("Finalizo")
+        print("*********** Fin SAGA")
         self.persistir_en_saga_log(self.pasos[-1])
 
     def persistir_en_saga_log(self, mensaje):
@@ -64,17 +65,9 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
     def __init__(self):
         self.inicializar_pasos()
 
-#el comando crear propiedad es por medio de API o desde la suscrión crear propiedad
-#oir mensaje es de los eventos ... el primero que esta escuhando es PropiedadCreada
-#el coordinador es el que se encarga de procesar el evento y ejecutar el comando
-# el handler para oir mensaje deberìa ser evento propiedad creada .... 
-from propiedadDeLosAlpes.seedwork.aplicacion.handlers import Handler
-
 class HandlerSaga(Handler):
     @staticmethod    
     def oir_mensaje(evento):
-        print("dispara oir mensaje")
-        print(evento)
         if isinstance(evento, EventoDominio):
             coordinador = CoordinadorPropiedades()
             coordinador.procesar_evento(evento)
