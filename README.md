@@ -59,3 +59,15 @@ select * from agentes;
 -- delete from propiedades;
 -- delete from agentes;
 ```
+
+```json
+{
+"nombre_propietario": "Camilo",
+"direccion": "",
+"pais": "",
+"tipo_propiedad": "Apartamento",
+"ubicacion": "Torres del Bosque",
+"id_empresa": 12345,
+"superficie": 80.5,
+"precio": 230000000
+}```

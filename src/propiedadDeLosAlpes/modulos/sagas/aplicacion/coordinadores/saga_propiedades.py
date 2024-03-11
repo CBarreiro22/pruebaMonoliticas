@@ -4,36 +4,16 @@ from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.validar_propiedad import ValidarPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.enriquecer_propiedad import EnriquecerPropiedad
 #from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.habilitar_propiedad import HabilitarPropiedad
-
-
 from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada  
 from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada
 from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
-
-
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from propiedadDeLosAlpes.seedwork.dominio.eventos import EventoDominio
-
 from propiedadDeLosAlpes.modulos.sagas.dominio.eventos.propiedades import CreacionPropiedadFallida, ValidacionPropiedadFallida, EnriquecimientoPropiedadFallida, HabilitacionPropiedadFallida
-
 #Comandos
 from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import CancelarCreacionPropiedad, RevertirEnriquecimientoPropiedad
 from propiedadDeLosAlpes.modulos.agente.dominio.comando import RevertirValidacionPropiedad
-
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
-
-
-# from aeroalpes.modulos.sagas.aplicacion.comandos.propiedades import RegistrarUsuario, ValidarUsuario
-# from aeroalpes.modulos.sagas.aplicacion.comandos.auditoria import PagarReserva, RevertirPago
-# from aeroalpes.modulos.sagas.aplicacion.comandos.agente import ConfirmarReserva, RevertirConfirmacion
-
-# from aeroalpes.modulos.vuelos.aplicacion.comandos.crear_reserva import CrearReserva
-# from aeroalpes.modulos.vuelos.aplicacion.comandos.aprobar_reserva import AprobarReserva
-# from aeroalpes.modulos.vuelos.aplicacion.comandos.cancelar_reserva import CancelarReserva
-# from aeroalpes.modulos.vuelos.dominio.eventos.reservas import ReservaCreada, ReservaCancelada, ReservaAprobada, CreacionReservaFallida, AprobacionReservaFallida
-# from aeroalpes.modulos.sagas.dominio.eventos.pagos import ReservaPagada, PagoRevertido
-# from aeroalpes.modulos.sagas.dominio.eventos.gds import ReservaGDSConfirmada, ConfirmacionGDSRevertida, ConfirmacionFallida
-
 
 class CoordinadorPropiedades(CoordinadorOrquestacion):
 
@@ -45,7 +25,6 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
             Transaccion(index=3, comando=EnriquecerPropiedad, evento=PropiedadEnriquecida, error=EnriquecimientoPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
             #Transaccion(index=4, comando=HabilitarPropiedad, evento=PropiedadHabilitada, error=HabilitacionPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
             Fin(index=4)
-            
         ]
         #Transaccion(index=2, comando=ValidarPropiedad, evento=PropiedadValidada, error=ValidacionPropiedadFallida, compensacion=RevertirValidacionPropiedad),
             #Transaccion(index=3, comando=EnriquecerPropiedad, evento=PropiedadEnriquecida, error=EnriquecimientoPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
@@ -72,15 +51,13 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
             comando = ValidarPropiedad(id_propiedad = str(evento.id_propiedad))
 
         if evento.__class__ == EventoPropiedadValidada:
-            comando = EnriquecerPropiedad(id_propiedad = str(evento.id_propiedad))
+            comando = EnriquecerPropiedad(id_propiedad = str(evento.id_propiedad), campos_faltantes= evento.campos_faltantes)
 
         # if evento.__class__ == PropiedadEnriquecida:
         #     comando = HabilitarPropiedad(id_propiedad = str(evento.id_propiedad))
         return comando
 
     def publicar_comando(self, evento: EventoDominio, tipo_comando: type):
-        #print(evento.__class__)
-        #print(PropiedadCreada.__class__)
         comando = self.construir_comando(evento, tipo_comando)
         ejecutar_commando(comando)
 

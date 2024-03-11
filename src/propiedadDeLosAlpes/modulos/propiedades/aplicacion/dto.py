@@ -17,3 +17,4 @@ class PropiedadDTO(DTO):
     precio: float = field(default_factory=float)
     estado: str = field(default_factory=str)
     ubicacion: str = field(default_factory=str)
+

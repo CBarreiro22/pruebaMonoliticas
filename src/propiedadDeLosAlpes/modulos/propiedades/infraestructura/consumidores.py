@@ -199,7 +199,7 @@ def evento_propiedad_validada(mensaje):
     print(mensaje)
     print(data)
     from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada as Validada
-    evento = Validada(id_propiedad=data.id_propiedad)
+    evento = Validada(id_propiedad=data.id_propiedad, campos_faltantes="")
     dispatcher.send(signal=f'OirMensaje', evento=evento)
 
     #OirMensaje
@@ -212,23 +212,26 @@ def evento_propiedad_enriquecida(mensaje):
     
     datos = json.loads(data.propiedades_completadas)
 
-    print(datos.get("nombre_propietario"))
+    # print(datos.get("nombre_propietario"))
 
-    propiedad: Propiedad = Propiedad(
-        id_propietario = data.id_propiedad,  
-        nombre_propietario = datos.get("nombre_propietario"),
-        direccion = datos.get("direccion"),
-        pais = datos.get("pais"),
-        tipo_propiedad = datos.get("tipo_propiedad"),
-        ubicacion = datos.get("ubicacion"),
-        id_empresa = datos.get("id_empresa"),
-        superficie = datos.get("superficie"),
-        precio = datos.get("precio"),
-        estado = "exitoso"
-    )
-    fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
-    repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
-    repositorio.actualizar(propiedad)
+    # propiedad: Propiedad = Propiedad(
+    #     id_propietario = data.id_propiedad,  
+    #     nombre_propietario = datos.get("nombre_propietario"),
+    #     direccion = datos.get("direccion"),
+    #     pais = datos.get("pais"),
+    #     tipo_propiedad = datos.get("tipo_propiedad"),
+    #     ubicacion = datos.get("ubicacion"),
+    #     id_empresa = datos.get("id_empresa"),
+    #     superficie = datos.get("superficie"),
+    #     precio = datos.get("precio"),
+    #     estado = "exitoso"
+    # )
+    # fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
+    # repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
+    # repositorio.actualizar(propiedad)
+    from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
+    evento = PropiedadEnriquecida(id_propiedad=data.id_propiedad)
+    dispatcher.send(signal=f'OirMensaje', evento=evento)
 
     #Para revertir proceso de creación
     #revertir_enriquecimiento_propiedad = RevertirEnriquecimientoPropiedad(id_propiedad=data.id_propiedad)
