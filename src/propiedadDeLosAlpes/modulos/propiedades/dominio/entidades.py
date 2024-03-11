@@ -26,4 +26,4 @@ class Propiedad(AgregacionRaiz):
 
     def crear_propiedad(self, propiedad: Propiedad):
         self.agregar_evento(
-            ComandoValidarPropiedad(id_propiedad=self.id))
+            PropiedadCreada(id_propiedad=self.id))

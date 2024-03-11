@@ -78,6 +78,10 @@ def create_app(configuracion={}):
         if not app.config.get('TESTING'):
             comenzar_consumidor()
 
+    
+        from propiedadDeLosAlpes.modulos.sagas.aplicacion.coordinadores.saga_propiedades import CoordinadorPropiedades
+        CoordinadorPropiedades()
+
     # Importa Blueprints
     from . import propiedades
     from . import agente
