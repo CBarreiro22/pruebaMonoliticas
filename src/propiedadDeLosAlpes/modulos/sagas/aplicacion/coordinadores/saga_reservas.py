@@ -44,9 +44,12 @@ class CoordinadorReservas(CoordinadorOrquestacion):
 
 
 # TODO Agregue un Listener/Handler para que se puedan redireccionar eventos de dominio
-def oir_mensaje(mensaje):
-    if isinstance(mensaje, EventoDominio):
-        coordinador = CoordinadorReservas()
-        coordinador.procesar_evento(mensaje)
-    else:
-        raise NotImplementedError("El mensaje no es evento de Dominio")
+from propiedadDeLosAlpes.seedwork.aplicacion.handlers import Handler
+
+class HandlerSaga(Handler):
+    def oir_mensaje(mensaje):
+        if isinstance(mensaje, EventoDominio):
+            coordinador = CoordinadorReservas()
+            coordinador.procesar_evento(mensaje)
+        else:
+            raise NotImplementedError("El mensaje no es evento de Dominio")

@@ -14,6 +14,7 @@ def registrar_handlers():
     import propiedadDeLosAlpes.modulos.propiedades.aplicacion
     import propiedadDeLosAlpes.modulos.auditoria.aplicacion
     import propiedadDeLosAlpes.modulos.agente.aplicacion
+    import propiedadDeLosAlpes.modulos.sagas.aplicacion
 
 
 def importar_modelos_alchemy():

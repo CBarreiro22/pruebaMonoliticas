@@ -1,5 +1,5 @@
 from pydispatch import dispatcher
-from src.propiedadDeLosAlpes.modulos.sagas.aplicacion.coordinadores.saga_propiedades import oir_mensaje
+from propiedadDeLosAlpes.modulos.sagas.aplicacion.coordinadores.saga_propiedades import HandlerSaga
 
 #dispatcher.connect(HandlerPropiedadDominio.handle_evento_propiedad_creada, signal='PropiedadCreadaDominio')
-dispatcher.connect(oir_mensaje, signal='PropiedadCreadaDominio')
+dispatcher.connect(HandlerSaga.oir_mensaje, signal='PropiedadCreadaDominio')

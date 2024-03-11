@@ -17,6 +17,7 @@ class CoordinadorSaga(ABC):
     def construir_comando(self, evento: EventoDominio, tipo_comando: type) -> Comando:
         ...
 
+    @abstractmethod
     def publicar_comando(self,evento: EventoDominio, tipo_comando: type):
         comando = construir_comando(evento, tipo_comando)
         ejecutar_commando(comando)
@@ -48,7 +49,8 @@ class Inicio(Paso):
 
 @dataclass
 class Fin(Paso):
-    ...
+    def __init__(self, index:int):
+        self.index= index
 
 @dataclass
 class Transaccion(Paso):
@@ -58,6 +60,14 @@ class Transaccion(Paso):
     error: EventoDominio
     compensacion: Comando
     exitosa: bool
+
+    def __init__(self, index:int, comando: Comando, evento: EventoDominio, error: EventoDominio, compensacion: Comando, exitosa: bool=False):
+        self.index= index
+        self.comando = comando
+        self.evento = evento
+        self.error = error
+        self.compensacion = compensacion
+        self.exitosa = exitosa
 
 class CoordinadorCoreografia(CoordinadorSaga, ABC):
     # TODO Piense como podemos hacer un Coordinador con coreografía y Sagas
@@ -70,7 +80,9 @@ class CoordinadorOrquestacion(CoordinadorSaga, ABC):
     index: int
     
     def obtener_paso_dado_un_evento(self, evento: EventoDominio):
-        for i, paso in enumerate(pasos):
+        #print(self.pasos)
+        #print(evento)
+        for i, paso in enumerate(self.pasos):
             if not isinstance(paso, Transaccion):
                 continue
 
@@ -79,10 +91,16 @@ class CoordinadorOrquestacion(CoordinadorSaga, ABC):
         raise Exception("Evento no hace parte de la transacción")
                 
     def es_ultima_transaccion(self, index):
-        return len(self.pasos) - 1
+        return index == (len(self.pasos) - 1)
 
     def procesar_evento(self, evento: EventoDominio):
         paso, index = self.obtener_paso_dado_un_evento(evento)
+        #print("procesar evento")
+        #print (paso)
+        #print(index)
+        #print(evento)
+        #print(self.es_ultima_transaccion(index))
+        #print(isinstance(evento, paso.error))
         if self.es_ultima_transaccion(index) and not isinstance(evento, paso.error):
             self.terminar()
         elif isinstance(evento, paso.error):

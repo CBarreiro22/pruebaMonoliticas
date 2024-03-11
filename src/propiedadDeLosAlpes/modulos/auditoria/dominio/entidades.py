@@ -32,4 +32,5 @@ class Auditoria(AgregacionRaiz):
             propiedad_validada = EventoPropiedadValidada(id_propiedad=auditoria.id_propiedad, estado="faltan_datos", campos_faltantes=campos_faltantes)
         else:
             propiedad_validada=EventoPropiedadValidada(id_propiedad=auditoria.id_propiedad, estado="exitoso", campos_faltantes=[])
-        return propiedad_validada
+        
+        self.agregar_evento(propiedad_validada)

@@ -48,6 +48,8 @@ class MapeadorPropiedad(RepMap):
         )
 
     def dto_a_entidad(self, dto: PropiedadDTO) -> Propiedad:
+        #print("*****Aqui")
+        #print(dto.id)
         propiedad = Propiedad(
             direccion=dto.direccion, 
             pais=dto.pais, 
@@ -57,6 +59,6 @@ class MapeadorPropiedad(RepMap):
             superficie=dto.superficie,
             precio=dto.precio,
             estado=dto.estado,
-            ubicacion=dto.ubicacion        
+            ubicacion=dto.ubicacion      
         )
         return propiedad

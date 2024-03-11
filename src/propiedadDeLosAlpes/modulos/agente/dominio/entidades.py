@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 from propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
 from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
 
+
 @dataclass
 class Agente(AgregacionRaiz):
     id_propiedad: uuid.UUID = field(hash=True, default=None)
