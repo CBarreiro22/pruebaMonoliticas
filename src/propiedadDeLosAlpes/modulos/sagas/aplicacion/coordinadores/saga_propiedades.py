@@ -3,10 +3,11 @@ from propiedadDeLosAlpes.seedwork.aplicacion.sagas import CoordinadorOrquestacio
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad import CrearPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.validar_propiedad import ValidarPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.enriquecer_propiedad import EnriquecerPropiedad
-#from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.habilitar_propiedad import HabilitarPropiedad
-from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada  
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.habilitar_propiedad import HabilitarPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada, PropiedadHabilitada  
 from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada
 from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
+
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from propiedadDeLosAlpes.seedwork.dominio.eventos import EventoDominio
 from propiedadDeLosAlpes.modulos.sagas.dominio.eventos.propiedades import CreacionPropiedadFallida, ValidacionPropiedadFallida, EnriquecimientoPropiedadFallida, HabilitacionPropiedadFallida
@@ -24,12 +25,9 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
             Transaccion(index=1, comando=CrearPropiedad, evento=PropiedadCreada, error=CreacionPropiedadFallida, compensacion=CancelarCreacionPropiedad),
             Transaccion(index=2, comando=ValidarPropiedad, evento=EventoPropiedadValidada, error=ValidacionPropiedadFallida, compensacion=RevertirValidacionPropiedad),
             Transaccion(index=3, comando=EnriquecerPropiedad, evento=PropiedadEnriquecida, error=EnriquecimientoPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
-            #Transaccion(index=4, comando=HabilitarPropiedad, evento=PropiedadHabilitada, error=HabilitacionPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
-            Fin(index=4)
+            Transaccion(index=4, comando=HabilitarPropiedad, evento=PropiedadHabilitada, error=HabilitacionPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
+            Fin(index=5)
         ]
-        #Transaccion(index=2, comando=ValidarPropiedad, evento=PropiedadValidada, error=ValidacionPropiedadFallida, compensacion=RevertirValidacionPropiedad),
-            #Transaccion(index=3, comando=EnriquecerPropiedad, evento=PropiedadEnriquecida, error=EnriquecimientoPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
-            #Fin(index=4)
 
     def iniciar(self):
         print("*********** Inicio SAGA")
@@ -54,8 +52,8 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
         if evento.__class__ == EventoPropiedadValidada:
             comando = EnriquecerPropiedad(id_propiedad = str(evento.id_propiedad), campos_faltantes= evento.campos_faltantes)
 
-        # if evento.__class__ == PropiedadEnriquecida:
-        #     comando = HabilitarPropiedad(id_propiedad = str(evento.id_propiedad))
+        if evento.__class__ == PropiedadEnriquecida:
+             comando = HabilitarPropiedad(id_propiedad = str(evento.id_propiedad), propiedades_completadas=evento.propiedades_completadas )
         return comando
 
     def publicar_comando(self, evento: EventoDominio, tipo_comando: type):

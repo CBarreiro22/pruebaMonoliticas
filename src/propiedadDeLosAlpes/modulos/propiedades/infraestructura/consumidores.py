@@ -255,7 +255,7 @@ def evento_propiedad_enriquecida(mensaje):
     # repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
     # repositorio.actualizar(propiedad)
     from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
-    evento = PropiedadEnriquecida(id_propiedad=data.id_propiedad)
+    evento = PropiedadEnriquecida(id_propiedad=data.id_propiedad , propiedades_completadas=data.propiedades_completadas )
     dispatcher.send(signal=f'OirMensaje', evento=evento)
 
     #Para revertir proceso de creación
