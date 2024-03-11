@@ -2,8 +2,7 @@
 from propiedadDeLosAlpes.seedwork.aplicacion.dto import Mapeador as AppMap
 from propiedadDeLosAlpes.seedwork.dominio.repositorios import Mapeador as RepMap
 from propiedadDeLosAlpes.modulos.auditoria.dominio.entidades import Auditoria
-from .dto import AuditoriaDTO
-
+from .dto import Auditoria as AuditoriaDTO
 
 class MapeadorAuditoriaDTOJson(AppMap):
     def externo_a_dto(self, datos: dict) -> AuditoriaDTO:

@@ -97,7 +97,7 @@ class HandlerSaga(Handler):
     @staticmethod    
     def oir_mensaje(evento):
         print("dispara oir mensaje")
-        #print(evento)
+        print(evento)
         if isinstance(evento, EventoDominio):
             coordinador = CoordinadorPropiedades()
             coordinador.procesar_evento(evento)

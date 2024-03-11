@@ -192,8 +192,17 @@ def evento_propiedad_validada(mensaje):
     data=mensaje.value().data
     print(f'PROPIEDADES - Evento recibido: {data}')
     #if data.estado == "faltan_datos":
-    enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
-    dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
+    
+    #enriquecer_propiedad= EnriquecerPropiedad(id_propiedad=data.id_propiedad,  campos_faltantes=data.campos_faltantes)
+    #dispatcher.send(signal=f'{type(enriquecer_propiedad).__name__}Dominio', evento=enriquecer_propiedad)
+    print("Oir mensaje desde propiedades")
+    print(mensaje)
+    print(data)
+    from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada as Validada
+    evento = Validada(id_propiedad=data.id_propiedad)
+    dispatcher.send(signal=f'OirMensaje', evento=evento)
+
+    #OirMensaje
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento_propiedad_validada ***********") 
 
 def evento_propiedad_enriquecida(mensaje):

@@ -33,9 +33,10 @@ class RepositorioAuditoriaPostgreSQL(RepositorioAuditoria):
         raise NotImplementedError
 
     def agregar(self, propiedad: Auditoria):
-        auditoria_dto = self.fabrica_auditoria.crear_objeto(propiedad, MapeadorAuditoria())
-        db.session.add(auditoria_dto)
-        db.session.commit()
+        # auditoria_dto = self.fabrica_auditoria.crear_objeto(propiedad, MapeadorAuditoria())
+        # db.session.add(auditoria_dto)
+        # db.session.commit()
+        ...
     
     def actualizar(self, propiedad: Auditoria):
         # TODO
