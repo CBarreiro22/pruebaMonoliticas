@@ -12,5 +12,4 @@ class PropiedadCreada(EventoDominio):
 @dataclass
 class PropiedadHabilitada(EventoDominio):
     id_propiedad: uuid.UUID = None
-    propiedades_completadas: str =None
     

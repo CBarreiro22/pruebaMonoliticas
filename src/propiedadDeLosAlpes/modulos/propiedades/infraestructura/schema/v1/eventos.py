@@ -14,4 +14,9 @@ class EventoPropiedadRegistradaAgentePayload(Record):
 
 class EventoPropiedadRegistradaAgente(EventoIntegracion):
     data = EventoPropiedadRegistradaAgentePayload()
-    
+
+class EventoPropiedadHabilitadaPayload(Record):
+    id_propiedad = String()
+
+class EventoPropiedadHabilitada(EventoIntegracion):
+    data = EventoPropiedadHabilitadaPayload()

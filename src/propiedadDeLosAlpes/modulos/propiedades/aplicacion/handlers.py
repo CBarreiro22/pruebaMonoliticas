@@ -33,3 +33,10 @@ class HandlerPropiedadDominio(Handler):
     def handle_evento_propiedad_creada(evento):
         despachador = Despachador()
         despachador.publicar_evento_propiedad_creada(evento, 'evento-propiedad-creada')
+    
+    @staticmethod
+    def handle_evento_propiedad_habilitada(evento):
+        despachador = Despachador()
+        despachador.publicar_evento_propiedad_habilitada(evento, 'evento-propiedad-habilitada')
+
+        

@@ -1,6 +1,6 @@
 import pulsar
 from pulsar.schema import *
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada, EventoPropiedadCreadaPayload, EventoPropiedadRegistradaAgente, EventoPropiedadRegistradaAgentePayload
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada, EventoPropiedadCreadaPayload, EventoPropiedadRegistradaAgente, EventoPropiedadRegistradaAgentePayload, EventoPropiedadHabilitada, EventoPropiedadHabilitadaPayload
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad, ComandoValidarPropiedadPayload, ComandoEnriquecerPropiedad, ComandoEnriquecerPropiedadPayload, ComandoRevertirEnriquecimientoPropiedad, ComandoRevertirEnriquecimientoPropiedadPayload
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
@@ -99,3 +99,17 @@ class Despachador:
         )
         evento = EventoPropiedadCreada(data=payload)
         self._publicar_evento_propiedad_creada(evento, topico, AvroSchema(EventoPropiedadCreada))
+
+    #evento_propiedad_habilitada
+    def _publicar_evento_propiedad_habilitada(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadHabilitada))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_evento_propiedad_habilitada(self, evento, topico):
+        payload = EventoPropiedadHabilitadaPayload(
+            id_propiedad=str(evento.id_propiedad)
+        )
+        evento = EventoPropiedadHabilitada(data=payload)
+        self._publicar_evento_propiedad_habilitada(evento, topico, AvroSchema(EventoPropiedadHabilitada))
