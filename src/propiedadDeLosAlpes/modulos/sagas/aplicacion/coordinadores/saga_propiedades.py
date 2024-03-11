@@ -1,5 +1,8 @@
 from propiedadDeLosAlpes.seedwork.aplicacion.sagas import CoordinadorOrquestacion, Transaccion, Inicio, Fin
+
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad import CrearPropiedad
+
+
 from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada  
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from propiedadDeLosAlpes.seedwork.dominio.eventos import EventoDominio
@@ -23,9 +26,10 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
         self.pasos = [
             Inicio(index=0),
             Transaccion(index=1, comando=CrearPropiedad, evento=PropiedadCreada, error=CreacionPropiedadFallida, compensacion=CancelarCreacionPropiedad),
-            Transaccion(index=2, comando=ValidarPropiedad, evento=PropiedadValidada, error=ValidacionPropiedadFallida, compensacion=RevertirValidacionPropiedad),
-            Transaccion(index=3, comando=EnriquecerPropiedad, evento=PropiedadEnriquecida, error=EnriquecimientoPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
-            Fin(index=4)
+            Fin(index=2)
+            #Transaccion(index=2, comando=ValidarPropiedad, evento=PropiedadValidada, error=ValidacionPropiedadFallida, compensacion=RevertirValidacionPropiedad),
+            #Transaccion(index=3, comando=EnriquecerPropiedad, evento=PropiedadEnriquecida, error=EnriquecimientoPropiedadFallida, compensacion=RevertirEnriquecimientoPropiedad),
+            #Fin(index=4)
         ]
 
     def iniciar(self):
@@ -45,10 +49,20 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
         # Debemos usar los atributos de ReservaCreada para crear el comando PagarReserva
         ...
 
+    def publicar_comando(self, evento: EventoDominio, tipo_comando: type):
+        comando = self.construir_comando(evento, tipo_comando)
+        ejecutar_commando(comando)
+
+#el comando crear propiedad es por medio de API o desde la suscrión crear propiedad
+#oir mensaje es de los eventos ... el primero que esta escuhando es PropiedadCreada
+#el coordinador es el que se encarga de procesar el evento y ejecutar el comando
+# el handler para oir mensaje deberìa ser evento propiedad creada .... 
 def oir_mensaje(mensaje):
+    print("dispara oir mensaje")
+    print(mensaje)
     if isinstance(mensaje, EventoDominio):
         coordinador = CoordinadorPropiedades()
         coordinador.procesar_evento(mensaje)
-        print("oir mensaje")
+        
     else:
         raise NotImplementedError("El mensaje no es evento de Dominio")

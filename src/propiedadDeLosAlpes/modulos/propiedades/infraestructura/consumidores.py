@@ -177,8 +177,13 @@ def comando_crear_propiedad(mensaje):
     repositorio = fabrica_repositorio.crear_objeto(RepositorioPropiedades.__class__)
     repositorio.agregar(propiedad)
 
-    comando_validar_propiedad = ComandoValidarPropiedad(id_propiedad=propiedad.id)
-    dispatcher.send(signal=f'{type(comando_validar_propiedad).__name__}Dominio', evento=comando_validar_propiedad)
+    # comando_validar_propiedad = ComandoValidarPropiedad(id_propiedad=propiedad.id)
+    # dispatcher.send(signal=f'{type(comando_validar_propiedad).__name__}Dominio', evento=comando_validar_propiedad)
+
+    #Lanzar evento de propiedad creada
+    propiedad_creada = PropiedadCreada(id_propiedad=data.propiedad)
+    dispatcher.send(signal=f'{type(propiedad_creada).__name__}Dominio', evento=propiedad_creada)
+    
 
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: comando_crear_propiedad ***********")
 
@@ -219,10 +224,6 @@ def evento_propiedad_enriquecida(mensaje):
     #Para revertir proceso de creación
     #revertir_enriquecimiento_propiedad = RevertirEnriquecimientoPropiedad(id_propiedad=data.id_propiedad)
     #dispatcher.send(signal=f'{type(revertir_enriquecimiento_propiedad).__name__}Dominio', evento=revertir_enriquecimiento_propiedad)
-
-    #Lanzar evento de propiedad creada
-    propiedad_creada = PropiedadCreada(id_propiedad=data.id_propiedad)
-    dispatcher.send(signal=f'{type(propiedad_creada).__name__}Dominio', evento=propiedad_creada)
 
     print("*********** PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: evento-propiedad-enriquecida ***********")
 
