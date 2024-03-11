@@ -24,7 +24,6 @@ class Auditoria(AgregacionRaiz):
     superficie: str = field(default=None) 
     
     def validar_propiedad(self, auditoria: Auditoria):
-        print(auditoria)
         campos_faltantes=[]
         for nombre_propiedad, valor in auditoria.__dict__.items():
             if valor == None or valor =="":

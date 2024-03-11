@@ -23,7 +23,7 @@ class EnriquecerPropiedad (Comando):
 class EnriquecerPropiedadHandler (AgenteBaseHandler) :
 
     def handle(self, comando: EnriquecerPropiedad):
-        print(f"*********** SAGAS - Comando para Agente: Enriquecer Propiedad - mensaje: {comando}")
+        print(f"============= SAGAS - Comando para Agente: Enriquecer Propiedad - mensaje: {comando}")
 
         id_propiedad = comando.id_propiedad 
         lista_campos = comando.campos_faltantes  

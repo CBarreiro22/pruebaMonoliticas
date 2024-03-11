@@ -11,7 +11,6 @@ from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquec
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from propiedadDeLosAlpes.seedwork.dominio.eventos import EventoDominio
 from propiedadDeLosAlpes.modulos.sagas.dominio.eventos.propiedades import CreacionPropiedadFallida, ValidacionPropiedadFallida, EnriquecimientoPropiedadFallida, HabilitacionPropiedadFallida
-#Comandos
 from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import CancelarCreacionPropiedad, RevertirEnriquecimientoPropiedad
 from propiedadDeLosAlpes.modulos.agente.dominio.comando import RevertirValidacionPropiedad
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando

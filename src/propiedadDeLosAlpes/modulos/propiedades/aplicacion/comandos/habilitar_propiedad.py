@@ -17,8 +17,8 @@ class HabilitarPropiedad (Comando):
 class HabilitarPropiedadHandler (CrearPropiedadBaseHandler) :
 
     def handle(self, comando: HabilitarPropiedad):
-        print("**Actualizar propiedad")
-        print(comando)
+        print(f"============= SAGAS - Comando para Propiedad: Habilitar Propiedad - mensaje: {comando}")
+
         datos = json.loads(comando.propiedades_completadas)
         propiedad: Propiedad = Propiedad(
             id_propietario = comando.id_propiedad,  

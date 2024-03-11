@@ -17,7 +17,7 @@ class ValidarPropiedad (Comando):
 class ValidarPropiedadHandler (AuditoriaBaseHandler) :
 
     def handle(self, comando: ValidarPropiedad):
-        print(f"*********** SAGAS - Comando para Auditoria: Validar Propiedad - mensaje: {comando}")
+        print(f"============= SAGAS - Comando para Auditoria: Validar Propiedad - mensaje: {comando}")
 
         servicio_propiedades = ServicioExternoPropiedades()
         auditoria_propiedad_dict=servicio_propiedades.obtener_datos(id_propiedad=comando.id_propiedad)

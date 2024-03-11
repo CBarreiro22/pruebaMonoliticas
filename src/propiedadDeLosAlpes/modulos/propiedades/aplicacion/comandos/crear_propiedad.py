@@ -24,6 +24,8 @@ class CrearPropiedad (Comando):
 class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
 
     def handle(self, comando: CrearPropiedad):
+        print(f"============= SAGAS - Comando para Propiedad: Crear Propiedad - mensaje: {comando}")
+        
         propiedad_dto = PropiedadDTO(
             direccion=comando.direccion,
             pais=comando.pais,
