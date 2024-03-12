@@ -239,7 +239,9 @@ def comando_crear_propiedad(mensaje):
 
     #Lanzar evento de propiedad creada
     propiedad_creada = PropiedadCreada(id_propiedad=data.propiedad)
-    dispatcher.send(signal=f'{type(propiedad_creada).__name__}Dominio', evento=propiedad_creada)
+    dispatcher.send(signal=f'OirMensaje', evento=evento)
+    #dispatcher.send(signal=f'{type(propiedad_creada).__name__}Dominio', evento=propiedad_creada)
+
     
 
     print("*********** CONSUMIDOR PROPIEDADES - FIN PROCESAMIENTO DE EVENTO: comando_crear_propiedad ***********")
