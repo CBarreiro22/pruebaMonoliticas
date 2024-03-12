@@ -76,7 +76,8 @@ select * from agentes;
 "id_empresa": 12345,
 "superficie": 80.5,
 "precio": 230000000
-}```
+}
+```
 
 ## Conribuciones
 
@@ -84,3 +85,5 @@ Dentro de las contribuciones se dividio el grupo en dos. Esto es debido a que se
 
 ### David y isai -> SAgas y BFF
 ### Benito y Camilo --> Comunicacion mediante eventos , comandos y mensajes
+
+
