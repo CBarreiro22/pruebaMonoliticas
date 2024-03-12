@@ -92,7 +92,7 @@ Dentro de las contribuciones se dividio el grupo en dos. Esto es debido a que se
 
 Obtener información de propiedad por ID
 
-[postman](../pruebaMonoliticas/GET%20propiedad.postman_collection.json)
+[postman](https://github.com/CBarreiro22/pruebaMonoliticas/blob/main/GET%20propiedad.postman_collection.json)
 
 ### graphql
 
