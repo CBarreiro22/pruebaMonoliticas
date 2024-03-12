@@ -79,7 +79,7 @@ select * from agentes;
 }
 ```
 
-## Conribuciones
+## Contribuciones
 
 Dentro de las contribuciones se dividio el grupo en dos. Esto es debido a que se habian ya utilizado el tiempo limite de gipod, por ende se hizo un trabajo entre pares, desarrollando el codigo desde la cuenta de Benito y David
 
