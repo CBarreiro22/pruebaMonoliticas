@@ -1,4 +1,10 @@
-# pruebaMonoliticas
+Equipo
+
+Diagrama
+
+![alt text](image.png)
+
+# Propiedades de los Alpes
 
 Para la ejecucion de este repositorio , puede probarlo por medio de gitpod, instalando la extension de chrome Gitpod
 
@@ -44,5 +50,30 @@ Siempre puede ejecutarlo en modo DEBUG:
 flask --app src/propiedadDeLosAlpes/api --debug run
 ```
 
+BFF: Web
 
+Desde el directorio src ejecute el siguiente comando
 
+```bash
+uvicorn bff_web.main:app --host localhost --port 8003 --reload
+```
+
+```sql
+select * from propiedades;
+select * from agentes;
+
+-- delete from propiedades;
+-- delete from agentes;
+```
+
+```json
+{
+"nombre_propietario": "Camilo",
+"direccion": "",
+"pais": "",
+"tipo_propiedad": "Apartamento",
+"ubicacion": "Torres del Bosque",
+"id_empresa": 12345,
+"superficie": 80.5,
+"precio": 230000000
+}```

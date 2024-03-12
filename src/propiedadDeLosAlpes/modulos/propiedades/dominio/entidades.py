@@ -3,6 +3,7 @@ import uuid
 from dataclasses import dataclass, field
 import propiedadDeLosAlpes.modulos.propiedades.dominio.objetos_valor as ov
 from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada
+from propiedadDeLosAlpes.modulos.propiedades.dominio.comandos import ComandoValidarPropiedad
 from propiedadDeLosAlpes.seedwork.dominio.entidades import AgregacionRaiz
 
 
@@ -21,12 +22,6 @@ class Propiedad(AgregacionRaiz):
     superficie: float = field(default=0)
     estado: str = field(default=None)
  
-
-
     def crear_propiedad(self, propiedad: Propiedad):
-        self.id_propietario = propiedad.id_propietario
-        self.estado = propiedad.estado
-        self.tipo_propiedad = propiedad.tipo_propiedad
-
         self.agregar_evento(
             PropiedadCreada(id_propiedad=self.id))

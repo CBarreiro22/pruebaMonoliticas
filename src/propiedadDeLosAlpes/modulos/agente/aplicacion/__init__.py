@@ -1,0 +1,6 @@
+from pydispatch import dispatcher
+from .handlers import HandlerAgenteDominio
+
+dispatcher.connect(HandlerAgenteDominio.handle_evento_propiedad_completada, signal='EventoPropiedadCompletadaDominio')
+dispatcher.connect(HandlerAgenteDominio.handle_evento_propiedad_enriquecida, signal='PropiedadEnriquecidaDominio')
+dispatcher.connect(HandlerAgenteDominio.handle_comando_revertir_validacion, signal='RevertirValidacionPropiedadDominio')

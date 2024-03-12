@@ -67,9 +67,24 @@ class RepositorioPropiedadesPostgreSQL(RepositorioPropiedades):
         db.session.commit()
     
     def actualizar(self, propiedad: Propiedad):
-        # TODO
-        raise NotImplementedError
+        propiedad_dto = db.session.query(PropiedadDTO).filter_by(id=str(propiedad.id_propietario)).first()
+        if propiedad_dto is None:
+            return
+        propiedad_dto.nombre_propietario = propiedad.nombre_propietario or propiedad_dto.nombre_propietario
+        propiedad_dto.direccion = propiedad.direccion or propiedad_dto.direccion
+        propiedad_dto.pais = propiedad.pais or propiedad_dto.pais
+        propiedad_dto.tipo_propiedad = propiedad.tipo_propiedad or propiedad_dto.tipo_propiedad
+        propiedad_dto.ubicacion = propiedad.ubicacion or propiedad_dto.ubicacion
+        propiedad_dto.id_empresa = propiedad.id_empresa or propiedad_dto.id_empresa
+        propiedad_dto.superficie = propiedad.superficie or propiedad_dto.superficie
+        propiedad_dto.precio = propiedad.precio or propiedad_dto.precio
+        propiedad_dto.estado = propiedad.estado
+
+        db.session.commit()
 
     def eliminar(self, propiedad_id: UUID):
-        # TODO
-        raise NotImplementedError
+        propiedad_dto = db.session.query(PropiedadDTO).filter_by(id=str(propiedad_id)).first()
+        if propiedad_dto is None:
+            return
+        db.session.delete(propiedad_dto)
+        db.session.commit()

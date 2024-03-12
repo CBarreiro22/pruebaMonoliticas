@@ -1,4 +1,0 @@
-from pydispatch import dispatcher
-from .handlers import HandlerPropiedadCompletadaDominio
-
-dispatcher.connect(HandlerPropiedadCompletadaDominio.handle_evento_propiedad_completada, signal='EventoPropiedadCompletadaDominio')

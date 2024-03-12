@@ -15,22 +15,27 @@ class CrearPropiedad (Comando):
     pais: str
     tipo_propiedad: str
     nombre_propietario: str
-    id: str
-    fecha_creacion: str
-    fecha_actualizacion: str
-
+    ubicacion: str
+    id_empresa: int
+    superficie: float
+    precio: float
+    estado: str
 
 class CrearPropiedadHandler (CrearPropiedadBaseHandler) :
 
     def handle(self, comando: CrearPropiedad):
+        print(f"============= SAGAS - Comando para Propiedad: Crear Propiedad - mensaje: {comando}")
+        
         propiedad_dto = PropiedadDTO(
             direccion=comando.direccion,
             pais=comando.pais,
             tipo_propiedad=comando.tipo_propiedad,
             nombre_propietario=comando.nombre_propietario,
-            id=comando.id,
-            fecha_creacion=comando.fecha_creacion,
-            fecha_actualizacion=comando.fecha_actualizacion
+            ubicacion=comando.ubicacion,
+            id_empresa=comando.id_empresa,
+            superficie=comando.superficie,
+            precio=comando.precio,
+            estado=comando.estado
         )
 
         propiedad: Propiedad = self.fabrica_propiedades.crear_objeto(propiedad_dto, MapeadorPropiedad())
