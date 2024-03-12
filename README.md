@@ -1,4 +1,10 @@
-# pruebaMonoliticas
+Equipo
+
+Diagrama
+
+![alt text](image.png)
+
+# Propiedades de los Alpes
 
 Para la ejecucion de este repositorio , puede probarlo por medio de gitpod, instalando la extension de chrome Gitpod
 
