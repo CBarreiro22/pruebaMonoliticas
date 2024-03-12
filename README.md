@@ -88,4 +88,26 @@ Dentro de las contribuciones se dividio el grupo en dos. Esto es debido a que se
 ### Benito y Camilo
 > Implementacion de la comunicacion mediante eventos , comandos y mensajes
 
+### Postman collection 
 
+Obtener información de propiedad por ID
+
+[postman](../pruebaMonoliticas/GET%20propiedad.postman_collection.json)
+
+### graphql
+
+para registrear la propiedad
+
+[proyecto compartido de postman](https://speeding-rocket-833109.postman.co/workspace/New-Team-Workspace~a2fd0a9f-43b7-45f5-93b1-c063c924a2b8/collection/65ee4e13fd7b469b2c45ea09?action=share&creator=23921893)
+
+esto tiene que estar corriendo
+[version web](https://8003-cbarreiro22-pruebamonol-g3xl65m8gaa.ws-us108.gitpod.io/v1)
+
+monitorea registros exitosos
+
+[registros exitosos](https://8003-cbarreiro22-pruebamonol-g3xl65m8gaa.ws-us108.gitpod.io/stream)
+
+monitorear registros no exitodos
+[registros no exitosos](https://8003-cbarreiro22-pruebamonol-g3xl65m8gaa.ws-us108.gitpod.io/stream/evento/validacion/propiedad/fallida)
+
+Las url deben ser reemplazadas con la nueva ejecución.

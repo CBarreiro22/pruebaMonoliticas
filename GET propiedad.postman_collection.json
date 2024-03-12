@@ -1,0 +1,41 @@
+{
+	"info": {
+		"_postman_id": "3a9d56a3-adaa-422a-8233-37f404fe0a4c",
+		"name": "GET propiedad",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23921893"
+	},
+	"item": [
+		{
+			"name": "https://5000-cbarreiro22-pruebamonol-g3xl65m8gaa.ws-us108.gitpod.io/propiedades/v1/propiedades/55878803-4441-4262-9209-02380b39eb1d",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://5000-cbarreiro22-pruebamonol-g3xl65m8gaa.ws-us108.gitpod.io/propiedades/v1/propiedades/0ce189a7-05df-4296-b678-00dcb6c6ba06",
+					"protocol": "https",
+					"host": [
+						"5000-cbarreiro22-pruebamonol-g3xl65m8gaa",
+						"ws-us108",
+						"gitpod",
+						"io"
+					],
+					"path": [
+						"propiedades",
+						"v1",
+						"propiedades",
+						"0ce189a7-05df-4296-b678-00dcb6c6ba06"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
