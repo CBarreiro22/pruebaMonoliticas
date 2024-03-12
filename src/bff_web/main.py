@@ -10,7 +10,7 @@ import datetime
 from pydantic import BaseSettings
 from typing import Any
 
-from .consumidores import suscribirse_a_topico
+from .consumidores import suscribirse_a_topico, suscribirse_a_topico_eventos_fallidos
 from .despachadores import Despachador
 
 from . import utils
@@ -27,13 +27,17 @@ app_configs: dict[str, Any] = {"title": "BFF-Web Propiedades"}
 app = FastAPI(**app_configs)
 tasks = list()
 eventos = list()
+eventos_fallidos = list()
 
 @app.on_event("startup")
 async def app_startup():
     global tasks
     global eventos
+    global eventos_fallidos
     task1 = asyncio.ensure_future(suscribirse_a_topico("evento-propiedad-habilitada", "propiedadDeLosAlpes-sub-eventos", "public/default/evento-propiedad-habilitada", eventos=eventos))
+    task2 = asyncio.ensure_future(suscribirse_a_topico("evento-validacion-propiedad-fallida", "propiedadDeLosAlpes-sub-eventos", "public/default/evento-validacion-propiedad-fallida", eventos=eventos_fallidos))
     tasks.append(task1)
+    tasks.append(task2)
 
 @app.on_event("shutdown")
 def shutdown_event():
@@ -54,6 +58,26 @@ async def stream_mensajes(request: Request):
                 break
 
             if len(eventos) > 0:
+                yield nuevo_evento()
+
+            await asyncio.sleep(0.1)
+
+    return EventSourceResponse(leer_eventos())
+
+
+@app.get('/stream/evento/validacion/propiedad/fallida')
+async def stream_mensajes(request: Request):
+    def nuevo_evento():
+        global eventos_fallidos
+        return {'data': eventos_fallidos.pop(), 'event': 'NuevoEventoFallido'}
+    async def leer_eventos():
+        global eventos_fallidos
+        while True:
+            # Si el cliente cierra la conexión deja de enviar eventos
+            if await request.is_disconnected():
+                break
+
+            if len(eventos_fallidos) > 0:
                 yield nuevo_evento()
 
             await asyncio.sleep(0.1)
