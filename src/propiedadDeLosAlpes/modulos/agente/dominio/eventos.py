@@ -9,3 +9,7 @@ from propiedadDeLosAlpes.seedwork.dominio.eventos import EventoDominio
 class PropiedadEnriquecida(EventoDominio):
     id_propiedad: uuid.UUID = None
     propiedades_completadas : str=None
+
+@dataclass
+class PropiedadNoCreada(EventoDominio):
+    id_propiedad: uuid.UUID = None

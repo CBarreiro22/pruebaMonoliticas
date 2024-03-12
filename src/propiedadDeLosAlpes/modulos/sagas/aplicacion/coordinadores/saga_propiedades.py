@@ -1,20 +1,24 @@
 from propiedadDeLosAlpes.seedwork.aplicacion.sagas import CoordinadorOrquestacion, Transaccion, Inicio, Fin
 
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.crear_propiedad import CrearPropiedad
+from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.cancelar_creacion_propiedad import CancelarPropiedad as CancelarCreacionPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.validar_propiedad import ValidarPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.enriquecer_propiedad import EnriquecerPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.aplicacion.comandos.habilitar_propiedad import HabilitarPropiedad
 from propiedadDeLosAlpes.modulos.propiedades.dominio.eventos import PropiedadCreada, PropiedadHabilitada  
-from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada
+from propiedadDeLosAlpes.modulos.auditoria.dominio.eventos import EventoPropiedadValidada, ValidacionPropiedadFallida
 from propiedadDeLosAlpes.modulos.agente.dominio.eventos import PropiedadEnriquecida
 
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import Comando
 from propiedadDeLosAlpes.seedwork.dominio.eventos import EventoDominio
-from propiedadDeLosAlpes.modulos.sagas.dominio.eventos.propiedades import CreacionPropiedadFallida, ValidacionPropiedadFallida, EnriquecimientoPropiedadFallida, HabilitacionPropiedadFallida
-from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import CancelarCreacionPropiedad, RevertirEnriquecimientoPropiedad
+from propiedadDeLosAlpes.modulos.sagas.dominio.eventos.propiedades import CreacionPropiedadFallida, EnriquecimientoPropiedadFallida, HabilitacionPropiedadFallida
+from propiedadDeLosAlpes.modulos.auditoria.dominio.comandos import RevertirEnriquecimientoPropiedad
 from propiedadDeLosAlpes.modulos.agente.dominio.comando import RevertirValidacionPropiedad
 from propiedadDeLosAlpes.seedwork.aplicacion.comandos import ejecutar_commando
 from propiedadDeLosAlpes.seedwork.aplicacion.handlers import Handler
+
+
+
 
 class CoordinadorPropiedades(CoordinadorOrquestacion):
 
@@ -53,6 +57,8 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
         # TODO Transforma un evento en la entrada de un comando
         # Por ejemplo si el evento que llega es ReservaCreada y el tipo_comando es PagarReserva
         # Debemos usar los atributos de ReservaCreada para crear el comando PagarReserva
+        
+        #EVENTOS EXITOSOS
         if evento.__class__ == PropiedadCreada:
             comando = ValidarPropiedad(id_propiedad = str(evento.id_propiedad))
 
@@ -61,6 +67,17 @@ class CoordinadorPropiedades(CoordinadorOrquestacion):
 
         if evento.__class__ == PropiedadEnriquecida:
              comando = HabilitarPropiedad(id_propiedad = str(evento.id_propiedad), propiedades_completadas=evento.propiedades_completadas )
+
+        #EVENTOS FALLIDOS
+        if evento.__class__ == ValidacionPropiedadFallida:
+             comando = CancelarCreacionPropiedad(id_propiedad = str(evento.id_propiedad) )
+
+        if evento.__class__ == EnriquecimientoPropiedadFallida:
+             comando = RevertirValidacionPropiedad(id_propiedad = str(evento.id_propiedad) )
+            
+        if evento.__class__ == HabilitacionPropiedadFallida:
+             comando = RevertirEnriquecimientoPropiedad(id_propiedad = str(evento.id_propiedad) )
+
         return comando
 
     def publicar_comando(self, evento: EventoDominio, tipo_comando: type):

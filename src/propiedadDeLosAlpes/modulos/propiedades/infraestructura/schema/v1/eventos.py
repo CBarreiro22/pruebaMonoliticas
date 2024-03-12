@@ -20,3 +20,18 @@ class EventoPropiedadHabilitadaPayload(Record):
 
 class EventoPropiedadHabilitada(EventoIntegracion):
     data = EventoPropiedadHabilitadaPayload()
+
+class EventoPropiedadNoCreadaPayload(Record):
+    id_propiedad = String()
+
+class EventoPropiedadNoCreada(EventoIntegracion):
+    data = EventoPropiedadNoCreadaPayload()
+
+class EventoValidacionPropiedadFallidaPayload(Record):
+    id_propiedad = String()
+    mensaje = String()
+
+class EventoValidacionPropiedadFallida(EventoIntegracion):
+    data = EventoValidacionPropiedadFallidaPayload()
+
+

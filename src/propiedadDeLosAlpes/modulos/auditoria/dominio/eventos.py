@@ -15,3 +15,8 @@ class EventoPropiedadValidada(EventoDominio):
 class ResultadosValidacionAgente(EventoDominio):
     id_propiedad: uuid.UUID = None
     campos_faltantes: List[str] = None
+
+@dataclass
+class ValidacionPropiedadFallida(EventoDominio):
+    id_propiedad: uuid.UUID = None
+    mensaje: str = None

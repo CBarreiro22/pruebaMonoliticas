@@ -6,11 +6,7 @@ from datetime import datetime
 @dataclass
 class CreacionPropiedadFallida(EventoDominio):
     id_propiedad: uuid.UUID = None
-
-@dataclass
-class ValidacionPropiedadFallida(EventoDominio):
-    id_propiedad: uuid.UUID = None
-
+       
 @dataclass
 class EnriquecimientoPropiedadFallida(EventoDominio):
     id_propiedad: uuid.UUID = None

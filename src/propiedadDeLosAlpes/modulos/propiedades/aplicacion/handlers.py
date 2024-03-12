@@ -38,5 +38,17 @@ class HandlerPropiedadDominio(Handler):
     def handle_evento_propiedad_habilitada(evento):
         despachador = Despachador()
         despachador.publicar_evento_propiedad_habilitada(evento, 'evento-propiedad-habilitada')
+    
+    @staticmethod
+    def handle_evento_propiedad_no_creada(evento):
+        despachador = Despachador()
+        despachador.publicar_evento_propiedad_no_creada(evento, 'evento-propiedad-no-creada')
+    
+    @staticmethod
+    def handle_evento_validacion_propiedad_fallida(evento):
+        despachador = Despachador()
+        despachador.publicar_evento_validacion_propiedad_fallida(evento, 'evento-validacion-propiedad-fallida')
 
+        
+        
         

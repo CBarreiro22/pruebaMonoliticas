@@ -1,6 +1,6 @@
 import pulsar
 from pulsar.schema import *
-from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada, EventoPropiedadCreadaPayload, EventoPropiedadRegistradaAgente, EventoPropiedadRegistradaAgentePayload, EventoPropiedadHabilitada, EventoPropiedadHabilitadaPayload
+from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.eventos import EventoPropiedadCreada, EventoPropiedadCreadaPayload, EventoPropiedadRegistradaAgente, EventoPropiedadRegistradaAgentePayload, EventoPropiedadHabilitada, EventoPropiedadHabilitadaPayload, EventoPropiedadNoCreada, EventoPropiedadNoCreadaPayload, EventoValidacionPropiedadFallida, EventoValidacionPropiedadFallidaPayload
 from propiedadDeLosAlpes.modulos.propiedades.infraestructura.schema.v1.comandos import ComandoValidarPropiedad, ComandoValidarPropiedadPayload, ComandoEnriquecerPropiedad, ComandoEnriquecerPropiedadPayload, ComandoRevertirEnriquecimientoPropiedad, ComandoRevertirEnriquecimientoPropiedadPayload
 from propiedadDeLosAlpes.seedwork.infraestructura import utils
 import datetime
@@ -113,3 +113,36 @@ class Despachador:
         )
         evento = EventoPropiedadHabilitada(data=payload)
         self._publicar_evento_propiedad_habilitada(evento, topico, AvroSchema(EventoPropiedadHabilitada))
+    
+    #evento_propiedad_no_creada
+    def _publicar_evento_propiedad_no_creada(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoPropiedadNoCreada))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_evento_propiedad_no_creada(self, evento, topico):
+        payload = EventoPropiedadNoCreadaPayload(
+            id_propiedad=str(evento.id_propiedad)
+        )
+        evento = EventoPropiedadNoCreada(data=payload)
+        self._publicar_evento_propiedad_no_creada(evento, topico, AvroSchema(EventoPropiedadNoCreada))
+    
+    #evento_validacion_propiedad_fallida
+    def _publicar_evento_validacion_propiedad_fallida(self, mensaje, topico, schema):
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoValidacionPropiedadFallida))
+        publicador.send(mensaje)
+        cliente.close()
+
+    def publicar_evento_validacion_propiedad_fallida(self, evento, topico):
+        payload = EventoValidacionPropiedadFallidaPayload(
+            id_propiedad=str(evento.id_propiedad),
+            mensaje= evento.mensaje
+        )
+        evento = EventoValidacionPropiedadFallida(data=payload)
+        self._publicar_evento_validacion_propiedad_fallida(evento, topico, AvroSchema(EventoValidacionPropiedadFallida))
+
+    
+
+        
